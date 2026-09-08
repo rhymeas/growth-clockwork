@@ -3,7 +3,7 @@
   "published": false,
   "license_granted": true,
   "license": "Apache-2.0",
-  "boundary_revision": "published-2026-09-07-r28",
+  "boundary_revision": "published-2026-09-07-r29",
   "files": [
     {
       "path": "agents/README.md",
@@ -367,8 +367,8 @@
     },
     {
       "path": "dashboard/src/App.test.tsx",
-      "sha256": "e6b4a9088d0191d9a183fd7b7dd78b843d3aeacef92a759723a136337751024e",
-      "bytes": 32394
+      "sha256": "deca1776d32c6040c730e66eb6253ae0e6133131c9e3e6234bbc379e1589533f",
+      "bytes": 33062
     },
     {
       "path": "dashboard/src/App.tsx",
@@ -417,8 +417,8 @@
     },
     {
       "path": "dashboard/src/components/DocumentPreview.tsx",
-      "sha256": "478c077d0455b10bf53fe320d3d5b3837e07d18345e281a3328891e7b390e7a8",
-      "bytes": 3329
+      "sha256": "2c2231161c672796242aaf9089f8f24acdb12b23dede614094972fb4ffbdebb6",
+      "bytes": 3394
     },
     {
       "path": "dashboard/src/components/EvidenceViewer.tsx",
@@ -622,7 +622,7 @@
     },
     {
       "path": "open-source-package.json",
-      "sha256": "99a99c7ce9ae7c10e2836b3cfaf8960246c47651dc3bcd84cd09c612f4088ed0",
+      "sha256": "5b7d3ecc42d438fc2adf7771c8ad472175c1f5b53a839b88f24a378ea546151f",
       "bytes": 6624,
       "origin": "generated-standalone-boundary-manifest"
     },

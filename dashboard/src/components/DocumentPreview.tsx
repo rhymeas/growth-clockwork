@@ -11,7 +11,9 @@ export function DocumentPreview({
   projectName: string;
 }) {
   const sections = customerSections(review.artifactContent);
-  const markdown = lessonMarkdown(review.artifactContent);
+  const markdown = review.kind === "agent-draft"
+    ? review.artifactContent
+    : lessonMarkdown(review.artifactContent);
   const decision = customerText(review.decision);
 
   return (

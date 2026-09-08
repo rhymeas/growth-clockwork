@@ -543,6 +543,21 @@ describe("Review Desk", () => {
     expect(screen.getByText("Revision r2 approved. Release package ready; nothing was published.")).toBeVisible();
   });
 
+  it("renders agent-draft Markdown as a readable review document", async () => {
+    const user = userEvent.setup();
+    mocks.getReviews.mockResolvedValue([{
+      ...mocks.review,
+      kind: "agent-draft",
+      artifactContent: "# Hidden duplicate title\n\nThe **practical rule** stays visible.\n\n| Item | State |\n|---|---|\n| Owner | Missing |",
+    }]);
+    render(<App />);
+
+    await openReview(user);
+    expect(screen.queryByRole("heading", { name: "Hidden duplicate title" })).toBeNull();
+    expect(screen.getByText("practical rule", { selector: "strong" })).toBeVisible();
+    expect(screen.getByRole("table")).toHaveTextContent("OwnerMissing");
+  });
+
   it("reports a queued publisher task without claiming delivery is live", async () => {
     const user = userEvent.setup();
     mocks.submitReviewAction.mockResolvedValue({
