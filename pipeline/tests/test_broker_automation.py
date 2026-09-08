@@ -53,6 +53,31 @@ class BrokerAutomationTests(unittest.TestCase):
             release.set()
             service.close()
 
+    def test_wait_until_idle_observes_the_running_project_chain(self):
+        release = threading.Event()
+
+        def runner(*args, **kwargs):
+            release.wait(2)
+
+        service = BrokerAutomation(
+            workspace=self.fixture.workspace,
+            database=self.fixture.workspace / 'tasks.sqlite',
+            permissions=self.fixture.permissions, executable='/usr/bin/true',
+            runner=runner)
+        try:
+            self.assertTrue(service.start(
+                project='alpha', task_id=self.task_id,
+                profile_path=self.fixture.profile_path))
+            timer = threading.Timer(0.05, release.set)
+            timer.start()
+            self.assertTrue(service.wait_until_idle('alpha', timeout=2))
+            timer.join()
+            with self.assertRaisesRegex(ValueError, 'Invalid automation wait'):
+                service.wait_until_idle('alpha', timeout=0)
+        finally:
+            release.set()
+            service.close()
+
     def test_preflight_failure_becomes_visible_failed_task(self):
         finished = threading.Event()
 

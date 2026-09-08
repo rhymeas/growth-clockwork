@@ -105,9 +105,12 @@ python3 -m pipeline.macos_autostart --workspace . --install-research --project <
 The project must have `research-feeds.json` and the Codex CLI must be signed in.
 The job also runs once after login so a missed Monday can catch up. Intake and
 curation are idempotent per selected brief and ISO week. Strict validation allows
-only an existing audience hypothesis and URLs from that receipt. The result is a
-Studio suggestion only: no draft, approval, slot or publication is created. The
-job carries no model API key, account credential or publishing permission. Use
+only an existing audience hypothesis and URLs from that receipt. If no content or
+unresolved broker work is active, one exact source-material record and proposal
+enter the existing serial Research → Marketing → Project QA route. Otherwise the
+suggestion waits; parallel content is not created. The job never approves, creates
+a publishing slot or publishes. It carries no model API key, account credential
+or publishing permission. Use
 `--update` after changing its pinned project or runtime path.
 
 For optional Postiz delivery, copy `runtime/postiz.example.json` to the gitignored

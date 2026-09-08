@@ -4,6 +4,7 @@ from __future__ import annotations
 from concurrent.futures import Future, ThreadPoolExecutor
 from pathlib import Path
 import threading
+import time
 
 from pipeline.marketing_worker import run_marketing_task
 from pipeline.mavery_qa_worker import run_mavery_qa_task
@@ -41,6 +42,25 @@ class BrokerAutomation:
 
     def close(self) -> None:
         self._executor.shutdown(wait=False, cancel_futures=False)
+
+    def wait_until_idle(self, project: str, *, timeout: int = 660) -> bool:
+        """Wait for this process's serial project chain, including delegated tasks."""
+        if not isinstance(project, str) or not project or type(timeout) is not int or not 1 <= timeout <= 900:
+            raise ValueError('Invalid automation wait')
+        deadline = time.monotonic() + timeout
+        while True:
+            with self._lock:
+                pending = [future for (task_project, _), future in self._futures.items()
+                           if task_project == project and not future.done()]
+            if not pending:
+                return True
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return False
+            try:
+                pending[0].result(timeout=remaining)
+            except TimeoutError:
+                return False
 
     def start(self, *, project: str, task_id: str, profile_path: Path) -> bool:
         key = (project, task_id)

@@ -3,7 +3,7 @@
   "published": false,
   "license_granted": true,
   "license": "Apache-2.0",
-  "boundary_revision": "published-2026-09-07-r31",
+  "boundary_revision": "published-2026-09-07-r32",
   "files": [
     {
       "path": "agents/README.md",
@@ -622,14 +622,14 @@
     },
     {
       "path": "open-source-package.json",
-      "sha256": "30cd29707eb8fd5b55575ce7ecd4fd7034f9bc366b7b418a95331edebc86a372",
+      "sha256": "4ac2f153cc0a9e8716b8a849347cff17e54baa8e68fa5596c6528015f3132639",
       "bytes": 6624,
       "origin": "generated-standalone-boundary-manifest"
     },
     {
       "path": "pipeline/README.md",
-      "sha256": "508a33c07e611845264948dfec71670383569e1f6ea125cba818b7caf6c24bf2",
-      "bytes": 18325
+      "sha256": "c2b217a2f8ff3d8d85c86f9ba3c09bd678c6128417d65cd66828811021aa56b6",
+      "bytes": 18326
     },
     {
       "path": "pipeline/__init__.py",
@@ -673,8 +673,8 @@
     },
     {
       "path": "pipeline/broker_automation.py",
-      "sha256": "6d8ae40d9c35ff33e731767d162ad4bf8c502c0a071465d3de0136a976858ec2",
-      "bytes": 4323
+      "sha256": "59be0e5534f950cab75fc041b854253f31cc42bd95672f7863a6c1d3ead0859b",
+      "bytes": 5227
     },
     {
       "path": "pipeline/broker_ingress.py",
@@ -913,8 +913,8 @@
     },
     {
       "path": "pipeline/tests/test_broker_automation.py",
-      "sha256": "50b30f388715ce9e3f521b40e72df24ac1e6bd59c2d1d54d21d2c490fa61cf26",
-      "bytes": 8762
+      "sha256": "ad47f36898aa80c65ffff55b4042a82bde9ada9f434ea7e4fdf023d52cb99952",
+      "bytes": 9744
     },
     {
       "path": "pipeline/tests/test_broker_ingress.py",
@@ -1143,8 +1143,8 @@
     },
     {
       "path": "pipeline/tests/test_weekly_cycle.py",
-      "sha256": "45c4d0c72c99c450589b945546576fac1def01667b9644977b623df2dfdf4915",
-      "bytes": 4608
+      "sha256": "79a4dfa85dda2011fdbc9fbe8fbf983755a07fca5747a34c39351a89b284509a",
+      "bytes": 9557
     },
     {
       "path": "pipeline/tests/test_workhorse.py",
@@ -1163,8 +1163,8 @@
     },
     {
       "path": "pipeline/weekly_cycle.py",
-      "sha256": "94ebf0a11a5d831853258c75024983a09e5d620bdc5bc113ebbd9953f8b762a2",
-      "bytes": 6541
+      "sha256": "5f0b3e4f53c88f76b80e5717a4b4d25e4a5a8a8a0158af203b91bed83348ad70",
+      "bytes": 11321
     },
     {
       "path": "pipeline/workhorse.py",
@@ -1662,8 +1662,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "98a413023de3890a79ef06c244f0987863ea7b30753199dff5212065871cc06a",
-      "bytes": 8655,
+      "sha256": "f5bf606c6b75aafd8c9f28ae22e3ae645b4bab82287da7f18eaba635cca6a3c6",
+      "bytes": 8855,
       "origin": "open-source/README.md"
     },
     {

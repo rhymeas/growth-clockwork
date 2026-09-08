@@ -19,7 +19,7 @@ pipeline/
   project_start.py          # immutable Project Briefs + research-readiness read model
   goal_loop.py              # durable, local-only starting check for one saved brief
   feed_intake.py            # bounded RSS/Atom from project-local research-feeds.json
-  weekly_cycle.py           # weekly receipt -> one strict local topic hypothesis
+  weekly_cycle.py           # weekly receipt -> one strict idle-only content route
   macos_autostart.py        # Desk login service + weekly local curator schedule
   project_memory.py         # immutable records + rebuildable SQLite FTS5 view
   code_graph.py             # optional code-index receipt assessment boundary
