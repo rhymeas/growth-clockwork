@@ -111,10 +111,33 @@ def launch_agent(
     return plistlib.dumps(value, fmt=plistlib.FMT_XML, sort_keys=True)
 
 
+def _replace_private(target: Path, content: bytes) -> None:
+    temporary = target.with_name(target.name + ".update")
+    if temporary.exists() or temporary.is_symlink():
+        raise AutostartError("LaunchAgent update file already exists")
+    descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    try:
+        view = memoryview(content)
+        while view:
+            written = os.write(descriptor, view)
+            if written < 1:
+                raise OSError("incomplete LaunchAgent write")
+            view = view[written:]
+        os.fsync(descriptor)
+    except OSError:
+        os.close(descriptor)
+        temporary.unlink(missing_ok=True)
+        raise AutostartError("LaunchAgent could not be written") from None
+    else:
+        os.close(descriptor)
+    os.replace(temporary, target)
+    os.chmod(target, 0o600)
+
+
 def install(
     workspace: Path, *, launch_agents: Path | None = None,
     python_executable: Path | None = None, codex_executable: Path | None = None,
-    uid: int | None = None,
+    uid: int | None = None, update: bool = False,
     run: Callable[..., subprocess.CompletedProcess] = subprocess.run,
     platform: str = sys.platform,
 ) -> dict[str, object]:
@@ -142,26 +165,13 @@ def install(
     target = directory / PLIST_NAME
     if target.is_symlink() or (target.exists() and not target.is_file()):
         raise AutostartError("LaunchAgent target is unsafe")
-    if target.exists():
-        if target.read_bytes() != content:
+    previous = target.read_bytes() if target.exists() else None
+    if previous is not None:
+        if previous != content and not update:
             raise AutostartError("A different Growth Clockwork LaunchAgent already exists")
         created = False
     else:
-        descriptor = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
-        try:
-            view = memoryview(content)
-            while view:
-                written = os.write(descriptor, view)
-                if written < 1:
-                    raise OSError("incomplete LaunchAgent write")
-                view = view[written:]
-            os.fsync(descriptor)
-        except OSError:
-            os.close(descriptor)
-            target.unlink(missing_ok=True)
-            raise AutostartError("LaunchAgent could not be written") from None
-        else:
-            os.close(descriptor)
+        _replace_private(target, content)
         created = True
     os.chmod(target, 0o600)
     domain = f"gui/{os.getuid() if uid is None else uid}"
@@ -169,17 +179,35 @@ def install(
         ["/bin/launchctl", "print", f"{domain}/{LABEL}"],
         check=False, capture_output=True, text=True, timeout=10,
     )
-    if status.returncode == 0:
+    if status.returncode == 0 and previous == content:
         return {"status": "already_loaded", "label": LABEL, "plist": str(target), "created": created}
+    was_loaded = status.returncode == 0
+    if was_loaded:
+        stopped = run(
+            ["/bin/launchctl", "bootout", f"{domain}/{LABEL}"],
+            check=False, capture_output=True, text=True, timeout=15,
+        )
+        if stopped.returncode != 0:
+            raise AutostartError("launchctl could not stop the existing Desk service")
+    if previous is not None and previous != content:
+        _replace_private(target, content)
     loaded = run(
         ["/bin/launchctl", "bootstrap", domain, str(target)],
         check=False, capture_output=True, text=True, timeout=15,
     )
     if loaded.returncode != 0:
-        if created:
+        if previous is not None and previous != content:
+            _replace_private(target, previous)
+            if was_loaded:
+                run(
+                    ["/bin/launchctl", "bootstrap", domain, str(target)],
+                    check=False, capture_output=True, text=True, timeout=15,
+                )
+        elif created:
             target.unlink(missing_ok=True)
         raise AutostartError("launchctl could not load the Desk service")
-    return {"status": "installed", "label": LABEL, "plist": str(target), "created": created}
+    return {"status": "updated" if previous != content and previous is not None else "installed",
+            "label": LABEL, "plist": str(target), "created": created}
 
 
 def readiness(
@@ -232,10 +260,14 @@ if __name__ == "__main__":
     parser.add_argument("--workspace", required=True, type=Path)
     parser.add_argument("--install", action="store_true",
                         help="Write and load the current user's LaunchAgent")
+    parser.add_argument("--update", action="store_true",
+                        help="Safely replace this tool's existing LaunchAgent")
     args = parser.parse_args()
+    if args.update and not args.install:
+        parser.error("--update requires --install")
     try:
         if args.install:
-            result = install(args.workspace)
+            result = install(args.workspace, update=args.update)
         else:
             result = {"status": "preview", "plist": plistlib.loads(launch_agent(args.workspace))}
     except AutostartError as exc:

@@ -89,6 +89,11 @@ port, store credentials or modify publishing permissions. If agent autostart is
 enabled, the generated plist also pins the discovered Codex executable; it does not
 store a model API key.
 
+After upgrading Growth Clockwork, preview the new plist first, then use
+`--install --update`. The updater stops only the fixed Growth Clockwork label,
+atomically replaces its private plist and restores the previous plist if loading
+the new service fails.
+
 For optional Postiz delivery, copy `runtime/postiz.example.json` to the gitignored
 `runtime/postiz.json` and configure it only after the separate Postiz service and
 channel OAuth connections exist. Keep `publisher.enabled` and

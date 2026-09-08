@@ -96,6 +96,55 @@ class MacOSAutostartTests(unittest.TestCase):
             )
         self.assertFalse(target.exists())
 
+    def test_update_replaces_and_reloads_only_the_owned_agent(self) -> None:
+        target = self.launch_agents / macos_autostart.PLIST_NAME
+        target.write_text("older owned configuration", encoding="utf-8")
+        calls = []
+
+        def run(command, **_kwargs):
+            calls.append(command)
+            return subprocess.CompletedProcess(command, 0, "", "")
+
+        result = macos_autostart.install(
+            self.workspace, launch_agents=self.launch_agents,
+            python_executable=self.python, codex_executable=self.python,
+            uid=501, run=run, platform="darwin", update=True,
+        )
+        self.assertEqual(result["status"], "updated")
+        self.assertEqual(target.read_bytes(), macos_autostart.launch_agent(
+            self.workspace, python_executable=self.python,
+            codex_executable=self.python))
+        self.assertEqual(calls[0][1:3], ["print", "gui/501/com.growth-clockwork.desk"])
+        self.assertEqual(calls[1][1:3], ["bootout", "gui/501/com.growth-clockwork.desk"])
+        self.assertEqual(calls[2][1:3], ["bootstrap", "gui/501"])
+
+    def test_failed_update_restores_previous_agent_and_reload_attempt(self) -> None:
+        target = self.launch_agents / macos_autostart.PLIST_NAME
+        previous = b"older owned configuration"
+        target.write_bytes(previous)
+        calls = []
+        bootstrap_count = 0
+
+        def run(command, **_kwargs):
+            nonlocal bootstrap_count
+            calls.append(command)
+            if command[1] == "bootstrap":
+                bootstrap_count += 1
+                code = 1 if bootstrap_count == 1 else 0
+            else:
+                code = 0
+            return subprocess.CompletedProcess(command, code, "", "")
+
+        with self.assertRaisesRegex(macos_autostart.AutostartError, "could not load"):
+            macos_autostart.install(
+                self.workspace, launch_agents=self.launch_agents,
+                python_executable=self.python, codex_executable=self.python,
+                uid=501, run=run, platform="darwin", update=True,
+            )
+        self.assertEqual(target.read_bytes(), previous)
+        self.assertEqual(bootstrap_count, 2)
+        self.assertFalse(target.with_name(target.name + ".update").exists())
+
     def test_non_macos_and_missing_build_are_rejected_without_write(self) -> None:
         with self.assertRaisesRegex(macos_autostart.AutostartError, "only on macOS"):
             macos_autostart.install(
