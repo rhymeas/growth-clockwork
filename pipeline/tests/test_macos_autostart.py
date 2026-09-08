@@ -22,17 +22,34 @@ class MacOSAutostartTests(unittest.TestCase):
         (self.workspace / "dashboard/dist").mkdir(parents=True)
         (self.workspace / "dashboard/dist/index.html").write_text("built", encoding="utf-8")
         (self.workspace / "runtime").mkdir()
+        (self.workspace / "runtime/broker").mkdir()
+        (self.workspace / "runtime/broker/tasks.sqlite").write_bytes(b"")
+        (self.workspace / "runtime/permissions.json").write_text(json.dumps({
+            "agents": {
+                "research": {"autostart": True},
+                "marketing": {"autostart": True},
+                "mavery-qa": {"autostart": True},
+            }
+        }), encoding="utf-8")
+        os.chmod(self.workspace / "runtime/broker/tasks.sqlite", 0o600)
+        os.chmod(self.workspace / "runtime/permissions.json", 0o600)
         self.launch_agents = Path(self.temporary.name) / "LaunchAgents"
         self.launch_agents.mkdir()
         self.python = Path(sys.executable).resolve()
 
     def test_generated_agent_is_loopback_built_and_contains_no_credentials(self) -> None:
-        raw = macos_autostart.launch_agent(self.workspace, python_executable=self.python)
+        raw = macos_autostart.launch_agent(
+            self.workspace, python_executable=self.python,
+            codex_executable=self.python,
+        )
         value = plistlib.loads(raw)
         self.assertEqual(value["Label"], "com.growth-clockwork.desk")
         arguments = value["ProgramArguments"]
         self.assertEqual(arguments[arguments.index("--port") + 1], "4173")
         self.assertEqual(arguments[arguments.index("--static-root") + 1], str((self.workspace / "dashboard/dist").resolve()))
+        self.assertEqual(arguments[arguments.index("--broker-database") + 1], str((self.workspace / "runtime/broker/tasks.sqlite").resolve()))
+        self.assertEqual(arguments[arguments.index("--broker-permissions") + 1], str((self.workspace / "runtime/permissions.json").resolve()))
+        self.assertEqual(arguments[arguments.index("--codex-executable") + 1], str(self.python))
         self.assertNotIn("--host", arguments)
         self.assertNotIn("token", raw.decode().lower())
         self.assertNotIn("password", raw.decode().lower())
@@ -46,7 +63,8 @@ class MacOSAutostartTests(unittest.TestCase):
 
         result = macos_autostart.install(
             self.workspace, launch_agents=self.launch_agents,
-            python_executable=self.python, uid=501, run=run, platform="darwin",
+            python_executable=self.python, codex_executable=self.python,
+            uid=501, run=run, platform="darwin",
         )
         target = self.launch_agents / macos_autostart.PLIST_NAME
         self.assertEqual(result["status"], "installed")
@@ -61,7 +79,8 @@ class MacOSAutostartTests(unittest.TestCase):
         with self.assertRaisesRegex(macos_autostart.AutostartError, "different"):
             macos_autostart.install(
                 self.workspace, launch_agents=self.launch_agents,
-                python_executable=self.python, run=lambda *_args, **_kwargs: None,
+                python_executable=self.python, codex_executable=self.python,
+                run=lambda *_args, **_kwargs: None,
                 platform="darwin",
             )
         target.unlink()
@@ -72,7 +91,8 @@ class MacOSAutostartTests(unittest.TestCase):
         with self.assertRaisesRegex(macos_autostart.AutostartError, "could not load"):
             macos_autostart.install(
                 self.workspace, launch_agents=self.launch_agents,
-                python_executable=self.python, run=fail, platform="darwin",
+                python_executable=self.python, codex_executable=self.python,
+                run=fail, platform="darwin",
             )
         self.assertFalse(target.exists())
 
@@ -84,8 +104,31 @@ class MacOSAutostartTests(unittest.TestCase):
             )
         (self.workspace / "dashboard/dist/index.html").unlink()
         with self.assertRaisesRegex(macos_autostart.AutostartError, "Built Desk"):
-            macos_autostart.launch_agent(self.workspace, python_executable=self.python)
+            macos_autostart.launch_agent(
+                self.workspace, python_executable=self.python,
+                codex_executable=self.python)
         self.assertEqual(list(self.launch_agents.iterdir()), [])
+
+    def test_missing_or_exposed_broker_state_is_rejected(self) -> None:
+        database = self.workspace / "runtime/broker/tasks.sqlite"
+        database.unlink()
+        with self.assertRaisesRegex(macos_autostart.AutostartError, "Broker database"):
+            macos_autostart.launch_agent(
+                self.workspace, python_executable=self.python,
+                codex_executable=self.python)
+        database.write_bytes(b"")
+        os.chmod(database, 0o644)
+        with self.assertRaisesRegex(macos_autostart.AutostartError, "private"):
+            macos_autostart.launch_agent(
+                self.workspace, python_executable=self.python,
+                codex_executable=self.python)
+
+    def test_enabled_agent_autostart_requires_a_codex_executable(self) -> None:
+        with self.assertRaisesRegex(macos_autostart.AutostartError, "Codex executable"):
+            macos_autostart.launch_agent(
+                self.workspace, python_executable=self.python,
+                codex_executable=self.workspace / "missing-codex",
+            )
 
     def test_readiness_is_read_only_and_distinguishes_install_from_runtime(self) -> None:
         def result(code: int):
@@ -93,20 +136,24 @@ class MacOSAutostartTests(unittest.TestCase):
 
         self.assertEqual(macos_autostart.readiness(
             self.workspace, launch_agents=self.launch_agents,
-            python_executable=self.python, platform="darwin",
+            python_executable=self.python, codex_executable=self.python,
+            platform="darwin",
         ), {"state": "not_installed"})
         target = self.launch_agents / macos_autostart.PLIST_NAME
         target.write_bytes(macos_autostart.launch_agent(
             self.workspace, python_executable=self.python,
+            codex_executable=self.python,
         ))
         os.chmod(target, 0o600)
         self.assertEqual(macos_autostart.readiness(
             self.workspace, launch_agents=self.launch_agents,
-            python_executable=self.python, run=result(1), platform="darwin",
+            python_executable=self.python, codex_executable=self.python,
+            run=result(1), platform="darwin",
         ), {"state": "installed_not_running"})
         self.assertEqual(macos_autostart.readiness(
             self.workspace, launch_agents=self.launch_agents,
-            python_executable=self.python, run=result(0), platform="darwin",
+            python_executable=self.python, codex_executable=self.python,
+            run=result(0), platform="darwin",
         ), {"state": "running"})
         os.chmod(target, 0o644)
         self.assertEqual(macos_autostart.readiness(

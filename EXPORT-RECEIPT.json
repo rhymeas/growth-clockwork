@@ -3,7 +3,7 @@
   "published": false,
   "license_granted": true,
   "license": "Apache-2.0",
-  "boundary_revision": "published-2026-09-07-r26",
+  "boundary_revision": "published-2026-09-07-r27",
   "files": [
     {
       "path": "agents/README.md",
@@ -622,7 +622,7 @@
     },
     {
       "path": "open-source-package.json",
-      "sha256": "c7d9867ec9aa5acb3229e2c545e85b3e46d9a074afb788a3fd40c05da2c2f1bc",
+      "sha256": "b64086107663d1e3b183ab8aab62743881b1158229b8a428fb795b27c0dffb45",
       "bytes": 6624,
       "origin": "generated-standalone-boundary-manifest"
     },
@@ -733,8 +733,8 @@
     },
     {
       "path": "pipeline/macos_autostart.py",
-      "sha256": "fb6b6978c93363067cafd1af74abed37b69f2aeb54d442d404d2b0525a13758a",
-      "bytes": 7579
+      "sha256": "7760745645805b84e56fe942fb6c4979dadb538de4fb65025bf4cd69e0744dcf",
+      "bytes": 9486
     },
     {
       "path": "pipeline/marketing_worker.py",
@@ -993,8 +993,8 @@
     },
     {
       "path": "pipeline/tests/test_macos_autostart.py",
-      "sha256": "f8f36fe8c9db105e58938264371687dad030298a6d5e4cec7a7d3ede9846eff1",
-      "bytes": 5612
+      "sha256": "6e7c13749c4e5bfdb445e3d5edbfd32c98088f2361d9306e4443c518695af951",
+      "bytes": 8046
     },
     {
       "path": "pipeline/tests/test_marketing_worker.py",
@@ -1652,8 +1652,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "3e5fe39bfb21e36376544774609256990a8942f2616710c0b42a9fea4fd78e69",
-      "bytes": 7308,
+      "sha256": "701cf61efff8b3d79160975575afbe67e954055a77010263e3619342a103bae5",
+      "bytes": 7563,
       "origin": "open-source/README.md"
     },
     {

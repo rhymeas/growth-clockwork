@@ -82,9 +82,12 @@ python3 -m pipeline.macos_autostart --workspace .
 ```
 
 After reviewing its exact paths, `--install` writes one user LaunchAgent and loads
-it with `launchctl`. It serves the already-built Desk after login while the Mac is
-awake. It does not build, open a remote port, store credentials or modify publishing
-permissions.
+it with `launchctl`. It serves the already-built Desk and its existing SQLite broker
+after login while the Mac is awake. The broker database and permission file must
+already exist and be private to the current user. It does not build, open a remote
+port, store credentials or modify publishing permissions. If agent autostart is
+enabled, the generated plist also pins the discovered Codex executable; it does not
+store a model API key.
 
 For optional Postiz delivery, copy `runtime/postiz.example.json` to the gitignored
 `runtime/postiz.json` and configure it only after the separate Postiz service and

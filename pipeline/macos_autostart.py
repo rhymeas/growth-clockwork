@@ -11,6 +11,7 @@ import json
 import os
 from pathlib import Path
 import plistlib
+import shutil
 import stat
 import subprocess
 import sys
@@ -21,6 +22,7 @@ from pipeline import root_writer
 
 LABEL = "com.growth-clockwork.desk"
 PLIST_NAME = f"{LABEL}.plist"
+CHATGPT_CODEX = Path("/Applications/ChatGPT.app/Contents/Resources/codex")
 
 
 class AutostartError(ValueError):
@@ -41,7 +43,10 @@ def _regular(path: Path, label: str, *, allow_symlink: bool = False) -> Path:
     return path
 
 
-def launch_agent(workspace: Path, *, python_executable: Path | None = None) -> bytes:
+def launch_agent(
+    workspace: Path, *, python_executable: Path | None = None,
+    codex_executable: Path | None = None,
+) -> bytes:
     workspace = root_writer._validate_workspace(Path(workspace))
     static_root = workspace / "dashboard/dist"
     _regular(static_root / "index.html", "Built Desk")
@@ -49,15 +54,48 @@ def launch_agent(workspace: Path, *, python_executable: Path | None = None) -> b
         Path(sys.executable) if python_executable is None else Path(python_executable),
         "Python executable", allow_symlink=True,
     )
+    broker_database = _regular(
+        workspace / "runtime/broker/tasks.sqlite", "Broker database")
+    broker_permissions = _regular(
+        workspace / "runtime/permissions.json", "Broker permissions")
+    for path, label in (
+        (broker_database, "Broker database"),
+        (broker_permissions, "Broker permissions"),
+    ):
+        if os.name == "posix" and stat.S_IMODE(path.stat().st_mode) & 0o077:
+            raise AutostartError(f"{label} must be private to the current user")
+    try:
+        permissions = json.loads(broker_permissions.read_text(encoding="utf-8"))
+        automation_enabled = all(
+            permissions["agents"][agent].get("autostart") is True
+            for agent in ("research", "marketing", "mavery-qa")
+        )
+    except (OSError, UnicodeError, ValueError, KeyError, TypeError):
+        automation_enabled = False
+    codex = None
+    if automation_enabled:
+        discovered = codex_executable
+        if discovered is None:
+            discovered = shutil.which("codex")
+        if discovered is None and sys.platform == "darwin" and CHATGPT_CODEX.is_file():
+            discovered = CHATGPT_CODEX
+        if discovered is None:
+            raise AutostartError("Codex executable is required by enabled agent autostart")
+        codex = _regular(Path(discovered), "Codex executable", allow_symlink=True)
     log_root = workspace / "runtime/service"
+    arguments = [
+        str(executable), "-m", "pipeline.review_api",
+        "--workspace", str(workspace),
+        "--port", "4173",
+        "--static-root", str(static_root),
+        "--broker-database", str(broker_database),
+        "--broker-permissions", str(broker_permissions),
+    ]
+    if codex is not None:
+        arguments.extend(("--codex-executable", str(codex)))
     value = {
         "Label": LABEL,
-        "ProgramArguments": [
-            str(executable), "-m", "pipeline.review_api",
-            "--workspace", str(workspace),
-            "--port", "4173",
-            "--static-root", str(static_root),
-        ],
+        "ProgramArguments": arguments,
         "WorkingDirectory": str(workspace),
         "EnvironmentVariables": {
             "PYTHONPATH": str(workspace),
@@ -75,14 +113,18 @@ def launch_agent(workspace: Path, *, python_executable: Path | None = None) -> b
 
 def install(
     workspace: Path, *, launch_agents: Path | None = None,
-    python_executable: Path | None = None, uid: int | None = None,
+    python_executable: Path | None = None, codex_executable: Path | None = None,
+    uid: int | None = None,
     run: Callable[..., subprocess.CompletedProcess] = subprocess.run,
     platform: str = sys.platform,
 ) -> dict[str, object]:
     if platform != "darwin":
         raise AutostartError("macOS LaunchAgent installation is available only on macOS")
     workspace = root_writer._validate_workspace(Path(workspace))
-    content = launch_agent(workspace, python_executable=python_executable)
+    content = launch_agent(
+        workspace, python_executable=python_executable,
+        codex_executable=codex_executable,
+    )
     raw_directory = (Path.home() / "Library/LaunchAgents" if launch_agents is None
                      else Path(launch_agents))
     if raw_directory.is_symlink():
@@ -142,7 +184,8 @@ def install(
 
 def readiness(
     workspace: Path, *, launch_agents: Path | None = None,
-    python_executable: Path | None = None, uid: int | None = None,
+    python_executable: Path | None = None, codex_executable: Path | None = None,
+    uid: int | None = None,
     run: Callable[..., subprocess.CompletedProcess] = subprocess.run,
     platform: str = sys.platform,
 ) -> dict[str, str]:
@@ -151,7 +194,10 @@ def readiness(
     if platform != "darwin":
         return {"state": "unsupported"}
     try:
-        expected = launch_agent(workspace, python_executable=python_executable)
+        expected = launch_agent(
+            workspace, python_executable=python_executable,
+            codex_executable=codex_executable,
+        )
     except (AutostartError, root_writer.WriterError):
         return {"state": "build_required"}
     raw_directory = (
