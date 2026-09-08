@@ -1,6 +1,6 @@
 # Open-source package boundary
 
-Status: Apache-2.0 public source repository; early alpha, no GitHub Release yet.
+Status: Apache-2.0 public source repository and early-alpha GitHub Pre-release.
 
 ## Decision
 
@@ -100,9 +100,9 @@ python3 -m pipeline.package_audit /absolute/path/to/candidate
 This pattern scan does not replace a secret-history scan, legal review or complete
 license-notice generation. MPL-2.0 components retain their own file-level terms.
 
-## Public status and remaining release gates
+## Public release status
 
-The public repository exists. A separately packaged GitHub Release still requires:
+The public repository and packaged Pre-release exist. Their preparation gates were:
 
 1. Extract exactly the manifest-selected files into a clean directory. Do not
    copy the whole Mavery workspace and then delete private material. **Implemented.**
@@ -116,9 +116,10 @@ The public repository exists. A separately packaged GitHub Release still require
    package README, installation path, contribution rules, security reporting
    process, compatibility statement, and versioning policy. **Candidate metadata implemented.**
 6. Keep the Apache-2.0 license confined to the extracted package. **Implemented.**
-7. Create the first packaged GitHub Release with checksums and reproducible local
-   validation. The public repository and source tag are already present. GitHub is
-   hosting, not runtime authority, and no paid GitHub feature is required.
+7. Create the first packaged GitHub Pre-release with checksums and reproducible
+   local validation. **Implemented for `v0.1.0-alpha.25`.** GitHub is hosting, not
+   runtime authority, and no paid GitHub feature is required.
 
-Until the remaining gates pass, the accurate description is **public early-alpha
-source repository, without a separately packaged GitHub Release**.
+The accurate description is **public early-alpha source repository and packaged
+Pre-release**. It is not a hosted service or a claim that optional integrations
+have been configured.

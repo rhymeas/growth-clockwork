@@ -3,7 +3,7 @@
   "published": false,
   "license_granted": true,
   "license": "Apache-2.0",
-  "boundary_revision": "published-2026-09-07-r25",
+  "boundary_revision": "published-2026-09-07-r26",
   "files": [
     {
       "path": "agents/README.md",
@@ -617,12 +617,12 @@
     },
     {
       "path": "docs/open-source-package-boundary.md",
-      "sha256": "003f19afc81064687aa363452969c0dec33373cd6d2eb22e1274ab4ceb8ccc3a",
-      "bytes": 6578
+      "sha256": "16dcd965ba07cd9952a34227cc4dedcaeb7ae4a84df11629c9d05fe1ee935932",
+      "bytes": 6577
     },
     {
       "path": "open-source-package.json",
-      "sha256": "0a3fb8690edf86c5229e16637d0c7d3dab0048071c3523c2160a509014558acb",
+      "sha256": "c7d9867ec9aa5acb3229e2c545e85b3e46d9a074afb788a3fd40c05da2c2f1bc",
       "bytes": 6624,
       "origin": "generated-standalone-boundary-manifest"
     },
