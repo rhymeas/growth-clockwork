@@ -18,10 +18,14 @@ import sys
 from typing import Callable
 
 from pipeline import root_writer
+from pipeline.feed_intake import _load_feeds
+from pipeline.goal_loop import GoalLoopService
 
 
 LABEL = "com.growth-clockwork.desk"
 PLIST_NAME = f"{LABEL}.plist"
+RESEARCH_LABEL = "com.growth-clockwork.weekly-research"
+RESEARCH_PLIST_NAME = f"{RESEARCH_LABEL}.plist"
 CHATGPT_CODEX = Path("/Applications/ChatGPT.app/Contents/Resources/codex")
 
 
@@ -111,6 +115,50 @@ def launch_agent(
     return plistlib.dumps(value, fmt=plistlib.FMT_XML, sort_keys=True)
 
 
+def research_launch_agent(
+    workspace: Path, project_id: str, *, python_executable: Path | None = None,
+) -> bytes:
+    """Build one bounded weekly feed-intake job for an existing project."""
+
+    workspace = root_writer._validate_workspace(Path(workspace))
+    executable = _regular(
+        Path(sys.executable) if python_executable is None else Path(python_executable),
+        "Python executable", allow_symlink=True,
+    )
+    service = GoalLoopService(workspace)
+    try:
+        profile_path, _profile = service._selected(project_id)
+        if not _load_feeds(profile_path):
+            raise AutostartError("Selected project has no research feeds")
+    except AutostartError:
+        raise
+    except (OSError, ValueError, KeyError) as exc:
+        raise AutostartError("Selected research project is unavailable") from exc
+    finally:
+        service.close()
+    log_root = workspace / "runtime/service"
+    value = {
+        "Label": RESEARCH_LABEL,
+        "ProgramArguments": [
+            str(executable), "-m", "pipeline.feed_intake",
+            "--workspace", str(workspace),
+            "--project", project_id,
+        ],
+        "WorkingDirectory": str(workspace),
+        "EnvironmentVariables": {
+            "PYTHONPATH": str(workspace),
+            "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        },
+        # Catch up after a reboot. feed_intake reuses the current week's receipt.
+        "RunAtLoad": True,
+        "StartCalendarInterval": {"Weekday": 1, "Hour": 9, "Minute": 0},
+        "ProcessType": "Background",
+        "StandardOutPath": str(log_root / "weekly-research.log"),
+        "StandardErrorPath": str(log_root / "weekly-research-error.log"),
+    }
+    return plistlib.dumps(value, fmt=plistlib.FMT_XML, sort_keys=True)
+
+
 def _replace_private(target: Path, content: bytes) -> None:
     temporary = target.with_name(target.name + ".update")
     if temporary.exists() or temporary.is_symlink():
@@ -148,6 +196,38 @@ def install(
         workspace, python_executable=python_executable,
         codex_executable=codex_executable,
     )
+    return _install_agent(
+        workspace, content, label=LABEL, plist_name=PLIST_NAME,
+        service_name="Desk", launch_agents=launch_agents, uid=uid,
+        update=update, run=run,
+    )
+
+
+def install_research(
+    workspace: Path, project_id: str, *, launch_agents: Path | None = None,
+    python_executable: Path | None = None, uid: int | None = None,
+    update: bool = False,
+    run: Callable[..., subprocess.CompletedProcess] = subprocess.run,
+    platform: str = sys.platform,
+) -> dict[str, object]:
+    if platform != "darwin":
+        raise AutostartError("macOS LaunchAgent installation is available only on macOS")
+    workspace = root_writer._validate_workspace(Path(workspace))
+    content = research_launch_agent(
+        workspace, project_id, python_executable=python_executable)
+    return _install_agent(
+        workspace, content, label=RESEARCH_LABEL,
+        plist_name=RESEARCH_PLIST_NAME, service_name="research schedule",
+        launch_agents=launch_agents, uid=uid, update=update, run=run,
+    )
+
+
+def _install_agent(
+    workspace: Path, content: bytes, *, label: str, plist_name: str,
+    service_name: str, launch_agents: Path | None,
+    uid: int | None, update: bool,
+    run: Callable[..., subprocess.CompletedProcess],
+) -> dict[str, object]:
     raw_directory = (Path.home() / "Library/LaunchAgents" if launch_agents is None
                      else Path(launch_agents))
     if raw_directory.is_symlink():
@@ -162,7 +242,7 @@ def install(
     else:
         log_root.mkdir(mode=0o700)
     os.chmod(log_root, 0o700)
-    target = directory / PLIST_NAME
+    target = directory / plist_name
     if target.is_symlink() or (target.exists() and not target.is_file()):
         raise AutostartError("LaunchAgent target is unsafe")
     previous = target.read_bytes() if target.exists() else None
@@ -176,19 +256,19 @@ def install(
     os.chmod(target, 0o600)
     domain = f"gui/{os.getuid() if uid is None else uid}"
     status = run(
-        ["/bin/launchctl", "print", f"{domain}/{LABEL}"],
+        ["/bin/launchctl", "print", f"{domain}/{label}"],
         check=False, capture_output=True, text=True, timeout=10,
     )
     if status.returncode == 0 and previous == content:
-        return {"status": "already_loaded", "label": LABEL, "plist": str(target), "created": created}
+        return {"status": "already_loaded", "label": label, "plist": str(target), "created": created}
     was_loaded = status.returncode == 0
     if was_loaded:
         stopped = run(
-            ["/bin/launchctl", "bootout", f"{domain}/{LABEL}"],
+            ["/bin/launchctl", "bootout", f"{domain}/{label}"],
             check=False, capture_output=True, text=True, timeout=15,
         )
         if stopped.returncode != 0:
-            raise AutostartError("launchctl could not stop the existing Desk service")
+            raise AutostartError(f"launchctl could not stop the existing {service_name} service")
     if previous is not None and previous != content:
         _replace_private(target, content)
     loaded = run(
@@ -205,9 +285,9 @@ def install(
                 )
         elif created:
             target.unlink(missing_ok=True)
-        raise AutostartError("launchctl could not load the Desk service")
+        raise AutostartError(f"launchctl could not load the {service_name} service")
     return {"status": "updated" if previous != content and previous is not None else "installed",
-            "label": LABEL, "plist": str(target), "created": created}
+            "label": label, "plist": str(target), "created": created}
 
 
 def readiness(
@@ -228,13 +308,41 @@ def readiness(
         )
     except (AutostartError, root_writer.WriterError):
         return {"state": "build_required"}
+    return _readiness_for(
+        expected, label=LABEL, plist_name=PLIST_NAME,
+        launch_agents=launch_agents, uid=uid, run=run)
+
+
+def research_readiness(
+    workspace: Path, project_id: str, *, launch_agents: Path | None = None,
+    python_executable: Path | None = None, uid: int | None = None,
+    run: Callable[..., subprocess.CompletedProcess] = subprocess.run,
+    platform: str = sys.platform,
+) -> dict[str, str]:
+    if platform != "darwin":
+        return {"state": "unsupported"}
+    try:
+        expected = research_launch_agent(
+            workspace, project_id, python_executable=python_executable)
+    except (AutostartError, root_writer.WriterError):
+        return {"state": "configuration_required"}
+    return _readiness_for(
+        expected, label=RESEARCH_LABEL, plist_name=RESEARCH_PLIST_NAME,
+        launch_agents=launch_agents, uid=uid, run=run)
+
+
+def _readiness_for(
+    expected: bytes, *, label: str, plist_name: str,
+    launch_agents: Path | None, uid: int | None,
+    run: Callable[..., subprocess.CompletedProcess],
+) -> dict[str, str]:
     raw_directory = (
         Path.home() / "Library/LaunchAgents" if launch_agents is None
         else Path(launch_agents)
     )
     if raw_directory.is_symlink() or not raw_directory.is_dir():
         return {"state": "needs_attention"}
-    target = raw_directory.resolve() / PLIST_NAME
+    target = raw_directory.resolve() / plist_name
     if not target.exists():
         return {"state": "not_installed"}
     try:
@@ -247,7 +355,7 @@ def readiness(
     domain = f"gui/{os.getuid() if uid is None else uid}"
     try:
         status = run(
-            ["/bin/launchctl", "print", f"{domain}/{LABEL}"],
+            ["/bin/launchctl", "print", f"{domain}/{label}"],
             check=False, capture_output=True, text=True, timeout=10,
         )
     except (OSError, subprocess.SubprocessError):
@@ -260,13 +368,23 @@ if __name__ == "__main__":
     parser.add_argument("--workspace", required=True, type=Path)
     parser.add_argument("--install", action="store_true",
                         help="Write and load the current user's LaunchAgent")
+    parser.add_argument("--install-research", action="store_true",
+                        help="Write and load the selected project's weekly research job")
+    parser.add_argument("--project", help="Project id for --install-research")
     parser.add_argument("--update", action="store_true",
                         help="Safely replace this tool's existing LaunchAgent")
     args = parser.parse_args()
-    if args.update and not args.install:
-        parser.error("--update requires --install")
+    if args.install and args.install_research:
+        parser.error("choose either --install or --install-research")
+    if args.update and not (args.install or args.install_research):
+        parser.error("--update requires --install or --install-research")
+    if args.install_research and not args.project:
+        parser.error("--project is required with --install-research")
     try:
-        if args.install:
+        if args.install_research:
+            result = install_research(
+                args.workspace, args.project, update=args.update)
+        elif args.install:
             result = install(args.workspace, update=args.update)
         else:
             result = {"status": "preview", "plist": plistlib.loads(launch_agent(args.workspace))}

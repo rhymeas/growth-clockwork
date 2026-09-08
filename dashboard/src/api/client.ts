@@ -73,25 +73,30 @@ export interface SetupStatusResponse {
   desk: "running";
   background: "active" | "manual";
   autostart: { state: "unsupported" | "build_required" | "not_installed" | "installed_not_running" | "running" | "needs_attention" };
+  research_schedule: { state: "unsupported" | "configuration_required" | "not_installed" | "installed_not_running" | "running" | "needs_attention" };
   remote_access: { state: "local_only" | "configured" | "needs_attention"; provider: "tailscale-serve" };
   publication: { mode: "not_configured" | "off" | "review" | "automatic"; publisher: "disabled" | "enabled" };
   host: "must_be_awake";
 }
 
-export async function getSetupStatus(signal?: AbortSignal): Promise<SetupStatusResponse> {
+export async function getSetupStatus(projectId?: string, signal?: AbortSignal): Promise<SetupStatusResponse> {
   if (isDemoMode) return {
     desk: "running", background: "manual", autostart: { state: "not_installed" },
+    research_schedule: { state: "not_installed" },
     remote_access: { state: "local_only", provider: "tailscale-serve" },
     publication: { mode: "review", publisher: "disabled" }, host: "must_be_awake",
   };
-  const value = await readJson<SetupStatusResponse>(await fetch("/api/setup-status", {
+  const suffix = projectId ? `?project_id=${encodeURIComponent(projectId)}` : "";
+  const value = await readJson<SetupStatusResponse>(await fetch(`/api/setup-status${suffix}`, {
     headers: { Accept: "application/json" }, signal,
   }));
   const autostartStates = ["unsupported", "build_required", "not_installed", "installed_not_running", "running", "needs_attention"];
+  const researchStates = ["unsupported", "configuration_required", "not_installed", "installed_not_running", "running", "needs_attention"];
   const accessStates = ["local_only", "configured", "needs_attention"];
   const publicationModes = ["not_configured", "off", "review", "automatic"];
   if (value.desk !== "running" || !["active", "manual"].includes(value.background)
     || !autostartStates.includes(value.autostart?.state)
+    || !researchStates.includes(value.research_schedule?.state)
     || value.remote_access?.provider !== "tailscale-serve" || !accessStates.includes(value.remote_access.state)
     || !publicationModes.includes(value.publication?.mode) || !["disabled", "enabled"].includes(value.publication?.publisher)
     || value.host !== "must_be_awake") {

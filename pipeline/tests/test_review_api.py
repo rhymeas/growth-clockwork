@@ -597,6 +597,7 @@ class ReviewAPITests(unittest.TestCase):
             self.assertEqual(response.status, 200)
             self.assertEqual(setup["desk"], "running")
             self.assertEqual(setup["autostart"]["state"], "build_required")
+            self.assertEqual(setup["research_schedule"]["state"], "configuration_required")
             self.assertEqual(setup["remote_access"]["state"], "local_only")
             self.assertEqual(setup["publication"], {
                 "mode": "not_configured", "publisher": "disabled",

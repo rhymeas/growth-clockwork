@@ -43,7 +43,7 @@ vi.mock("./api/client", () => ({
   getResearchFeeds: vi.fn().mockResolvedValue({project_id: "alpha", week: "2026-W36", result: null}),
   getWebsiteAnalytics: vi.fn().mockResolvedValue({project_id: "alpha", status: "not_connected", source: "ga4", report: null}),
   getPlatformAnalytics: vi.fn().mockResolvedValue({project_id: "alpha", status: "not_connected", source: "native_platform_analytics", report: null}),
-  getSetupStatus: vi.fn().mockResolvedValue({desk: "running", background: "active", autostart: {state: "not_installed"}, remote_access: {state: "local_only", provider: "tailscale-serve"}, publication: {mode: "review", publisher: "disabled"}, host: "must_be_awake"}),
+  getSetupStatus: vi.fn().mockResolvedValue({desk: "running", background: "active", autostart: {state: "not_installed"}, research_schedule: {state: "not_installed"}, remote_access: {state: "local_only", provider: "tailscale-serve"}, publication: {mode: "review", publisher: "disabled"}, host: "must_be_awake"}),
   getEvidence: mocks.getEvidence,
   getReviewMaterial: mocks.getReviewMaterial,
   submitProjectBrief: mocks.submitProjectBrief,

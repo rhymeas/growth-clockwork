@@ -19,7 +19,7 @@ export function InsightsWorkspace({ desk, reviews, queueUnavailable = false, onO
       <p>{desk.displayName} · Evidence, not estimates</p>
     </header>
     {desk.source === "local_setup" && <p className="setup-notice">Local setup outline — not a live project report.</p>}
-    <SystemStatus />
+    <SystemStatus projectId={desk.projectId} />
     <div className="world-grid world-grid-open">
     <section className="world-card" aria-labelledby="baseline-title">
       <header><h2>Measurement</h2><span>From the saved project brief</span></header>

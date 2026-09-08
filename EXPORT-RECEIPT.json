@@ -3,7 +3,7 @@
   "published": false,
   "license_granted": true,
   "license": "Apache-2.0",
-  "boundary_revision": "published-2026-09-07-r29",
+  "boundary_revision": "published-2026-09-07-r30",
   "files": [
     {
       "path": "agents/README.md",
@@ -367,8 +367,8 @@
     },
     {
       "path": "dashboard/src/App.test.tsx",
-      "sha256": "deca1776d32c6040c730e66eb6253ae0e6133131c9e3e6234bbc379e1589533f",
-      "bytes": 33062
+      "sha256": "a6555341790b995bd9e2db6907b1c4615ec95d205c2cd8e9067bdc9d593027ff",
+      "bytes": 33107
     },
     {
       "path": "dashboard/src/App.tsx",
@@ -377,13 +377,13 @@
     },
     {
       "path": "dashboard/src/api/client.test.ts",
-      "sha256": "df68e8237869e27a617db127496f601f3ae57f4e592f0cfce4d17b926f141b0f",
-      "bytes": 26006
+      "sha256": "9edaa9da5d1eb981aa4fd4f16f60bf1194e9c1a8b926fffd0ab4d91b16d1ef70",
+      "bytes": 26060
     },
     {
       "path": "dashboard/src/api/client.ts",
-      "sha256": "9a792785a18f3d7f04fef05458d1844af3bb605db5e2aac632916daaa5a8f3d2",
-      "bytes": 27467
+      "sha256": "8393750e9eaa9d9219a64e6a5e3e0a5b6f9ce783b82699f31ba79816b5477cf8",
+      "bytes": 27983
     },
     {
       "path": "dashboard/src/api/studio.test.ts",
@@ -427,8 +427,8 @@
     },
     {
       "path": "dashboard/src/components/InsightsWorkspace.tsx",
-      "sha256": "db37bbfa272bdb8dbdc980b8ba5b5c2ce4eb82fc83e8c2950dbcff98f3e798eb",
-      "bytes": 3917
+      "sha256": "7aed03330332a2a3dde7d64e2ad3c5cdd012936a00f804ec8ff9d112b280bdd0",
+      "bytes": 3944
     },
     {
       "path": "dashboard/src/components/LessonContent.test.tsx",
@@ -502,13 +502,13 @@
     },
     {
       "path": "dashboard/src/components/SystemStatus.test.tsx",
-      "sha256": "715a4c70db12f229ed6cdcd763f118f43b4d7a5a46ed4b5cd6c8a0e1babe9a90",
-      "bytes": 1097
+      "sha256": "7e0ad1624e1917eee82e2e847e08b6abf8842fb10134a62a9864fb3e883d023e",
+      "bytes": 1166
     },
     {
       "path": "dashboard/src/components/SystemStatus.tsx",
-      "sha256": "0847822450f2504b0b0b35cd74d040f2e3a7c2f3ba27d0793dbf5ce2709082ec",
-      "bytes": 2392
+      "sha256": "5310cc60186b9a1ddbfb1bd2f7867ecb92870d8b6003b49061c3ebcddab6f769",
+      "bytes": 2602
     },
     {
       "path": "dashboard/src/components/Topbar.tsx",
@@ -622,7 +622,7 @@
     },
     {
       "path": "open-source-package.json",
-      "sha256": "5b7d3ecc42d438fc2adf7771c8ad472175c1f5b53a839b88f24a378ea546151f",
+      "sha256": "2d348f427288c33378a796c4ac984e96ad1de8acb2b01de25af40506af8dc1be",
       "bytes": 6624,
       "origin": "generated-standalone-boundary-manifest"
     },
@@ -733,8 +733,8 @@
     },
     {
       "path": "pipeline/macos_autostart.py",
-      "sha256": "31e3cc67c223e66d2bbdd34ca126bfed91cbccbbe0f34af485eea67f87122562",
-      "bytes": 10990
+      "sha256": "dfd7cdd294866d4612c6f4d253beaebe0345c0f2b3cd770df066244fb1f96f0a",
+      "bytes": 16021
     },
     {
       "path": "pipeline/marketing_worker.py",
@@ -833,8 +833,8 @@
     },
     {
       "path": "pipeline/review_api.py",
-      "sha256": "b2f4ce1ca6edc4fed096e6c6a5d7938fe0133f138594ff4ce1741ce182c0b9b1",
-      "bytes": 95298
+      "sha256": "2decd322fb58e755c107779583b93384ccc6d320e6db454d09395336417e14bd",
+      "bytes": 95692
     },
     {
       "path": "pipeline/rework.py",
@@ -993,8 +993,8 @@
     },
     {
       "path": "pipeline/tests/test_macos_autostart.py",
-      "sha256": "1cb88f44331161a816a6daab74502a84b7f0ff244eab8c042a0be47f3025397e",
-      "bytes": 10312
+      "sha256": "7dda3f32e2c5e478cac8c741d34e5821ddb2cf8dc0c30f64906612dc91b92b55",
+      "bytes": 14002
     },
     {
       "path": "pipeline/tests/test_marketing_worker.py",
@@ -1083,8 +1083,8 @@
     },
     {
       "path": "pipeline/tests/test_review_api.py",
-      "sha256": "1f9978c9d87673fafc8e79f888b538bfc2f9706fe905fe450a771b7eadaa3414",
-      "bytes": 51645
+      "sha256": "5c87c1d1a3d69606d82426f7829b1c31926931c16ed9a984fd8622cb84953d07",
+      "bytes": 51737
     },
     {
       "path": "pipeline/tests/test_rework.py",
@@ -1652,8 +1652,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "9e25d68677f7d65362646200c7923c1e38c782db06ca1b436c6d023f181a1834",
-      "bytes": 7819,
+      "sha256": "f23cb626af62c474f87538e25a935e2224ed3f889d602317b9477351aee7933e",
+      "bytes": 8319,
       "origin": "open-source/README.md"
     },
     {

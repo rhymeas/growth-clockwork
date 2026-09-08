@@ -45,11 +45,12 @@ describe("Review API client", () => {
   it("accepts bounded setup states and rejects invented remote access", async () => {
     const valid = {
       desk: "running", background: "active", autostart: { state: "not_installed" },
+      research_schedule: { state: "running" },
       remote_access: { state: "local_only", provider: "tailscale-serve" },
       publication: { mode: "review", publisher: "disabled" }, host: "must_be_awake",
     } as const;
     vi.mocked(fetch).mockResolvedValueOnce(jsonResponse(valid));
-    await expect(getSetupStatus()).resolves.toEqual(valid);
+    await expect(getSetupStatus("alpha")).resolves.toEqual(valid);
     vi.mocked(fetch).mockResolvedValueOnce(jsonResponse({
       ...valid, remote_access: { ...valid.remote_access, state: "public" },
     }));

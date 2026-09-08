@@ -33,6 +33,25 @@ class MacOSAutostartTests(unittest.TestCase):
         }), encoding="utf-8")
         os.chmod(self.workspace / "runtime/broker/tasks.sqlite", 0o600)
         os.chmod(self.workspace / "runtime/permissions.json", 0o600)
+        (self.workspace / "projects/example").mkdir(parents=True)
+        (self.workspace / "projects/example/project.json").write_text(json.dumps({
+            "profile_version": "1.0",
+            "profile_revision": "example-v1",
+            "project_id": "example",
+            "display_name": "Example",
+            "root_role_id": "growth-clockwork-root",
+            "writer": {
+                "state_root": "projects/example/state",
+                "allowed_roots": ["records", "clockwork/run-receipts"],
+                "append_only_roots": ["records", "clockwork/run-receipts"],
+                "receipt_root": "clockwork/run-receipts",
+                "max_files_per_request": 8,
+                "max_total_bytes": 1048576
+            }
+        }), encoding="utf-8")
+        (self.workspace / "projects/example/research-feeds.json").write_text(
+            json.dumps([["Example", "https://example.com/feed.xml"]]),
+            encoding="utf-8")
         self.launch_agents = Path(self.temporary.name) / "LaunchAgents"
         self.launch_agents.mkdir()
         self.python = Path(sys.executable).resolve()
@@ -53,6 +72,56 @@ class MacOSAutostartTests(unittest.TestCase):
         self.assertNotIn("--host", arguments)
         self.assertNotIn("token", raw.decode().lower())
         self.assertNotIn("password", raw.decode().lower())
+
+    def test_generated_research_agent_runs_weekly_and_on_login(self) -> None:
+        raw = macos_autostart.research_launch_agent(
+            self.workspace, "example", python_executable=self.python)
+        value = plistlib.loads(raw)
+        self.assertEqual(value["Label"], macos_autostart.RESEARCH_LABEL)
+        self.assertEqual(value["StartCalendarInterval"], {
+            "Weekday": 1, "Hour": 9, "Minute": 0})
+        self.assertTrue(value["RunAtLoad"])
+        self.assertNotIn("KeepAlive", value)
+        arguments = value["ProgramArguments"]
+        self.assertEqual(arguments[1:3], ["-m", "pipeline.feed_intake"])
+        self.assertEqual(arguments[arguments.index("--project") + 1], "example")
+        self.assertNotIn("token", raw.decode().lower())
+        self.assertNotIn("password", raw.decode().lower())
+
+    def test_research_install_and_readiness_use_separate_owned_label(self) -> None:
+        calls: list[list[str]] = []
+
+        def run(command, **_kwargs):
+            calls.append(command)
+            return subprocess.CompletedProcess(
+                command, 1 if command[1] == "print" else 0, "", "")
+
+        result = macos_autostart.install_research(
+            self.workspace, "example", launch_agents=self.launch_agents,
+            python_executable=self.python, uid=501, run=run,
+            platform="darwin")
+        target = self.launch_agents / macos_autostart.RESEARCH_PLIST_NAME
+        self.assertEqual(result["status"], "installed")
+        self.assertEqual(target.stat().st_mode & 0o777, 0o600)
+        self.assertEqual(calls[0][2],
+                         "gui/501/com.growth-clockwork.weekly-research")
+        self.assertEqual(calls[1],
+                         ["/bin/launchctl", "bootstrap", "gui/501", str(target.resolve())])
+        self.assertEqual(macos_autostart.research_readiness(
+            self.workspace, "example", launch_agents=self.launch_agents,
+            python_executable=self.python,
+            run=lambda command, **kwargs: subprocess.CompletedProcess(
+                command, 0, "", ""), platform="darwin"), {"state": "running"})
+
+    def test_research_schedule_requires_an_existing_feed_configuration(self) -> None:
+        (self.workspace / "projects/example/research-feeds.json").unlink()
+        with self.assertRaisesRegex(macos_autostart.AutostartError, "no research feeds"):
+            macos_autostart.research_launch_agent(
+                self.workspace, "example", python_executable=self.python)
+        self.assertEqual(macos_autostart.research_readiness(
+            self.workspace, "example", launch_agents=self.launch_agents,
+            python_executable=self.python, platform="darwin"),
+            {"state": "configuration_required"})
 
     def test_install_writes_mode_600_and_bootstraps_user_domain(self) -> None:
         calls: list[list[str]] = []

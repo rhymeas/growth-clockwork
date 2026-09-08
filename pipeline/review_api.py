@@ -480,7 +480,7 @@ class ReviewService:
         except BrokerError as exc:
             raise ReviewError(503, 'broker_unavailable', str(exc)) from exc
 
-    def setup_status(self) -> dict[str, Any]:
+    def setup_status(self, project_id: str | None = None) -> dict[str, Any]:
         """Return coarse operating states without exposing paths or configuration."""
 
         permissions_path = self.workspace / "runtime/permissions.json"
@@ -507,6 +507,10 @@ class ReviewService:
             "desk": "running",
             "background": "active" if self.broker_automation is not None else "manual",
             "autostart": macos_autostart.readiness(self.workspace),
+            "research_schedule": (
+                macos_autostart.research_readiness(self.workspace, project_id)
+                if project_id else {"state": "configuration_required"}
+            ),
             "remote_access": access,
             "publication": publication,
             "host": "must_be_awake",
@@ -1707,9 +1711,10 @@ class ReviewRequestHandler(BaseHTTPRequestHandler):
                 return
             query = parse_qs(parsed.query, keep_blank_values=True)
             if parsed.path == "/api/setup-status":
-                if query:
-                    raise ReviewError(400, "invalid_query", "Setup status accepts no query")
-                self._send_json(200, self.server.review_service.setup_status())
+                if query and (set(query) != {"project_id"} or len(query["project_id"]) != 1):
+                    raise ReviewError(400, "invalid_query", "Setup status accepts at most one project_id")
+                project_id = query["project_id"][0] if query else None
+                self._send_json(200, self.server.review_service.setup_status(project_id))
                 return
             if parsed.path == "/api/broker-status":
                 if set(query) != {"project_id"} or len(query["project_id"]) != 1:

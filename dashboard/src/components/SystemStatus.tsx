@@ -9,24 +9,25 @@ const publicationLabel: Record<SetupStatusResponse["publication"]["mode"], strin
 };
 
 function automationDetail(data: SetupStatusResponse) {
-  if (data.autostart.state === "running") return "Starts after Mac login";
+  if (data.autostart.state === "running" && data.research_schedule.state === "running") return "Login start · weekly research";
+  if (data.autostart.state === "running") return "Starts after Mac login · research schedule off";
   if (data.autostart.state === "installed_not_running" || data.autostart.state === "needs_attention") return "Startup needs attention";
   if (data.autostart.state === "build_required") return "Build needed before startup";
   if (data.autostart.state === "unsupported") return "Login startup unavailable";
   return "Manual after Mac restart";
 }
 
-export function SystemStatus() {
+export function SystemStatus({ projectId }: { projectId: string }) {
   const [result, setResult] = useState<SetupStatusResponse | "error" | null>(null);
   useEffect(() => {
     const controller = new AbortController();
-    getSetupStatus(controller.signal).then(value => {
+    getSetupStatus(projectId, controller.signal).then(value => {
       if (!controller.signal.aborted) setResult(value);
     }).catch(() => {
       if (!controller.signal.aborted) setResult("error");
     });
     return () => controller.abort();
-  }, []);
+  }, [projectId]);
   if (!result) return <section className="system-status" aria-label="System status" aria-live="polite"><p className="analytics-source">Checking local system…</p></section>;
   if (result === "error") return <section className="system-status" aria-label="System status" aria-live="polite"><p className="analytics-source">System status unavailable.</p></section>;
   const access = result.remote_access.state === "configured" ? "Private devices"

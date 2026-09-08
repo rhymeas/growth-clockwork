@@ -94,6 +94,18 @@ After upgrading Growth Clockwork, preview the new plist first, then use
 atomically replaces its private plist and restores the previous plist if loading
 the new service fails.
 
+To collect one selected project's configured RSS/Atom sources every Monday at
+09:00, preview and install the separate research job:
+
+```bash
+python3 -m pipeline.macos_autostart --workspace . --install-research --project example-project
+```
+
+It also runs once after login so a missed Monday can catch up. Intake is idempotent
+per selected brief and ISO week. The job carries no model key, account credential
+or publishing permission. Use `--update` after changing its pinned project or
+runtime path.
+
 For optional Postiz delivery, copy `runtime/postiz.example.json` to the gitignored
 `runtime/postiz.json` and configure it only after the separate Postiz service and
 channel OAuth connections exist. Keep `publisher.enabled` and
