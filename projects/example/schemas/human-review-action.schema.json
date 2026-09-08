@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "human-review-action@1",
+  "title": "Human Review Action",
+  "description": "Immutable terminal review record for one exact artifact revision. It has no publish operation or side effect field.",
+  "type": "object",
+  "required": [
+    "review_action_version",
+    "action_id",
+    "project_id",
+    "project_profile_revision",
+    "artifact_id",
+    "artifact_revision",
+    "artifact_sha256",
+    "action",
+    "actor_type",
+    "recorded_at",
+    "note",
+    "reason",
+    "rework_requested"
+  ],
+  "properties": {
+    "review_action_version": { "const": "1.0" },
+    "action_id": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+    "project_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+    "project_profile_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "artifact_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "action": { "enum": ["approve", "decline", "note"] },
+    "actor_type": { "const": "human" },
+    "recorded_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+      "format": "date-time"
+    },
+    "note": {
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        { "type": "null" }
+      ]
+    },
+    "reason": {
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        { "type": "null" }
+      ]
+    },
+    "rework_requested": { "type": "boolean" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "action": { "const": "approve" } }, "required": ["action"] },
+      "then": {
+        "properties": {
+          "note": { "type": "null" },
+          "reason": { "type": "null" },
+          "rework_requested": { "const": false }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "action": { "const": "decline" } }, "required": ["action"] },
+      "then": {
+        "properties": {
+          "note": { "type": "null" },
+          "reason": { "type": "string", "minLength": 1 },
+          "rework_requested": { "const": false }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "action": { "const": "note" } }, "required": ["action"] },
+      "then": {
+        "properties": {
+          "note": { "type": "string", "minLength": 1 },
+          "reason": { "type": "null" },
+          "rework_requested": { "const": true }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "outbox-review-item@1",
+  "title": "Outbox Review Item",
+  "description": "Exact publish-blind manifest consumed by the local human review API.",
+  "type": "object",
+  "required": [
+    "review_item_version",
+    "project_id",
+    "project_profile_revision",
+    "artifact_id",
+    "artifact_revision",
+    "artifact_path",
+    "artifact_sha256",
+    "title",
+    "type",
+    "preview",
+    "evidence",
+    "quality_checks"
+  ],
+  "properties": {
+    "review_item_version": { "const": "1.0" },
+    "project_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+    "project_profile_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "artifact_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "artifact_path": { "type": "string", "pattern": "^outbox/artifacts/[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$" },
+    "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "title": { "type": "string", "minLength": 1 },
+    "type": { "type": "string", "minLength": 1 },
+    "preview": { "type": "string", "minLength": 1 },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "ref"],
+        "properties": {
+          "label": { "type": "string", "minLength": 1 },
+          "ref": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "quality_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "status", "detail"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["pass", "warn", "fail", "not_run"] },
+          "detail": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,41 @@
+{
+  "spec_version": "1.0",
+  "role_id": "product-marketing-positioning",
+  "display_name": "Product Marketing and Positioning",
+  "role_class": "core",
+  "mission": "Translate product truth, audience evidence, and current alternatives into a supported positioning and proof architecture.",
+  "capabilities": ["segmentation-interpretation", "category-framing", "positioning", "message-architecture", "competitive-analysis", "claim-to-proof-mapping"],
+  "owns": ["positioning package", "message house", "claim-to-proof map", "trade-offs and disqualifiers", "launch-readiness narrative"],
+  "does_not_own": ["product truth", "audience evidence", "pricing", "roadmap", "launch activation", "human claim approval", "publication"],
+  "activation": {
+    "modes": ["required_by_route"],
+    "profile_default": "enabled",
+    "conditions": ["A route requires positioning, claim, narrative, competitive, or launch-readiness work."],
+    "prerequisites": ["product-truth@1", "audience-context@1", "evidence-packet@1"]
+  },
+  "inputs": [
+    {"input_id": "positioning-task", "contract": "task-envelope@2", "required": true, "requirements": ["Names the segment, decision scope, and output contract."]},
+    {"input_id": "product-truth", "contract": "product-truth@1", "required": true, "requirements": ["Approved facts, prohibited claims, proof layers, and freshness are revision-pinned."]},
+    {"input_id": "audience", "contract": "audience-context@1", "required": true, "requirements": ["Audience hypotheses retain confidence and exclusions."]},
+    {"input_id": "market-evidence", "contract": "evidence-packet@1", "required": true, "requirements": ["Alternatives and comparisons include scope and recency."]}
+  ],
+  "outputs": [
+    {"output_id": "positioning-package", "contract": "positioning-package@1", "purpose": "Defines segment, category, alternatives, differentiation, trade-offs, messages, and proof gaps."},
+    {"output_id": "launch-readiness-package", "contract": "launch-readiness-package@1", "purpose": "Combines a supported launch narrative with explicit readiness gaps and no activation action."}
+  ],
+  "dependencies": {"required_roles": ["evidence-research", "audience-voc"], "may_run_parallel_with": ["analytics-experimentation"]},
+  "authority": {
+    "autonomous_internal_work": true,
+    "direct_persistence": false,
+    "network": "none",
+    "external_side_effects": false,
+    "may_publish": false,
+    "may_send": false,
+    "may_spend": false,
+    "may_modify_accounts": false,
+    "allowed_internal_actions": ["interpret approved product truth", "compare evidence-backed alternatives", "draft positioning", "mark unsupported claims as gaps"]
+  },
+  "quality_rules": ["Every material claim maps to approved truth or evidence.", "Include the do-nothing alternative where relevant.", "Keep competitor comparisons current, fair, and scoped.", "A package is a proposal, not market truth or launch approval."],
+  "stop_conditions": ["Required product truth is unavailable.", "Audience evidence is not governance-valid.", "A requested comparison is stale or unsupported.", "The request would set price, roadmap, budget, or launch activation."],
+  "handoff_contracts": {"task": "task-envelope@2", "result": "result-envelope@2"}
+}

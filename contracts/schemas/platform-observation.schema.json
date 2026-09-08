@@ -1,0 +1,300 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "platform-observation@1",
+  "title": "Platform Audience Observation",
+  "description": "Reproducible, privacy-bounded sampling record for one public or first-party social platform surface.",
+  "type": "object",
+  "required": [
+    "project_id",
+    "project_profile_revision",
+    "observation_version",
+    "observation_id",
+    "platform",
+    "surface",
+    "research_question",
+    "access_method",
+    "source_tier",
+    "governance_use",
+    "collector_tool",
+    "access_terms_ref",
+    "collection_authority_ref",
+    "query_or_sampling_frame",
+    "observed_window",
+    "sample",
+    "content_dimensions",
+    "evidence",
+    "commercial_use_clearance",
+    "raw_personal_data_stored",
+    "redaction_method",
+    "retention_policy",
+    "known_biases",
+    "unknowns",
+    "collected_at"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "project_profile_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "observation_version": {
+      "const": "1.0"
+    },
+    "observation_id": {
+      "type": "string",
+      "pattern": "^OBS-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$"
+    },
+    "platform": {
+      "enum": ["tiktok", "youtube", "instagram", "pinterest", "x"]
+    },
+    "surface": {
+      "type": "string",
+      "minLength": 1
+    },
+    "research_question": {
+      "type": "string",
+      "minLength": 10
+    },
+    "access_method": {
+      "enum": [
+        "official_api",
+        "first_party_analytics",
+        "approved_research_environment",
+        "human_assisted_capture",
+        "manual_export",
+        "manual_public_observation",
+        "third_party_scraping_service",
+        "session_cookie_capture",
+        "public_web_fallback",
+        "model_inference"
+      ]
+    },
+    "source_tier": {
+      "enum": [
+        "official_primary",
+        "official_owner_data",
+        "approved_research",
+        "documented_oss_capture",
+        "third_party_black_box",
+        "unofficial_session",
+        "model_inference"
+      ]
+    },
+    "governance_use": {
+      "enum": [
+        "decision_evidence",
+        "directional_discovery",
+        "idea_generation_only"
+      ]
+    },
+    "collector_tool": {
+      "type": "string",
+      "minLength": 1
+    },
+    "access_terms_ref": {
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "collection_authority_ref": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+    },
+    "query_or_sampling_frame": {
+      "type": "object"
+    },
+    "observed_window": {
+      "type": "object",
+      "required": ["start", "end"],
+      "properties": {
+        "start": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "sample": {
+      "type": "object",
+      "required": [
+        "items_seen",
+        "items_included",
+        "pages_fetched",
+        "pagination_complete",
+        "quota_limited",
+        "representativeness"
+      ],
+      "properties": {
+        "items_seen": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "items_included": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pages_fetched": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pagination_complete": {
+          "type": "boolean"
+        },
+        "quota_limited": {
+          "type": "boolean"
+        },
+        "representativeness": {
+          "const": "not_claimed"
+        }
+      },
+      "additionalProperties": false
+    },
+    "content_dimensions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "themes",
+          "questions",
+          "pains",
+          "language",
+          "formats",
+          "engagement_signals",
+          "creator_patterns",
+          "search_intent"
+        ]
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+        "properties": {
+          "artifact_ref": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+          },
+          "artifact_revision": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "commercial_use_clearance": {
+      "enum": ["cleared", "restricted", "unknown"]
+    },
+    "raw_personal_data_stored": {
+      "const": false
+    },
+    "redaction_method": {
+      "enum": ["aggregate_only", "identifiers_removed", "not_applicable"]
+    },
+    "retention_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "known_biases": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "collected_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "access_method": {
+            "enum": [
+              "third_party_scraping_service",
+              "session_cookie_capture",
+              "public_web_fallback",
+              "model_inference"
+            ]
+          }
+        },
+        "required": ["access_method"]
+      },
+      "then": {
+        "properties": {
+          "governance_use": {
+            "const": "idea_generation_only"
+          },
+          "commercial_use_clearance": {
+            "enum": ["restricted", "unknown"]
+          },
+          "raw_personal_data_stored": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source_tier": {
+            "enum": [
+              "third_party_black_box",
+              "unofficial_session",
+              "model_inference"
+            ]
+          }
+        },
+        "required": ["source_tier"]
+      },
+      "then": {
+        "properties": {
+          "governance_use": {
+            "const": "idea_generation_only"
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

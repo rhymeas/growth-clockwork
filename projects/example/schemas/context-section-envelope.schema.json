@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "context-section-envelope@1",
+  "title": "Project Context Section Envelope",
+  "description": "Portable, project-bound envelope for one immutable context section. Runtime code must still resolve paths, reject symlinks, and verify referenced bytes.",
+  "type": "object",
+  "required": [
+    "project_id",
+    "project_profile_revision",
+    "envelope_version",
+    "section_kind",
+    "section_revision",
+    "material_state",
+    "usage_policy",
+    "synthetic",
+    "fixture_only",
+    "publishable",
+    "approval_ref",
+    "source_refs",
+    "unknowns",
+    "content",
+    "created_at"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "project_profile_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "envelope_version": {
+      "const": "1.0"
+    },
+    "section_kind": {
+      "enum": [
+        "facts",
+        "prohibited_claims",
+        "audience",
+        "market",
+        "funnel",
+        "metrics",
+        "channels",
+        "authority"
+      ]
+    },
+    "section_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "material_state": {
+      "enum": ["current", "candidate", "missing", "retired"]
+    },
+    "usage_policy": {
+      "enum": ["allowed", "restricted", "blocked"]
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "fixture_only": {
+      "type": "boolean"
+    },
+    "publishable": {
+      "type": "boolean"
+    },
+    "approval_ref": {
+      "type": ["string", "null"],
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+    },
+    "source_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "source_id",
+          "artifact_ref",
+          "artifact_revision",
+          "artifact_sha256",
+          "source_state"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          },
+          "artifact_ref": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+          },
+          "artifact_revision": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "source_state": {
+            "enum": [
+              "approved",
+              "candidate",
+              "fail_closed",
+              "implementation_contract",
+              "policy",
+              "synthetic_fixture",
+              "gap_record"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "content": {
+      "type": "object"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "material_state": { "const": "candidate" }
+        },
+        "required": ["material_state"]
+      },
+      "then": {
+        "properties": {
+          "usage_policy": { "enum": ["restricted", "blocked"] },
+          "publishable": { "const": false }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "material_state": { "enum": ["missing", "retired"] }
+        },
+        "required": ["material_state"]
+      },
+      "then": {
+        "properties": {
+          "usage_policy": { "const": "blocked" },
+          "publishable": { "const": false }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "synthetic": { "const": true }
+        },
+        "required": ["synthetic"]
+      },
+      "then": {
+        "properties": {
+          "fixture_only": { "const": true },
+          "publishable": { "const": false }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "fixture_only": { "const": true }
+        },
+        "required": ["fixture_only"]
+      },
+      "then": {
+        "properties": {
+          "synthetic": { "const": true },
+          "publishable": { "const": false }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "publishable": { "const": true }
+        },
+        "required": ["publishable"]
+      },
+      "then": {
+        "properties": {
+          "material_state": { "const": "current" },
+          "usage_policy": { "const": "allowed" },
+          "synthetic": { "const": false },
+          "fixture_only": { "const": false }
+        }
+      }
+    }
+  ]
+}

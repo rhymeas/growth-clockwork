@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "route-spec@1",
+  "title": "Portable Growth Route Specification",
+  "type": "object",
+  "required": [
+    "route_version",
+    "route_id",
+    "display_name",
+    "purpose",
+    "activation",
+    "context_requirements",
+    "nodes",
+    "final_product",
+    "parallelism",
+    "failure_policy",
+    "terminal_review"
+  ],
+  "properties": {
+    "route_version": {
+      "const": "1.0"
+    },
+    "route_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 100
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 20
+    },
+    "activation": {
+      "type": "object",
+      "required": [
+        "modes",
+        "objective_signals",
+        "prerequisites"
+      ],
+      "properties": {
+        "modes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "required_by_objective",
+              "mandatory_by_product_motion",
+              "activated_by_observed_trigger"
+            ]
+          }
+        },
+        "objective_signals": {
+          "$ref": "#/$defs/nonEmptyUniqueStrings"
+        },
+        "prerequisites": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "context_requirements": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "facts",
+          "prohibited_claims",
+          "audience",
+          "market",
+          "funnel",
+          "metrics",
+          "channels",
+          "authority"
+        ]
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    },
+    "final_product": {
+      "type": "object",
+      "required": [
+        "producer_node",
+        "contract",
+        "supporting_contracts"
+      ],
+      "properties": {
+        "producer_node": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,63}$"
+        },
+        "contract": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]+@[0-9]+$"
+        },
+        "supporting_contracts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]+@[0-9]+$"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "parallelism": {
+      "type": "object",
+      "required": [
+        "max_concurrent_workhorses",
+        "only_independent_nodes"
+      ],
+      "properties": {
+        "max_concurrent_workhorses": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "only_independent_nodes": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "failure_policy": {
+      "type": "object",
+      "required": [
+        "dependent_nodes",
+        "independent_nodes",
+        "ambiguous_result",
+        "semantic_revisions"
+      ],
+      "properties": {
+        "dependent_nodes": {
+          "const": "blocked-or-skipped"
+        },
+        "independent_nodes": {
+          "const": "may-continue"
+        },
+        "ambiguous_result": {
+          "const": "needs_attention-no-blind-retry"
+        },
+        "semantic_revisions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        }
+      },
+      "additionalProperties": false
+    },
+    "terminal_review": {
+      "type": "object",
+      "required": [
+        "governance_node",
+        "governance_contract",
+        "required_governance_result",
+        "review_item_contract",
+        "terminal_state",
+        "human_actions",
+        "external_side_effects",
+        "may_publish"
+      ],
+      "properties": {
+        "governance_node": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,63}$"
+        },
+        "governance_contract": {
+          "const": "governance-verdict@1"
+        },
+        "required_governance_result": {
+          "const": "pass"
+        },
+        "review_item_contract": {
+          "const": "outbox-review-item@1"
+        },
+        "terminal_state": {
+          "const": "review_ready"
+        },
+        "human_actions": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "approve",
+              "decline",
+              "note"
+            ]
+          }
+        },
+        "external_side_effects": {
+          "const": false
+        },
+        "may_publish": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "nonEmptyUniqueStrings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "node": {
+      "type": "object",
+      "required": [
+        "node_id",
+        "role_id",
+        "depends_on",
+        "optional",
+        "run_when",
+        "objective",
+        "output_contract",
+        "deliverable_contract",
+        "allowed_write_roots"
+      ],
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,63}$"
+        },
+        "role_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,63}$"
+        },
+        "depends_on": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{1,63}$"
+          }
+        },
+        "optional": {
+          "type": "boolean"
+        },
+        "run_when": {
+          "type": "string",
+          "minLength": 3
+        },
+        "objective": {
+          "type": "string",
+          "minLength": 10
+        },
+        "output_contract": {
+          "const": "result-envelope@2"
+        },
+        "deliverable_contract": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]+@[0-9]+$"
+        },
+        "allowed_write_roots": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

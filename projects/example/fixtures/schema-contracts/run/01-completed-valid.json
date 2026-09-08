@@ -1,0 +1,39 @@
+{
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "manifest_version": "1.0",
+  "run_id": "EX-RUN-001",
+  "status": "completed",
+  "objective": "Produce one synthetic final artifact for human review.",
+  "project_context": {
+    "artifact_ref": "records/context/CTX-DEMO.json",
+    "artifact_revision": "demo-r1",
+    "artifact_sha256": "b000000000000000000000000000000000000000000000000000000000000001"
+  },
+  "routes": ["positioning"],
+  "tasks": [
+    {
+      "task_id": "EX-1-T001",
+      "task_ref": "handoffs/EX-RUN-001/EX-1-T001.json",
+      "task_sha256": "d000000000000000000000000000000000000000000000000000000000000001",
+      "status": "completed"
+    }
+  ],
+  "output_artifacts": [
+    {
+      "artifact_ref": "outbox/artifacts/demo-brief/r1.md",
+      "artifact_revision": "r1",
+      "artifact_sha256": "c000000000000000000000000000000000000000000000000000000000000001"
+    }
+  ],
+  "review_items": [
+    {
+      "artifact_ref": "outbox/pending/demo-brief/r1.json",
+      "artifact_revision": "r1",
+      "artifact_sha256": "d000000000000000000000000000000000000000000000000000000000000002"
+    }
+  ],
+  "publish_side_effects": false,
+  "started_at": "2026-08-31T19:00:00Z",
+  "completed_at": "2026-08-31T19:10:00Z"
+}

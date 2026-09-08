@@ -1,0 +1,232 @@
+{
+  "catalog_version": "1.0",
+  "catalog_revision": "growth-agent-catalog-v1",
+  "roles": [
+    {"role_id": "growth-coordinator", "path": "roles/core/growth-coordinator.json", "sha256": "84dcf07a394b086f4c928b3e70771374b37af5e83be4bad33fb292c80850af8e"},
+    {"role_id": "governance-reviewer", "path": "roles/core/governance-reviewer.json", "sha256": "fdb55a54f3080412ca625a6b746497b49e16d6df3fa6a6fdb236856c416df8af"},
+    {"role_id": "evidence-research", "path": "roles/core/evidence-research.json", "sha256": "b17dc14f6b37b3aabc5d70e68dc576ed18fcf979e05c7ae54a9382f44aec77b5"},
+    {"role_id": "audience-voc", "path": "roles/core/audience-voc.json", "sha256": "66de1b9565faf6084b91240e97005b6cdbfcd20c45984c8bdddd8ca87bc84cb0"},
+    {"role_id": "product-marketing-positioning", "path": "roles/core/product-marketing-positioning.json", "sha256": "234656da4a9ac0b2d00e0496e743ee4f8cdef7038df36c37a546381cf76c3fa0"},
+    {"role_id": "growth-product-cro", "path": "roles/core/growth-product-cro.json", "sha256": "a269a58f2fa0054fa8a2a1860aa70073511a2f3828df25f8b6a99d160da07a4c"},
+    {"role_id": "analytics-experimentation", "path": "roles/core/analytics-experimentation.json", "sha256": "5378ff56b90b9519e190b6bb23e3faf6081614e71cad8ab82e66c02b8825cc46"},
+    {"role_id": "content-strategy", "path": "roles/core/content-strategy.json", "sha256": "6daae8276ac8cbaf8305210db5a5b8a8239817129959d5ee82a86d53141fe586"},
+    {"role_id": "editorial-production", "path": "roles/core/editorial-production.json", "sha256": "54c884d86dfb51fbf65d3a335e7bb76e12120dc13d97ed4eaf5dc9c85471db78"},
+    {"role_id": "search-ai-discovery", "path": "roles/specialists/search-ai-discovery.json", "sha256": "244c83f192ca5201a970eb833c1f22874d7d8e3932d0e34006a3e64cf117a0fe"},
+    {"role_id": "lifecycle-crm", "path": "roles/specialists/lifecycle-crm.json", "sha256": "c5edabc8fd78dabbac3385a7c2d8300fcae8603d24d14250f0c49c448c121131"},
+    {"role_id": "social-media", "path": "roles/specialists/social-media.json", "sha256": "a8b041f5640bf7adc52127bcac0921d5fbf2acc299cb9ea2ea6b4053f9280e2b"},
+    {"role_id": "community", "path": "roles/specialists/community.json", "sha256": "e6052c233fc4c9e2838fbe08a50c322a04a33e66cf8ce054cc3afe29fbed95f5"},
+    {"role_id": "demand-generation", "path": "roles/specialists/demand-generation.json", "sha256": "5323aa4be8652fe4981a8ea65ea52dc1a16ce0d4e463965f08ba333b235a9387"},
+    {"role_id": "paid-acquisition", "path": "roles/specialists/paid-acquisition.json", "sha256": "9871521e29b773b46eb0ff314cceabf829b91841826a67e1cee8419d6a93b6f4"},
+    {"role_id": "partnerships", "path": "roles/specialists/partnerships.json", "sha256": "f6e929515264ac9c0dbf46641b66aa1b2781c541dba19517b0108e7aebf5d1f4"},
+    {"role_id": "brand-creative", "path": "roles/specialists/brand-creative.json", "sha256": "a7edbd55f156f125a042518cbea08a166ee2cfaebb971cd125bcb5cb3316c9c5"},
+    {"role_id": "developer-relations", "path": "roles/specialists/developer-relations.json", "sha256": "19d8fd84a5c46467ae786173e18e35332ea364856bd170627598f168d6022b92"},
+    {"role_id": "marketing-ops-revops", "path": "roles/specialists/marketing-ops-revops.json", "sha256": "6b7c456c115420932d74f6fc024ee59689507b008d45019a10e417ed135553b8"}
+  ],
+  "routes": [
+    {
+      "route_id": "research-evidence",
+      "path": "routes/research-evidence.json",
+      "sha256": "c20c8413b8365f7b27908ac5261da7aedb557b27f6e94303312cf3f5e3f6a303",
+      "required_context": ["facts", "prohibited_claims", "market", "authority"],
+      "steps": [
+        {"step_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Frame one decision question, evidence standard, scope, budget, and stop rule.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+        {"step_id": "research", "role_id": "evidence-research", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Collect bounded evidence and preserve sources, contradictions, unknowns, and confidence.", "output_contract": "result-envelope@2", "deliverable_contract": "evidence-packet@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+        {"step_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["research"], "optional": false, "run_when": "always", "objective": "Review the exact evidence packet for source scope, policy, authority, revision, and proof boundaries.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]}
+      ],
+      "final_product_contract": "evidence-packet@1",
+      "governance_step_id": "governance-final",
+      "terminal_state": "review_ready",
+      "human_actions": ["approve", "decline", "note"],
+      "may_publish": false
+    },
+    {
+      "route_id": "organic-audience-community",
+      "path": "routes/organic-audience-community.json",
+      "sha256": "be6ca52570f48a13fa5bd92d6ec42c318c6f18fda1d3f61087f70e53a8c5701d",
+      "required_context": ["facts", "prohibited_claims", "audience", "market", "channels", "authority"],
+      "steps": [
+        {"step_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Bind one organic audience objective, surface, evidence standard, relationship boundary, non-goals, and stop rule.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+        {"step_id": "audience-evidence", "role_id": "evidence-research", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Collect bounded public and project evidence about the audience question, channel constraints, recurring needs, contradictions, and proof gaps.", "output_contract": "result-envelope@2", "deliverable_contract": "evidence-packet@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+        {"step_id": "community-insight", "role_id": "community", "depends_on": ["audience-evidence"], "optional": true, "run_when": "Activate only when a real recurring group, current aggregate signals, moderation boundaries, and a human community owner are evidenced.", "objective": "Turn aggregate community evidence into a bounded audience-change proposal and feedback-closure design without outreach, sanctions, or relationship automation.", "output_contract": "result-envelope@2", "deliverable_contract": "community-program@1", "allowed_write_roots": ["handoffs", "records/audience"]},
+        {"step_id": "developer-journey", "role_id": "developer-relations", "depends_on": ["audience-evidence"], "optional": true, "run_when": "Activate only for a public API, SDK, integration, or developer product with a bounded external-developer journey and supported-version evidence.", "objective": "Prepare a technical discovery package covering time to first success, documentation friction, examples, limitations, and a human-owned feedback loop.", "output_contract": "result-envelope@2", "deliverable_contract": "developer-experience-package@1", "allowed_write_roots": ["handoffs", "records/discovery"]},
+        {"step_id": "social-product", "role_id": "social-media", "depends_on": ["audience-evidence", "community-insight", "developer-journey"], "optional": true, "run_when": "Activate only when the selected organic objective includes one enabled social surface with current channel rules, metric definitions, and a human account owner.", "objective": "Produce one complete platform-native channel product bound to exact claims, sources, limitations, and any activated community or developer findings without posting it.", "output_contract": "result-envelope@2", "deliverable_contract": "social-package@1", "allowed_write_roots": ["handoffs", "staging"]},
+        {"step_id": "organic-package", "role_id": "product-marketing-positioning", "depends_on": ["audience-evidence", "community-insight", "developer-journey", "social-product"], "optional": false, "run_when": "always", "objective": "Assemble the supported organic audience thesis, mutual-value boundaries, channel sequence, readiness findings, owners, measurement, risks, non-goals, and explicit no-launch status.", "output_contract": "result-envelope@2", "deliverable_contract": "launch-readiness-package@1", "allowed_write_roots": ["handoffs", "positioning/packages", "staging"]},
+        {"step_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["organic-package"], "optional": false, "run_when": "always", "objective": "Review the exact organic audience-readiness package and any supporting channel product for complete value, claims, privacy, rights, relationship boundaries, revision binding, and no-launch compliance.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["handoffs", "records/governance"]}
+      ],
+      "final_product_contract": "launch-readiness-package@1",
+      "governance_step_id": "governance-final",
+      "terminal_state": "review_ready",
+      "human_actions": ["approve", "decline", "note"],
+      "may_publish": false
+    },
+    {
+      "route_id": "demand-acquisition",
+      "path": "routes/demand-acquisition.json",
+      "sha256": "18929a633f7252c80304d7c7c80d7d9b5d629456401ae23e2d1fde5d7f275fc7",
+      "required_context": ["facts", "prohibited_claims", "audience", "market", "funnel", "metrics", "channels", "authority"],
+      "steps": [
+        {"step_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Bind one demand decision, offer, qualification rule, owner capacity, economics question, zero-spend boundary, non-goals, and stop rule.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+        {"step_id": "demand-evidence", "role_id": "evidence-research", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Collect bounded evidence about the buying context, alternatives, channel constraints, partner fit, conversion assumptions, and proof gaps.", "output_contract": "result-envelope@2", "deliverable_contract": "evidence-packet@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+        {"step_id": "measurement-design", "role_id": "analytics-experimentation", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Bind baseline, qualified-demand metric, population, window, guardrails, data quality, incrementality boundary, and decision rule before any activation.", "output_contract": "result-envelope@2", "deliverable_contract": "measurement-plan@1", "allowed_write_roots": ["handoffs", "records/learning"]},
+        {"step_id": "paid-plan", "role_id": "paid-acquisition", "depends_on": ["demand-evidence", "measurement-design"], "optional": true, "run_when": "Activate only when a paid-channel hypothesis, conversion baseline, measurement contract, explicit human budget ceiling, and sensitive-audience review exist; output remains paused with zero spend.", "objective": "Specify a falsifiable paid-acquisition experiment with audience exclusions, creative matrix, economics, measurement, guardrails, and a human-only activation checklist without spending or changing an account.", "output_contract": "result-envelope@2", "deliverable_contract": "paused-paid-experiment@1", "allowed_write_roots": ["handoffs", "records/experiments"]},
+        {"step_id": "partner-fit", "role_id": "partnerships", "depends_on": ["demand-evidence"], "optional": true, "run_when": "Activate only for qualified inbound interest or a documented strategic hypothesis with mutual user value and a named human relationship owner.", "objective": "Prepare a bounded evidence packet covering partner criteria, mutual user value, fit, conflicts, risks, open questions, and human-owned next actions without contact enrichment or outreach.", "output_contract": "result-envelope@2", "deliverable_contract": "partner-fit-memo@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+        {"step_id": "demand-program", "role_id": "demand-generation", "depends_on": ["demand-evidence", "measurement-design", "paid-plan", "partner-fit"], "optional": true, "run_when": "Activate only when a validated B2B offer, buying context, qualification definition, measurable funnel, and named human follow-up capacity are evidenced.", "objective": "Prepare a demand-readiness package with offer, qualification, handoff capacity, campaign structure, tracking, risks, non-goals, and explicit no-send, zero-spend, no-launch status.", "output_contract": "result-envelope@2", "deliverable_contract": "demand-plan@1", "allowed_write_roots": ["handoffs", "staging"]},
+        {"step_id": "acquisition-package", "role_id": "product-marketing-positioning", "depends_on": ["demand-evidence", "measurement-design", "paid-plan", "partner-fit", "demand-program"], "optional": false, "run_when": "always", "objective": "Assemble one supported acquisition-readiness package with audience, offer, proof, channel sequence, owners, measurement, risks, rollback, non-goals, and explicit no-send, zero-spend, no-launch status.", "output_contract": "result-envelope@2", "deliverable_contract": "launch-readiness-package@1", "allowed_write_roots": ["handoffs", "positioning/packages", "staging"]},
+        {"step_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["acquisition-package"], "optional": false, "run_when": "always", "objective": "Review the exact acquisition-readiness package for evidence, qualification, measurement, privacy, sensitive audiences, relationship authority, budget boundaries, and no-execution compliance.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["handoffs", "records/governance"]}
+      ],
+      "final_product_contract": "launch-readiness-package@1",
+      "governance_step_id": "governance-final",
+      "terminal_state": "review_ready",
+      "human_actions": ["approve", "decline", "note"],
+      "may_publish": false
+    },
+    {
+      "route_id": "lifecycle-retention",
+      "path": "routes/lifecycle-retention.json",
+      "sha256": "6176c057af13971cd9f052f2a8c301e31409f1fb1e9aa392af056e79447f8109",
+      "required_context": ["facts", "prohibited_claims", "audience", "funnel", "metrics", "channels", "authority"],
+      "steps": [
+        {"step_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Bind one influenceable lifecycle state, intended user benefit, consent boundary, exclusions, frequency limits, measurement question, non-goals, and stop rule.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+        {"step_id": "retention-measurement", "role_id": "analytics-experimentation", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Bind the lifecycle baseline, population, outcome metric, window, holdout strategy, guardrails, missingness, data-quality rules, and causal boundary.", "output_contract": "result-envelope@2", "deliverable_contract": "measurement-plan@1", "allowed_write_roots": ["handoffs", "records/learning"]},
+        {"step_id": "lifecycle-plan", "role_id": "lifecycle-crm", "depends_on": ["retention-measurement"], "optional": false, "run_when": "always", "objective": "Produce a paused lifecycle plan with user-state rationale, consent, segments, suppression, frequency, journey copy, holdout, QA, measurement, and human-only activation state.", "output_contract": "result-envelope@2", "deliverable_contract": "lifecycle-plan@1", "allowed_write_roots": ["handoffs", "staging"]},
+        {"step_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["lifecycle-plan"], "optional": false, "run_when": "always", "objective": "Review the exact lifecycle plan for consent, suppression, frequency, claims, privacy, measurement, paused state, revision binding, and no-send compliance.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["handoffs", "records/governance"]}
+      ],
+      "final_product_contract": "lifecycle-plan@1",
+      "governance_step_id": "governance-final",
+      "terminal_state": "review_ready",
+      "human_actions": ["approve", "decline", "note"],
+      "may_publish": false
+    },
+    {
+      "route_id": "marketing-operations",
+      "path": "routes/marketing-operations.json",
+      "sha256": "f00cefde99bf2781ad74df84e98ddc23278b9199424bcb48d1a3f7cca8b38ada",
+      "required_context": ["funnel", "metrics", "channels", "authority"],
+      "steps": [
+        {"step_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Bind one stable transport problem, canonical owners, authority, data boundary, reliability target, non-goals, resource cap, and stop rule.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+        {"step_id": "operations-baseline", "role_id": "analytics-experimentation", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Validate the current workflow baseline, lineage, volume, error classes, missingness, manual burden, reporting window, and measurable reliability guardrails.", "output_contract": "result-envelope@2", "deliverable_contract": "validated-snapshot@1", "allowed_write_roots": ["handoffs", "records/learning"]},
+        {"step_id": "operations-design", "role_id": "marketing-ops-revops", "depends_on": ["operations-baseline"], "optional": false, "run_when": "always", "objective": "Produce an internal workflow-readiness package covering owners, schemas, idempotency, finite retries, quarantine, readback, permissions, recovery, compatibility, test evidence, risks, and inactive status.", "output_contract": "result-envelope@2", "deliverable_contract": "adapter-specification@1", "allowed_write_roots": ["handoffs", "staging"]},
+        {"step_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["operations-design"], "optional": false, "run_when": "always", "objective": "Review the exact workflow-readiness package for canonical ownership, authority, privacy, idempotency, bounded recovery, compatibility, test evidence, inactive state, and no-account-mutation compliance.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["handoffs", "records/governance"]}
+      ],
+      "final_product_contract": "adapter-specification@1",
+      "governance_step_id": "governance-final",
+      "terminal_state": "review_ready",
+      "human_actions": ["approve", "decline", "note"],
+      "may_publish": false
+    },
+    {
+      "route_id": "audience-deep-research",
+      "path": "routes/audience-deep-research.json",
+      "sha256": "0c05b06d7b97fa281af9790fd846274a178f3848c128eb1f4b7dab22f3bd4e42",
+      "required_context": ["facts", "prohibited_claims", "audience", "market", "channels", "authority"],
+      "steps": [
+        {"step_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Bind one audience decision question, requested platforms, evidence threshold, access and privacy boundary, sampling limits, non-goals, resource cap, and stop rule.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+        {"step_id": "audience-research", "role_id": "evidence-research", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Produce a cross-platform audience research package with pinned observations, source tiers, coverage, sampling limits, insights, counterevidence, unknowns, confidence, and bounded recommendations.", "output_contract": "result-envelope@2", "deliverable_contract": "audience-research-package@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+        {"step_id": "audience-synthesis", "role_id": "audience-voc", "depends_on": ["audience-research"], "optional": false, "run_when": "always", "objective": "Translate the exact research package into an audience-change proposal that separates observation, interpretation, and hypothesis while preserving exclusions, biases, counterevidence, and uncertainty.", "output_contract": "result-envelope@2", "deliverable_contract": "audience-change-proposal@1", "allowed_write_roots": ["handoffs", "records/audience"]},
+        {"step_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["audience-synthesis"], "optional": false, "run_when": "always", "objective": "Review the exact audience-change proposal and supporting research package for access authority, traceability, sampling claims, privacy, bias, counterevidence, revision binding, and no-contact compliance.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["handoffs", "records/governance"]}
+      ],
+      "final_product_contract": "audience-change-proposal@1",
+      "governance_step_id": "governance-final",
+      "terminal_state": "review_ready",
+      "human_actions": ["approve", "decline", "note"],
+      "may_publish": false
+    },
+    {
+      "route_id": "market-positioning",
+      "path": "routes/market-positioning.json",
+      "sha256": "fa5cb9cd6e013af5dc0034e80da35fffced9698fb9b16c67f86cb0479cef6987",
+      "required_context": ["facts", "prohibited_claims", "audience", "market", "authority"],
+      "steps": [
+        {"step_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Qualify the positioning decision and define segment, evidence, and output boundaries.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+        {"step_id": "market-evidence", "role_id": "evidence-research", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Collect current evidence about alternatives, category, problem, and proof scope.", "output_contract": "result-envelope@2", "deliverable_contract": "evidence-packet@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+        {"step_id": "audience-synthesis", "role_id": "audience-voc", "depends_on": ["market-evidence"], "optional": false, "run_when": "always", "objective": "Synthesize segment, problem context, language, exclusions, bias, and confidence.", "output_contract": "result-envelope@2", "deliverable_contract": "audience-change-proposal@1", "allowed_write_roots": ["records/audience", "handoffs"]},
+        {"step_id": "positioning", "role_id": "product-marketing-positioning", "depends_on": ["market-evidence", "audience-synthesis"], "optional": false, "run_when": "always", "objective": "Create one supported positioning package and mark every proof gap.", "output_contract": "result-envelope@2", "deliverable_contract": "positioning-package@1", "allowed_write_roots": ["positioning/packages", "handoffs"]},
+        {"step_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["positioning"], "optional": false, "run_when": "always", "objective": "Review the exact positioning package for truth, evidence, fairness, authority, and revision binding.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]}
+      ],
+      "final_product_contract": "positioning-package@1",
+      "governance_step_id": "governance-final",
+      "terminal_state": "review_ready",
+      "human_actions": ["approve", "decline", "note"],
+      "may_publish": false
+    },
+    {
+      "route_id": "product-funnel-experiment",
+      "path": "routes/product-funnel-experiment.json",
+      "sha256": "e978bfc52a6ebdbecafc6009f792c92aff38726ca41aa67b28b116313e91e16d",
+      "required_context": ["audience", "funnel", "metrics", "authority"],
+      "steps": [
+        {"step_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Qualify the product outcome, population, bottleneck question, and experiment authority.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+        {"step_id": "friction-evidence", "role_id": "evidence-research", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Collect qualitative and product evidence about the suspected friction and alternatives.", "output_contract": "result-envelope@2", "deliverable_contract": "evidence-packet@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+        {"step_id": "baseline", "role_id": "analytics-experimentation", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Validate baseline, metric definitions, lineage, coverage, and measurement feasibility.", "output_contract": "result-envelope@2", "deliverable_contract": "validated-snapshot@1", "allowed_write_roots": ["records/learning", "handoffs"]},
+        {"step_id": "experiment-owner", "role_id": "growth-product-cro", "depends_on": ["friction-evidence", "baseline"], "optional": false, "run_when": "always", "objective": "Diagnose the bottleneck and specify the smallest trustworthy product experiment.", "output_contract": "result-envelope@2", "deliverable_contract": "experiment-charter@1", "allowed_write_roots": ["records/experiments", "handoffs"]},
+        {"step_id": "measurement-design", "role_id": "analytics-experimentation", "depends_on": ["experiment-owner"], "optional": false, "run_when": "always", "objective": "Bind metrics, guardrails, power strategy, runtime, data-quality checks, and decision rule.", "output_contract": "result-envelope@2", "deliverable_contract": "measurement-plan@1", "allowed_write_roots": ["records/learning", "handoffs"]},
+        {"step_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["experiment-owner", "measurement-design"], "optional": false, "run_when": "always", "objective": "Review the exact experiment charter and measurement plan for evidence, ethics, privacy, authority, and causal boundaries.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]}
+      ],
+      "final_product_contract": "experiment-charter@1",
+      "governance_step_id": "governance-final",
+      "terminal_state": "review_ready",
+      "human_actions": ["approve", "decline", "note"],
+      "may_publish": false
+    },
+    {
+      "route_id": "content-channel",
+      "path": "routes/content-channel.json",
+      "sha256": "4772027039c45d1149f50210169c7baa30c0a37207f0de593c16240d0df5b4ac",
+      "required_context": ["facts", "prohibited_claims", "audience", "market", "channels", "authority"],
+      "steps": [
+        {"step_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Select one channel product and bind audience, useful outcome, evidence, and WIP limits.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+        {"step_id": "content-evidence", "role_id": "evidence-research", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Collect the minimum evidence needed for the useful outcome, examples, claims, and limitations.", "output_contract": "result-envelope@2", "deliverable_contract": "evidence-packet@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+        {"step_id": "audience-refresh", "role_id": "audience-voc", "depends_on": ["content-evidence"], "optional": true, "run_when": "Run when audience context is stale, contradictory, or insufficient for the selected artifact.", "objective": "Refresh only the audience hypothesis needed for this channel product.", "output_contract": "result-envelope@2", "deliverable_contract": "audience-change-proposal@1", "allowed_write_roots": ["records/audience", "handoffs"]},
+        {"step_id": "positioning-context", "role_id": "product-marketing-positioning", "depends_on": ["content-evidence", "audience-refresh"], "optional": true, "run_when": "Run when the product contains a product claim, category statement, comparison, or launch narrative.", "objective": "Provide the exact supported message and proof boundary required by the brief.", "output_contract": "result-envelope@2", "deliverable_contract": "positioning-package@1", "allowed_write_roots": ["positioning/packages", "handoffs"]},
+        {"step_id": "brief", "role_id": "content-strategy", "depends_on": ["content-evidence", "audience-refresh", "positioning-context"], "optional": false, "run_when": "always", "objective": "Create one complete lesson brief and claim-level source map.", "output_contract": "result-envelope@2", "deliverable_contract": "lesson-brief@1", "allowed_write_roots": ["content", "handoffs"]},
+        {"step_id": "governance-precheck", "role_id": "governance-reviewer", "depends_on": ["brief"], "optional": false, "run_when": "always", "objective": "Review the exact brief and source map before final production begins.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]},
+        {"step_id": "creative", "role_id": "brand-creative", "depends_on": ["governance-precheck"], "optional": true, "run_when": "Run when the channel contract requires non-text or designed asset bytes.", "objective": "Produce exact, rights-aware, accessible asset bytes and metadata for the final product.", "output_contract": "result-envelope@2", "deliverable_contract": "creative-package@1", "allowed_write_roots": ["staging", "handoffs"]},
+        {"step_id": "editorial", "role_id": "editorial-production", "depends_on": ["governance-precheck", "creative"], "optional": false, "run_when": "always", "objective": "Produce exactly one complete channel product bound to the brief, sources, and any asset hashes.", "output_contract": "result-envelope@2", "deliverable_contract": "channel-product@1", "allowed_write_roots": ["content", "staging", "handoffs"]},
+        {"step_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["editorial", "creative"], "optional": false, "run_when": "always", "objective": "Review the exact final product and asset revisions for evidence, policy, rights, accessibility, and authority.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]}
+      ],
+      "final_product_contract": "channel-product@1",
+      "governance_step_id": "governance-final",
+      "terminal_state": "review_ready",
+      "human_actions": ["approve", "decline", "note"],
+      "may_publish": false
+    },
+    {
+      "route_id": "launch-readiness",
+      "path": "routes/launch-readiness.json",
+      "sha256": "0bdc8def27b8e117492a75d6f38991b2bf873e109e3c6685b9ffa44c0608de50",
+      "required_context": ["facts", "prohibited_claims", "audience", "market", "funnel", "metrics", "channels", "authority"],
+      "steps": [
+        {"step_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Define one launch goal, user path, scope, owners, readiness criteria, non-goals, and stop rule.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+        {"step_id": "launch-evidence", "role_id": "evidence-research", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Collect current evidence about audience, alternatives, channel constraints, and launch risks.", "output_contract": "result-envelope@2", "deliverable_contract": "evidence-packet@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+        {"step_id": "product-readiness", "role_id": "growth-product-cro", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Assess whether the intended user path reaches the promised value and identify blocking funnel gaps.", "output_contract": "result-envelope@2", "deliverable_contract": "funnel-diagnosis@1", "allowed_write_roots": ["records/experiments", "handoffs"]},
+        {"step_id": "measurement-readiness", "role_id": "analytics-experimentation", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Bind launch baseline, metrics, guardrails, window, coverage, and decision rule.", "output_contract": "result-envelope@2", "deliverable_contract": "measurement-plan@1", "allowed_write_roots": ["records/learning", "handoffs"]},
+        {"step_id": "search-preflight", "role_id": "search-ai-discovery", "depends_on": ["launch-evidence"], "optional": true, "run_when": "Run when owned-web or search discovery is part of the launch motion.", "objective": "Prepare the technical and content discoverability preflight without changing or publishing the website.", "output_contract": "result-envelope@2", "deliverable_contract": "discovery-package@1", "allowed_write_roots": ["handoffs", "records/discovery"]},
+        {"step_id": "lifecycle-preflight", "role_id": "lifecycle-crm", "depends_on": ["product-readiness", "measurement-readiness"], "optional": true, "run_when": "Run only when a consented lifecycle journey is part of the expected user path.", "objective": "Prepare a paused lifecycle journey with consent, suppression, frequency, and measurement checks.", "output_contract": "result-envelope@2", "deliverable_contract": "lifecycle-plan@1", "allowed_write_roots": ["handoffs", "staging"]},
+        {"step_id": "creative-preflight", "role_id": "brand-creative", "depends_on": ["launch-evidence"], "optional": true, "run_when": "Run when final launch assets are required by the selected channels.", "objective": "Produce a revision-bound creative package with rights, accessibility, metadata, and exact hashes.", "output_contract": "result-envelope@2", "deliverable_contract": "creative-package@1", "allowed_write_roots": ["staging", "handoffs"]},
+        {"step_id": "launch-package", "role_id": "product-marketing-positioning", "depends_on": ["launch-evidence", "product-readiness", "measurement-readiness", "search-preflight", "lifecycle-preflight", "creative-preflight"], "optional": false, "run_when": "always", "objective": "Assemble the supported narrative, readiness findings, channel sequence, risks, and explicit no-launch boundary.", "output_contract": "result-envelope@2", "deliverable_contract": "launch-readiness-package@1", "allowed_write_roots": ["positioning/packages", "staging", "handoffs"]},
+        {"step_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["launch-package"], "optional": false, "run_when": "always", "objective": "Review the exact launch-readiness package and assets for truth, evidence, readiness, rights, authority, and no-publication compliance.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]}
+      ],
+      "final_product_contract": "launch-readiness-package@1",
+      "governance_step_id": "governance-final",
+      "terminal_state": "review_ready",
+      "human_actions": ["approve", "decline", "note"],
+      "may_publish": false
+    },
+    {
+      "route_id": "measurement-learning",
+      "path": "routes/measurement-learning.json",
+      "sha256": "d7ed58e752951b4c3a4ca36843d2ebf3656acbeb9097fd721b5add4d48f7497d",
+      "required_context": ["funnel", "metrics", "authority"],
+      "steps": [
+        {"step_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Define the decision question, admissible statement type, baseline, and learning destination.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+        {"step_id": "analysis", "role_id": "analytics-experimentation", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Validate data quality and produce a bounded measurement, interpretation, options, and learning proposal.", "output_contract": "result-envelope@2", "deliverable_contract": "measurement-learning-package@1", "allowed_write_roots": ["records/learning", "handoffs"]},
+        {"step_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["analysis"], "optional": false, "run_when": "always", "objective": "Review the exact measurement-learning package for lineage, definitions, causal language, authority, and revision binding.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]}
+      ],
+      "final_product_contract": "measurement-learning-package@1",
+      "governance_step_id": "governance-final",
+      "terminal_state": "review_ready",
+      "human_actions": ["approve", "decline", "note"],
+      "may_publish": false
+    }
+  ]
+}

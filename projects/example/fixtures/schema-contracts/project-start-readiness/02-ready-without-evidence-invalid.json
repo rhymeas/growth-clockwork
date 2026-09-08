@@ -1,0 +1,34 @@
+{
+  "audience": {
+    "detail": "The audience is asserted as validated without any supporting evidence, which must be rejected.",
+    "evidence_refs": [],
+    "status": "validated"
+  },
+  "authority": {
+    "human_review_required": true,
+    "may_change_public_accounts": false,
+    "may_publish": false
+  },
+  "brief": {
+    "artifact_ref": "records/project-start/briefs/START-example-growth/r1.json",
+    "artifact_revision": "r1",
+    "artifact_sha256": "566ab1985bff42865240991551c77507607c2600b3fed30ae64a3eb954d1fa63"
+  },
+  "contains_personal_data": false,
+  "evidence": {
+    "detail": "The evidence is asserted as sufficient without a cited evidence package, which must be rejected.",
+    "evidence_refs": [],
+    "status": "sufficient"
+  },
+  "first_recommendation": {
+    "detail": "A ready recommendation without exact evidence references must be rejected by the contract.",
+    "evidence_refs": [],
+    "status": "ready"
+  },
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "readiness_version": "1.0",
+  "recorded_at": "2026-08-31T17:06:00Z",
+  "recorded_by": "growth-coordinator",
+  "snapshot_id": "START-READY-example-invalid"
+}

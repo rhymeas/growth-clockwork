@@ -1,0 +1,697 @@
+{
+  "requirements_version": "1.0",
+  "requirements_revision": "professional-deliverable-requirements-v1",
+  "schema_contract": "professional-deliverable@1",
+  "contracts": {
+    "adapter-specification@1": {
+      "description": "Deterministic adapter specification with canonical ownership, schemas, idempotency, bounded recovery, permissions, readback, and inactive-by-default activation.",
+      "required_payload_fields": {
+        "workflow_requirement": "object",
+        "source_owner": "string",
+        "destination_owner": "string",
+        "source_schema": "object",
+        "destination_schema": "object",
+        "field_mapping": "array",
+        "idempotency": "object",
+        "retry_policy": "object",
+        "readback": "object",
+        "permissions": "object",
+        "quarantine": "object",
+        "recovery": "object",
+        "retention": "object",
+        "compatibility": "object",
+        "test_plan": "object",
+        "activation_state": "string"
+      },
+      "required_quality_checks": [
+        "canonical_ownership",
+        "schema_compatibility",
+        "idempotency_verified",
+        "finite_retry_and_quarantine",
+        "readback_defined",
+        "least_privilege",
+        "recovery_tested",
+        "inactive_by_default"
+      ]
+    },
+    "audience-research-package@1": {
+      "description": "Cross-platform audience research package with pinned observations, explicit coverage, sampling limits, counterevidence, uncertainty, and bounded recommendations.",
+      "required_payload_fields": {
+        "decision_question": "string",
+        "requested_platforms": "array",
+        "research_status": "string",
+        "coverage": "array",
+        "observation_refs": "array",
+        "insights": "array",
+        "audience_segments": "array",
+        "content_patterns": "array",
+        "recommendations": "array",
+        "counterevidence": "array",
+        "unknowns": "array",
+        "overall_confidence": "string",
+        "not_representative_acknowledged": "boolean",
+        "contains_personal_data": "boolean"
+      },
+      "required_quality_checks": [
+        "platform_access_authority",
+        "observation_traceability",
+        "coverage_and_sampling_limits",
+        "cross_platform_support",
+        "counterevidence_preserved",
+        "privacy_and_terms_review",
+        "recommendations_bounded"
+      ]
+    },
+    "community-program@1": {
+      "description": "Human-owned community program for an evidenced recurring group with mutual value, moderation boundaries, feedback closure, and meaningful health signals.",
+      "required_payload_fields": {
+        "community_purpose": "string",
+        "recurring_group_evidence": "object",
+        "mutual_value": "object",
+        "program_cadence": "object",
+        "participation_boundaries": "object",
+        "code_of_conduct": "object",
+        "feedback_loop": "object",
+        "health_signals": "array",
+        "moderation_escalations": "array",
+        "human_owned_actions": "array",
+        "activation_state": "string"
+      },
+      "required_quality_checks": [
+        "recurring_group_evidence",
+        "mutual_value",
+        "relationship_boundary",
+        "moderation_boundary",
+        "feedback_closure",
+        "privacy_review",
+        "human_owned_activation"
+      ]
+    },
+    "decision-record@1": {
+      "description": "Evidence-bound internal decision proposal with alternatives, tradeoffs, risks, uncertainty, revisit logic, and no implied human approval.",
+      "required_payload_fields": {
+        "decision_question": "string",
+        "decision_context": "object",
+        "status": "string",
+        "options": "array",
+        "recommendation": "object",
+        "tradeoffs": "array",
+        "risks": "array",
+        "assumptions": "array",
+        "unknowns": "array",
+        "revisit_trigger": "object",
+        "approval_state": "string"
+      },
+      "required_quality_checks": [
+        "evidence_bound",
+        "alternatives_considered",
+        "tradeoffs_explicit",
+        "risks_and_unknowns",
+        "authority_checked",
+        "not_human_approval"
+      ]
+    },
+    "demand-plan@1": {
+      "description": "Review-ready B2B demand plan with qualification, handoff capacity, tracking, measurement, guardrails, and a no-send activation boundary.",
+      "required_payload_fields": {
+        "offer": "object",
+        "buying_context": "object",
+        "qualification": "object",
+        "campaign_hypothesis": "object",
+        "channel_plan": "array",
+        "handoff": "object",
+        "capacity": "object",
+        "measurement": "object",
+        "tracking": "object",
+        "guardrails": "array",
+        "risks": "array",
+        "activation_state": "string"
+      },
+      "required_quality_checks": [
+        "offer_evidence",
+        "qualification_defined",
+        "handoff_capacity",
+        "measurement_bound",
+        "tracking_review",
+        "privacy_review",
+        "no_send_activation"
+      ]
+    },
+    "developer-experience-package@1": {
+      "description": "Tested developer-experience package with supported versions, time-to-first-success evidence, friction backlog, quickstart, examples, limitations, and feedback closure.",
+      "required_payload_fields": {
+        "developer_outcome": "string",
+        "supported_surface": "object",
+        "tested_journey": "object",
+        "time_to_first_success": "object",
+        "friction_backlog": "array",
+        "quickstart": "object",
+        "examples": "array",
+        "limitations": "array",
+        "version_compatibility": "object",
+        "feedback_loop": "object"
+      },
+      "required_quality_checks": [
+        "journey_tested",
+        "version_bound",
+        "examples_validated",
+        "limitations_explicit",
+        "technical_not_promotional",
+        "feedback_human_owned"
+      ]
+    },
+    "partner-fit-memo@1": {
+      "description": "Evidence-based partner-fit memo with mutual user value, conflicts, risks, open questions, and a human-owned relationship boundary.",
+      "required_payload_fields": {
+        "partner_criteria": "object",
+        "candidate_organizations": "array",
+        "public_evidence": "array",
+        "fit_assessment": "array",
+        "mutual_user_value": "array",
+        "conflicts": "array",
+        "risks": "array",
+        "open_questions": "array",
+        "human_owned_next_action": "object",
+        "contact_data_used": "boolean",
+        "commitment_state": "string"
+      },
+      "required_quality_checks": [
+        "public_evidence_only",
+        "mutual_user_value",
+        "no_private_contact_enrichment",
+        "conflict_and_legal_review",
+        "no_implied_commitment",
+        "human_relationship_owner"
+      ]
+    },
+    "paused-paid-experiment@1": {
+      "description": "Paused paid-acquisition experiment with explicit economics, sensitive-audience exclusions, measurement, guardrails, stop rules, and human-only activation.",
+      "required_payload_fields": {
+        "channel_hypothesis": "object",
+        "audience": "object",
+        "exclusions": "array",
+        "creative_matrix": "array",
+        "budget_ceiling": "object",
+        "unit_economics": "object",
+        "measurement_plan": "object",
+        "incrementality_boundary": "object",
+        "guardrails": "array",
+        "stop_rules": "array",
+        "human_activation_checklist": "array",
+        "activation_state": "string"
+      },
+      "required_quality_checks": [
+        "human_budget_authority",
+        "zero_spend_verified",
+        "measurement_bound",
+        "sensitive_audience_review",
+        "attribution_causal_boundary",
+        "account_unchanged",
+        "paused_by_default"
+      ]
+    },
+    "rollout-recommendation@1": {
+      "description": "Evidence-bound ship, iterate, stop, or rollback recommendation that applies a pre-bound decision rule without executing a rollout.",
+      "required_payload_fields": {
+        "experiment_ref": "object",
+        "evidence_summary": "object",
+        "decision_options": "array",
+        "recommendation": "string",
+        "decision_rule_result": "object",
+        "guardrails_status": "array",
+        "risk_assessment": "object",
+        "rollback_plan": "object",
+        "uncertainty": "array",
+        "human_decision_required": "boolean"
+      },
+      "required_quality_checks": [
+        "exact_experiment_binding",
+        "decision_rule_applied",
+        "guardrails_reviewed",
+        "uncertainty_preserved",
+        "rollback_ready",
+        "no_rollout_execution"
+      ]
+    },
+    "social-package@1": {
+      "description": "Review-ready platform-native social package with complete value, exact claims and assets, reply-risk classification, native metrics, and no-post activation state.",
+      "required_payload_fields": {
+        "channel": "string",
+        "objective": "string",
+        "audience": "object",
+        "artifact_type": "string",
+        "complete_content": "object",
+        "claims": "array",
+        "sources": "array",
+        "assets": "array",
+        "metadata": "object",
+        "reply_risk": "object",
+        "native_metrics": "object",
+        "limitations": "array",
+        "activation_state": "string"
+      },
+      "required_quality_checks": [
+        "complete_value",
+        "channel_fit",
+        "claim_fact_check",
+        "rights_and_accessibility",
+        "native_metrics_separate",
+        "relationship_escalation",
+        "no_post_activation"
+      ]
+    },
+    "audience-change-proposal@1": {
+      "description": "Evidence-bound audience or voice-of-customer change proposal.",
+      "required_payload_fields": {
+        "audience_id": "string",
+        "segment_boundary": "object",
+        "sampling_frame": "object",
+        "observations": "array",
+        "interpretations": "array",
+        "hypotheses": "array",
+        "switching_forces": "array",
+        "exclusions": "array",
+        "biases": "array",
+        "saturation_status": "string",
+        "proposed_change": "object"
+      },
+      "required_quality_checks": [
+        "source_traceability",
+        "observation_interpretation_separation",
+        "segment_boundary",
+        "sampling_and_bias_review",
+        "privacy_review"
+      ]
+    },
+    "channel-product@1": {
+      "description": "One complete, channel-native final product with claims, sources, assets, and preview evidence.",
+      "required_payload_fields": {
+        "channel": "string",
+        "audience": "object",
+        "useful_outcome": "string",
+        "complete_content": "object",
+        "claims": "array",
+        "sources": "array",
+        "assets": "array",
+        "metadata": "object",
+        "preview": "object",
+        "limitations": "array"
+      },
+      "required_quality_checks": [
+        "complete_value",
+        "no_promotional_cta",
+        "claim_fact_check",
+        "channel_fit",
+        "rights_and_accessibility",
+        "render_review"
+      ]
+    },
+    "creative-package@1": {
+      "description": "Revision-bound creative assets with exact hashes, usage rights, accessibility, and render checks.",
+      "required_payload_fields": {
+        "communication_goal": "string",
+        "concept": "object",
+        "asset_manifest": "array",
+        "rights": "array",
+        "accessibility": "object",
+        "alt_text": "array",
+        "metadata": "object",
+        "render_proof": "array"
+      },
+      "required_quality_checks": [
+        "exact_asset_revision",
+        "rights_review",
+        "accessibility_review",
+        "metadata_review",
+        "render_review"
+      ]
+    },
+    "discovery-package@1": {
+      "description": "Technical and people-first search/discovery preflight without publication authority.",
+      "required_payload_fields": {
+        "target_intents": "array",
+        "technical_findings": "array",
+        "content_opportunities": "array",
+        "information_architecture": "object",
+        "internal_links": "array",
+        "indexation_plan": "object",
+        "measurement_plan": "object"
+      },
+      "required_quality_checks": [
+        "technical_validation",
+        "people_first_value",
+        "intent_evidence",
+        "discovery_value_separation",
+        "measurement_feasible"
+      ]
+    },
+    "evidence-packet@1": {
+      "description": "Bounded answer to one decision question with traceable findings, contradictions, gaps, and stop rule.",
+      "required_payload_fields": {
+        "decision_question": "string",
+        "method": "object",
+        "source_hierarchy": "array",
+        "findings": "array",
+        "contradictions": "array",
+        "evidence_gaps": "array",
+        "confidence_rationale": "string",
+        "stop_rule": "string",
+        "next_question": "string"
+      },
+      "required_quality_checks": [
+        "source_identity",
+        "source_traceability",
+        "source_quality",
+        "fact_inference_separation",
+        "contradictions_preserved",
+        "bounded_conclusion"
+      ]
+    },
+    "experiment-charter@1": {
+      "description": "Pre-registered product or growth experiment with a falsifiable hypothesis and trustworthy decision rule.",
+      "required_payload_fields": {
+        "hypothesis": "object",
+        "population": "object",
+        "intervention": "object",
+        "primary_metric": "object",
+        "guardrails": "array",
+        "randomization": "object",
+        "exposure": "object",
+        "sample_strategy": "object",
+        "runtime": "object",
+        "decision_rule": "object",
+        "rollback_rule": "object",
+        "low_traffic_alternative": "object"
+      },
+      "required_quality_checks": [
+        "falsifiable_hypothesis",
+        "preregistered",
+        "measurement_feasible",
+        "power_and_sample_review",
+        "srm_plan",
+        "risk_and_privacy_review"
+      ]
+    },
+    "funnel-diagnosis@1": {
+      "description": "Evidence-bound diagnosis of one controllable funnel bottleneck and its opportunity boundary.",
+      "required_payload_fields": {
+        "population": "object",
+        "value_moment": "object",
+        "funnel_steps": "array",
+        "dropoffs": "array",
+        "frictions": "array",
+        "data_quality": "object",
+        "controllable_bottleneck": "object",
+        "opportunities": "array",
+        "do_nothing_option": "object"
+      },
+      "required_quality_checks": [
+        "metric_definition",
+        "population_and_window",
+        "data_quality",
+        "qual_quant_triangulation",
+        "causal_boundary",
+        "controllability_review"
+      ]
+    },
+    "governance-verdict@1": {
+      "description": "Independent, revision-bound governance verdict over an exact professional artifact.",
+      "required_payload_fields": {
+        "reviewed_artifact": "object",
+        "verdict": "string",
+        "applicable_rules": "array",
+        "findings": "array",
+        "severity": "string",
+        "verdict_rationale": "string",
+        "required_actions": "array",
+        "rework_owner": "string",
+        "proof_boundary": "object"
+      },
+      "required_quality_checks": [
+        "exact_revision",
+        "evidence_present",
+        "claims_within_evidence",
+        "prohibited_claims",
+        "rights_and_privacy",
+        "policy_and_channel",
+        "cross_artifact_consistency",
+        "proof_layer"
+      ]
+    },
+    "launch-readiness-package@1": {
+      "description": "Cross-functional launch-readiness decision package that cannot itself launch.",
+      "required_payload_fields": {
+        "launch_goal": "string",
+        "audience": "object",
+        "user_path": "array",
+        "scope": "object",
+        "owners": "array",
+        "readiness_criteria": "array",
+        "non_goals": "array",
+        "channel_sequence": "array",
+        "measurement_plan": "object",
+        "risks": "array",
+        "rollback_plan": "object",
+        "status": "string"
+      },
+      "required_quality_checks": [
+        "product_readiness",
+        "positioning_readiness",
+        "measurement_readiness",
+        "channel_readiness",
+        "governance_readiness",
+        "activation_authority",
+        "rollback_readiness"
+      ]
+    },
+    "learning-record@1": {
+      "description": "Evidence-linked learning that distinguishes observation, interpretation, hypothesis, and causal claim.",
+      "required_payload_fields": {
+        "learning_type": "string",
+        "statement": "string",
+        "causal_claim": "boolean",
+        "experiment_ref": "object",
+        "evidence_summary": "object",
+        "recommended_change": "object",
+        "supersedes": "array",
+        "next_decision": "string"
+      },
+      "required_quality_checks": [
+        "evidence_present",
+        "statement_type_correct",
+        "causal_support",
+        "exact_experiment_binding",
+        "next_decision_bound"
+      ]
+    },
+    "lesson-brief@1": {
+      "description": "Evidence-ready brief for one complete useful lesson and one bounded channel product.",
+      "required_payload_fields": {
+        "audience_question": "string",
+        "useful_outcome": "string",
+        "thesis": "string",
+        "originality": "object",
+        "evidence_standard": "object",
+        "claim_source_map": "array",
+        "worked_example": "object",
+        "format": "object",
+        "distribution_hypothesis": "object",
+        "success_signal": "object",
+        "refresh_rule": "object"
+      },
+      "required_quality_checks": [
+        "audience_fit",
+        "evidence_ready",
+        "originality_review",
+        "complete_value",
+        "reproducible_example",
+        "refresh_rule_bound"
+      ]
+    },
+    "lifecycle-plan@1": {
+      "description": "Paused-by-default lifecycle journey with consent, suppression, frequency, and measurement controls.",
+      "required_payload_fields": {
+        "audience_state": "object",
+        "trigger": "object",
+        "consent_basis": "object",
+        "suppression_rules": "array",
+        "frequency_cap": "object",
+        "journey": "array",
+        "holdout": "object",
+        "measurement": "object",
+        "activation_state": "string"
+      },
+      "required_quality_checks": [
+        "consent_verified",
+        "suppression_verified",
+        "frequency_review",
+        "holdout_review",
+        "deliverability_review",
+        "paused_by_default"
+      ]
+    },
+    "measurement-learning-package@1": {
+      "description": "Bounded measurement readout and learning proposal with explicit causal limits.",
+      "required_payload_fields": {
+        "decision_question": "string",
+        "validated_snapshot": "object",
+        "statement_type": "string",
+        "interpretation": "object",
+        "effect_estimate": "object",
+        "causal_boundary": "object",
+        "options": "array",
+        "recommended_disposition": "string",
+        "learning_record": "object"
+      },
+      "required_quality_checks": [
+        "metric_contract",
+        "data_quality",
+        "baseline_and_window",
+        "effect_and_uncertainty",
+        "causal_boundary",
+        "learning_evidence",
+        "decision_rule_applied"
+      ]
+    },
+    "measurement-plan@1": {
+      "description": "Pre-bound metric, data-quality, window, power, guardrail, and decision contract.",
+      "required_payload_fields": {
+        "decision_question": "string",
+        "baseline": "object",
+        "primary_metric": "object",
+        "guardrails": "array",
+        "population": "object",
+        "window": "object",
+        "timezone": "string",
+        "filters": "array",
+        "data_quality_rules": "array",
+        "power_strategy": "object",
+        "decision_rule": "object"
+      },
+      "required_quality_checks": [
+        "metric_contract",
+        "baseline_bound",
+        "population_and_window",
+        "lineage_defined",
+        "power_review",
+        "decision_rule_bound"
+      ]
+    },
+    "positioning-package@1": {
+      "description": "Canonical positioning package bound to a primary segment, alternatives, tradeoffs, and proof.",
+      "required_payload_fields": {
+        "primary_segment": "object",
+        "problem": "object",
+        "category": "object",
+        "alternatives": "array",
+        "value": "object",
+        "differentiation": "array",
+        "tradeoffs": "array",
+        "disqualifiers": "array",
+        "objections": "array",
+        "claim_proof_map": "array",
+        "message_house": "object",
+        "message_tests": "array"
+      },
+      "required_quality_checks": [
+        "segment_evidence",
+        "approved_fact_binding",
+        "do_nothing_alternative",
+        "claim_proof_fit",
+        "tradeoffs_explicit",
+        "message_test_readiness"
+      ]
+    },
+    "route-decision@1": {
+      "description": "Evidence-bound selection of one admissible professional route and controllable bottleneck.",
+      "required_payload_fields": {
+        "problem": "object",
+        "lifecycle_stage": "string",
+        "growth_model": "object",
+        "controllable_bottleneck": "object",
+        "selected_route_id": "string",
+        "alternatives": "array",
+        "rationale": "string",
+        "stop_or_retire_rule": "object"
+      },
+      "required_quality_checks": [
+        "project_context_bound",
+        "evidence_bound",
+        "alternatives_considered",
+        "bottleneck_controllable",
+        "route_admissible",
+        "capacity_checked"
+      ]
+    },
+    "source-map@1": {
+      "description": "Claim-level source map with scope, hierarchy, contradictions, coverage, and stopping logic.",
+      "required_payload_fields": {
+        "research_question": "string",
+        "source_hierarchy": "array",
+        "sources": "array",
+        "claim_bindings": "array",
+        "contradictions": "array",
+        "coverage": "object",
+        "exclusions": "array",
+        "stop_rule": "string"
+      },
+      "required_quality_checks": [
+        "source_identity",
+        "source_scope",
+        "claim_traceability",
+        "contradictions_preserved",
+        "deduplicated",
+        "coverage_review"
+      ]
+    },
+    "task-set@1": {
+      "description": "Qualified objective and bounded task set owned by one coordinator for one route.",
+      "required_payload_fields": {
+        "outcome_owner": "string",
+        "decision_question": "string",
+        "audience": "object",
+        "business_goal": "object",
+        "baseline": "object",
+        "horizon": "object",
+        "success_signal": "object",
+        "guardrails": "array",
+        "non_goals": "array",
+        "do_nothing_option": "object",
+        "stop_condition": "object",
+        "resource_limits": "object",
+        "tasks": "array"
+      },
+      "required_quality_checks": [
+        "project_binding",
+        "single_outcome_owner",
+        "objective_qualified",
+        "route_authority",
+        "bounded_scope",
+        "stop_rule"
+      ]
+    },
+    "validated-snapshot@1": {
+      "description": "Exact-window, source-lineage-preserving metric snapshot with explicit missingness and quality limits.",
+      "required_payload_fields": {
+        "metric_contract": "object",
+        "source_lineage": "array",
+        "population": "object",
+        "window": "object",
+        "timezone": "string",
+        "filters": "array",
+        "coverage": "object",
+        "data_quality": "object",
+        "observations": "array",
+        "fetch_time": "string"
+      },
+      "required_quality_checks": [
+        "lineage_verified",
+        "metric_definition",
+        "population_and_window",
+        "data_quality",
+        "missing_not_zero",
+        "freshness_review"
+      ]
+    }
+  }
+}

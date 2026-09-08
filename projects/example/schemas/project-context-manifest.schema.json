@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-context-manifest@1",
+  "title": "Project Context Manifest",
+  "description": "Immutable, project-bound index of the exact context revisions a run may use.",
+  "type": "object",
+  "required": [
+    "project_id",
+    "project_profile_revision",
+    "manifest_version",
+    "context_id",
+    "context_revision",
+    "status",
+    "sections",
+    "authority",
+    "created_at"
+  ],
+  "properties": {
+    "project_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+    "project_profile_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "manifest_version": { "const": "1.0" },
+    "context_id": { "type": "string", "pattern": "^CTX-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$" },
+    "context_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$" },
+    "status": { "enum": ["draft", "ready", "retired"] },
+    "sections": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["kind", "artifact_ref", "artifact_revision", "artifact_sha256"],
+        "properties": {
+          "kind": {
+            "enum": [
+              "facts",
+              "prohibited_claims",
+              "audience",
+              "market",
+              "funnel",
+              "metrics",
+              "channels",
+              "authority"
+            ]
+          },
+          "artifact_ref": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$" },
+          "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$" },
+          "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        },
+        "additionalProperties": false
+      },
+      "allOf": [
+        { "contains": { "properties": { "kind": { "const": "facts" } }, "required": ["kind"] }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "properties": { "kind": { "const": "prohibited_claims" } }, "required": ["kind"] }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "properties": { "kind": { "const": "audience" } }, "required": ["kind"] }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "properties": { "kind": { "const": "market" } }, "required": ["kind"] }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "properties": { "kind": { "const": "funnel" } }, "required": ["kind"] }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "properties": { "kind": { "const": "metrics" } }, "required": ["kind"] }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "properties": { "kind": { "const": "channels" } }, "required": ["kind"] }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "properties": { "kind": { "const": "authority" } }, "required": ["kind"] }, "minContains": 1, "maxContains": 1 }
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "required": ["autonomous_internal_work", "human_final_review_required", "publish_credentials_available"],
+      "properties": {
+        "autonomous_internal_work": { "const": true },
+        "human_final_review_required": { "const": true },
+        "publish_credentials_available": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

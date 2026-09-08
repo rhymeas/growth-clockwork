@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "enabled": false,
+  "provider": "tailscale-serve",
+  "origin": null,
+  "allowed_logins": []
+}

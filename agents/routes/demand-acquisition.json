@@ -1,0 +1,201 @@
+{
+  "route_version": "1.0",
+  "route_id": "demand-acquisition",
+  "display_name": "Demand and Acquisition",
+  "purpose": "Prepare a measurable demand program with optional paid and partnership work while preserving a zero-spend, no-send, no-launch, and no-account-mutation boundary.",
+  "activation": {
+    "modes": [
+      "required_by_objective",
+      "mandatory_by_product_motion",
+      "activated_by_observed_trigger"
+    ],
+    "objective_signals": [
+      "The objective concerns qualified demand, a bounded paid experiment, or an evidence-based partnership hypothesis."
+    ],
+    "prerequisites": [
+      "The offer, audience, qualification rule, human follow-up capacity, metric definitions, and zero-execution authority boundary are explicit."
+    ]
+  },
+  "context_requirements": [
+    "facts",
+    "prohibited_claims",
+    "audience",
+    "market",
+    "funnel",
+    "metrics",
+    "channels",
+    "authority"
+  ],
+  "nodes": [
+    {
+      "node_id": "coordinate",
+      "role_id": "growth-coordinator",
+      "depends_on": [],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Bind one demand decision, offer, qualification rule, owner capacity, economics question, zero-spend boundary, non-goals, and stop rule.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "task-set@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/decisions"
+      ]
+    },
+    {
+      "node_id": "demand-evidence",
+      "role_id": "evidence-research",
+      "depends_on": [
+        "coordinate"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Collect bounded evidence about the buying context, alternatives, channel constraints, partner fit, conversion assumptions, and proof gaps.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "evidence-packet@1",
+      "allowed_write_roots": [
+        "evidence/packets",
+        "handoffs"
+      ]
+    },
+    {
+      "node_id": "measurement-design",
+      "role_id": "analytics-experimentation",
+      "depends_on": [
+        "coordinate"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Bind baseline, qualified-demand metric, population, window, guardrails, data quality, incrementality boundary, and decision rule before any activation.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "measurement-plan@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/learning"
+      ]
+    },
+    {
+      "node_id": "paid-plan",
+      "role_id": "paid-acquisition",
+      "depends_on": [
+        "demand-evidence",
+        "measurement-design"
+      ],
+      "optional": true,
+      "run_when": "Activate only when a paid-channel hypothesis, conversion baseline, measurement contract, explicit human budget ceiling, and sensitive-audience review exist; output remains paused with zero spend.",
+      "objective": "Specify a falsifiable paid-acquisition experiment with audience exclusions, creative matrix, economics, measurement, guardrails, and a human-only activation checklist without spending or changing an account.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "paused-paid-experiment@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/experiments"
+      ]
+    },
+    {
+      "node_id": "partner-fit",
+      "role_id": "partnerships",
+      "depends_on": [
+        "demand-evidence"
+      ],
+      "optional": true,
+      "run_when": "Activate only for qualified inbound interest or a documented strategic hypothesis with mutual user value and a named human relationship owner.",
+      "objective": "Prepare a bounded evidence packet covering partner criteria, mutual user value, fit, conflicts, risks, open questions, and human-owned next actions without contact enrichment or outreach.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "partner-fit-memo@1",
+      "allowed_write_roots": [
+        "evidence/packets",
+        "handoffs"
+      ]
+    },
+    {
+      "node_id": "demand-program",
+      "role_id": "demand-generation",
+      "depends_on": [
+        "demand-evidence",
+        "measurement-design",
+        "paid-plan",
+        "partner-fit"
+      ],
+      "optional": true,
+      "run_when": "Activate only when a validated B2B offer, buying context, qualification definition, measurable funnel, and named human follow-up capacity are evidenced.",
+      "objective": "Prepare a demand-readiness package with offer, qualification, handoff capacity, campaign structure, tracking, risks, non-goals, and explicit no-send, zero-spend, no-launch status.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "demand-plan@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "staging"
+      ]
+    },
+    {
+      "node_id": "acquisition-package",
+      "role_id": "product-marketing-positioning",
+      "depends_on": [
+        "demand-evidence",
+        "measurement-design",
+        "paid-plan",
+        "partner-fit",
+        "demand-program"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Assemble one supported acquisition-readiness package with audience, offer, proof, channel sequence, owners, measurement, risks, rollback, non-goals, and explicit no-send, zero-spend, no-launch status.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "launch-readiness-package@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "positioning/packages",
+        "staging"
+      ]
+    },
+    {
+      "node_id": "governance-final",
+      "role_id": "governance-reviewer",
+      "depends_on": [
+        "acquisition-package"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Review the exact acquisition-readiness package for evidence, qualification, measurement, privacy, sensitive audiences, relationship authority, budget boundaries, and no-execution compliance.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "governance-verdict@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/governance"
+      ]
+    }
+  ],
+  "final_product": {
+    "producer_node": "acquisition-package",
+    "contract": "launch-readiness-package@1",
+    "supporting_contracts": [
+      "evidence-packet@1",
+      "measurement-plan@1",
+      "paused-paid-experiment@1",
+      "partner-fit-memo@1",
+      "demand-plan@1"
+    ]
+  },
+  "parallelism": {
+    "max_concurrent_workhorses": 2,
+    "only_independent_nodes": true
+  },
+  "failure_policy": {
+    "dependent_nodes": "blocked-or-skipped",
+    "independent_nodes": "may-continue",
+    "ambiguous_result": "needs_attention-no-blind-retry",
+    "semantic_revisions": 2
+  },
+  "terminal_review": {
+    "governance_node": "governance-final",
+    "governance_contract": "governance-verdict@1",
+    "required_governance_result": "pass",
+    "review_item_contract": "outbox-review-item@1",
+    "terminal_state": "review_ready",
+    "human_actions": [
+      "approve",
+      "decline",
+      "note"
+    ],
+    "external_side_effects": false,
+    "may_publish": false
+  }
+}

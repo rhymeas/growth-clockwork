@@ -1,0 +1,23 @@
+{
+  "adapter_id": "local-filesystem-synthetic@1",
+  "adapter_receipt_version": "1.0",
+  "adapter_version": "1.0",
+  "completed_at": "2026-08-31T19:01:00Z",
+  "execution_id": "66666666-6666-4666-8666-666666666666",
+  "external_side_effects": false,
+  "output_artifact": {
+    "artifact_ref": "staging/local-release/simulated-live/55555555-5555-4555-8555-555555555555/fixture-artifact-r1.md",
+    "artifact_revision": "r1",
+    "artifact_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "release_package": {
+    "artifact_ref": "records/release-packages/fixture-artifact/22222222-2222-4222-8222-222222222222.json",
+    "artifact_revision": "22222222-2222-4222-8222-222222222222",
+    "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "request_id": "55555555-5555-4555-8555-555555555555",
+  "status": "completed",
+  "target": "simulated-live"
+}

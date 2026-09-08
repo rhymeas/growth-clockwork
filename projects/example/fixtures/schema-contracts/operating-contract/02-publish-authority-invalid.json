@@ -1,0 +1,5 @@
+{
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "authority": {"may_publish": true}
+}

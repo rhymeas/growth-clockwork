@@ -1,0 +1,379 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "result-envelope@2",
+  "title": "Result Envelope v2",
+  "description": "Project-neutral, immutable result for one exact task envelope and route step.",
+  "type": "object",
+  "required": [
+    "project_id",
+    "project_profile_revision",
+    "result_version",
+    "run_id",
+    "task_id",
+    "task_sha256",
+    "step_id",
+    "role_id",
+    "status",
+    "output_artifacts",
+    "evidence_artifacts",
+    "checks",
+    "attempts",
+    "usage",
+    "provenance",
+    "error",
+    "created_at"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "project_profile_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "result_version": {
+      "const": "2.0"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._:-]{2,127}$"
+    },
+    "task_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "step_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "role_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "blocked",
+        "needs_attention",
+        "failed"
+      ]
+    },
+    "output_artifacts": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "artifact_ref",
+          "artifact_revision",
+          "artifact_sha256",
+          "contract_id"
+        ],
+        "properties": {
+          "artifact_ref": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+          },
+          "artifact_revision": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "contract_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]+@[0-9]+$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence_artifacts": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "artifact_ref",
+          "artifact_revision",
+          "artifact_sha256"
+        ],
+        "properties": {
+          "artifact_ref": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+          },
+          "artifact_revision": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "result",
+          "evidence_ref"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "result": {
+            "enum": [
+              "pass",
+              "fail",
+              "not_run",
+              "unavailable"
+            ]
+          },
+          "evidence_ref": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": [
+                  "artifact_ref",
+                  "artifact_revision",
+                  "artifact_sha256"
+                ],
+                "properties": {
+                  "artifact_ref": {
+                    "type": "string",
+                    "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+                  },
+                  "artifact_revision": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                  },
+                  "artifact_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "attempts": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2
+    },
+    "usage": {
+      "type": "object",
+      "required": [
+        "duration_ms",
+        "input_tokens",
+        "output_tokens",
+        "variable_external_cost_eur"
+      ],
+      "properties": {
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "input_tokens": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "output_tokens": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "variable_external_cost_eur": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "provider",
+        "model",
+        "prompt_version",
+        "contract_version",
+        "input_revision",
+        "output_revision"
+      ],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "prompt_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contract_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "output_revision": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "error": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "class",
+            "message",
+            "retryable"
+          ],
+          "properties": {
+            "class": {
+              "enum": [
+                "timeout",
+                "malformed_output",
+                "missing_input",
+                "dependency",
+                "context",
+                "contract",
+                "authority",
+                "governance",
+                "budget",
+                "ambiguous_write",
+                "provider",
+                "other"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "completed"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "output_artifacts": {
+            "minItems": 1
+          },
+          "checks": {
+            "items": {
+              "properties": {
+                "result": {
+                  "const": "pass"
+                }
+              },
+              "required": [
+                "result"
+              ]
+            }
+          },
+          "provenance": {
+            "properties": {
+              "output_revision": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "error": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "error": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

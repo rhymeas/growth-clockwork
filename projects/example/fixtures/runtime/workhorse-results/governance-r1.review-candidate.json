@@ -1,0 +1,52 @@
+{
+  "artifact_ref": "evidence/packets/EX-1000/research-r1.json",
+  "artifact_revision": "research-r1",
+  "artifact_sha256": "0548fdd2c9ccc5de9498b68f8760df266f5f4949e2b230f23e4ab7d20d39310f",
+  "artifact_id": "EX-1000-evidence",
+  "title": "Synthetic evidence decision brief",
+  "type": "evidence-packet",
+  "preview": "Four synthetic planning options were checked against one fixture-only source. The evidence supports no comparative winner, so the bounded conclusion is insufficient_evidence. No measured outcome, demand, or repeatability is claimed.",
+  "evidence": [
+    {
+      "label": "Exact synthetic evidence packet",
+      "ref": "evidence/packets/EX-1000/research-r1.json"
+    }
+  ],
+  "quality_checks": [
+    {
+      "name": "Evidence present",
+      "status": "pass",
+      "detail": "The exact producer artifact and its source pointer resolve."
+    },
+    {
+      "name": "Claims within evidence",
+      "status": "pass",
+      "detail": "The artifact concludes insufficient evidence and names no winner."
+    },
+    {
+      "name": "Prohibited claims",
+      "status": "pass",
+      "detail": "No real product outcome, demand, benchmark, or testimonial is claimed."
+    },
+    {
+      "name": "Rights respected",
+      "status": "pass",
+      "detail": "Only synthetic fixture material is present."
+    },
+    {
+      "name": "Exact revision",
+      "status": "pass",
+      "detail": "Review is bound to research-r1 and its exact SHA-256."
+    },
+    {
+      "name": "Policy and channel",
+      "status": "pass",
+      "detail": "Fixture-only, non-publishable, and no channel action."
+    },
+    {
+      "name": "Proof layer",
+      "status": "pass",
+      "detail": "Synthetic documentation is not presented as measured or live proof."
+    }
+  ]
+}

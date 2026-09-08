@@ -1,0 +1,18 @@
+{
+  "review_item_version": "1.0",
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "artifact_id": "demo-brief",
+  "artifact_revision": "r1",
+  "artifact_path": "outbox/artifacts/demo-brief/r1.md",
+  "artifact_sha256": "c000000000000000000000000000000000000000000000000000000000000001",
+  "title": "Synthetic positioning brief",
+  "type": "positioning-package",
+  "preview": "A synthetic preview that contains no real product information.",
+  "evidence": [
+    { "label": "Synthetic evidence", "ref": "evidence/packets/demo.json" }
+  ],
+  "quality_checks": [
+    { "name": "Contract", "status": "pass", "detail": "The fixture matches the shared contract." }
+  ]
+}

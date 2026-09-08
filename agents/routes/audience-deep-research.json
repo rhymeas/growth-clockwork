@@ -1,0 +1,121 @@
+{
+  "route_version": "1.0",
+  "route_id": "audience-deep-research",
+  "display_name": "Audience Deep Research",
+  "purpose": "Turn bounded cross-platform observations into an evidence-linked audience change proposal without publishing, spending, contacting people, or mutating an account.",
+  "activation": {
+    "modes": [
+      "required_by_objective",
+      "activated_by_observed_trigger"
+    ],
+    "objective_signals": [
+      "The objective requires deeper audience evidence across one or more supported public platform surfaces before changing audience, content, positioning, or channel strategy."
+    ],
+    "prerequisites": [
+      "The decision question, requested platforms, lawful read-only access method, sampling frame, data-retention boundary, and no-contact authority are explicit."
+    ]
+  },
+  "context_requirements": [
+    "facts",
+    "prohibited_claims",
+    "audience",
+    "market",
+    "channels",
+    "authority"
+  ],
+  "nodes": [
+    {
+      "node_id": "coordinate",
+      "role_id": "growth-coordinator",
+      "depends_on": [],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Bind one audience decision question, requested platforms, evidence threshold, access and privacy boundary, sampling limits, non-goals, resource cap, and stop rule.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "task-set@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/decisions"
+      ]
+    },
+    {
+      "node_id": "audience-research",
+      "role_id": "evidence-research",
+      "depends_on": [
+        "coordinate"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Produce a cross-platform audience research package with pinned observations, source tiers, coverage, sampling limits, insights, counterevidence, unknowns, confidence, and bounded recommendations.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "audience-research-package@1",
+      "allowed_write_roots": [
+        "evidence/packets",
+        "handoffs"
+      ]
+    },
+    {
+      "node_id": "audience-synthesis",
+      "role_id": "audience-voc",
+      "depends_on": [
+        "audience-research"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Translate the exact research package into an audience-change proposal that separates observation, interpretation, and hypothesis while preserving exclusions, biases, counterevidence, and uncertainty.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "audience-change-proposal@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/audience"
+      ]
+    },
+    {
+      "node_id": "governance-final",
+      "role_id": "governance-reviewer",
+      "depends_on": [
+        "audience-synthesis"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Review the exact audience-change proposal and supporting research package for access authority, traceability, sampling claims, privacy, bias, counterevidence, revision binding, and no-contact compliance.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "governance-verdict@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/governance"
+      ]
+    }
+  ],
+  "final_product": {
+    "producer_node": "audience-synthesis",
+    "contract": "audience-change-proposal@1",
+    "supporting_contracts": [
+      "audience-research-package@1"
+    ]
+  },
+  "parallelism": {
+    "max_concurrent_workhorses": 2,
+    "only_independent_nodes": true
+  },
+  "failure_policy": {
+    "dependent_nodes": "blocked-or-skipped",
+    "independent_nodes": "may-continue",
+    "ambiguous_result": "needs_attention-no-blind-retry",
+    "semantic_revisions": 2
+  },
+  "terminal_review": {
+    "governance_node": "governance-final",
+    "governance_contract": "governance-verdict@1",
+    "required_governance_result": "pass",
+    "review_item_contract": "outbox-review-item@1",
+    "terminal_state": "review_ready",
+    "human_actions": [
+      "approve",
+      "decline",
+      "note"
+    ],
+    "external_side_effects": false,
+    "may_publish": false
+  }
+}

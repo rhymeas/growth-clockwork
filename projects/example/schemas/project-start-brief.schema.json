@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-start-brief@1",
+  "title": "Project Start Brief",
+  "description": "An immutable, operator-authored starting point for one project. It records a goal, intended audience, success signal, non-goals, and a bounded research question. It never grants publication authority.",
+  "type": "object",
+  "required": [
+    "project_id",
+    "project_profile_revision",
+    "brief_version",
+    "brief_id",
+    "brief_revision",
+    "goal",
+    "audience",
+    "success_signal",
+    "non_goals",
+    "research_question",
+    "authority",
+    "created_by",
+    "contains_personal_data",
+    "created_at"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "project_profile_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "brief_version": {
+      "const": "1.0"
+    },
+    "brief_id": {
+      "type": "string",
+      "pattern": "^START-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$"
+    },
+    "brief_revision": {
+      "type": "string",
+      "pattern": "^r[1-9][0-9]{0,5}$"
+    },
+    "goal": {
+      "type": "object",
+      "required": ["title", "detail"],
+      "properties": {
+        "title": { "type": "string", "minLength": 3 },
+        "detail": { "type": "string", "minLength": 10 }
+      },
+      "additionalProperties": false
+    },
+    "audience": {
+      "type": "object",
+      "required": ["label", "detail"],
+      "properties": {
+        "label": { "type": "string", "minLength": 3 },
+        "detail": { "type": "string", "minLength": 10 }
+      },
+      "additionalProperties": false
+    },
+    "success_signal": {
+      "type": "object",
+      "required": ["label", "detail"],
+      "properties": {
+        "label": { "type": "string", "minLength": 3 },
+        "detail": { "type": "string", "minLength": 10 }
+      },
+      "additionalProperties": false
+    },
+    "non_goals": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 3 }
+    },
+    "research_question": {
+      "type": "string",
+      "minLength": 10
+    },
+    "authority": {
+      "type": "object",
+      "required": [
+        "may_publish",
+        "may_change_public_accounts",
+        "human_review_required"
+      ],
+      "properties": {
+        "may_publish": { "const": false },
+        "may_change_public_accounts": { "const": false },
+        "human_review_required": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "created_by": { "const": "operator" },
+    "contains_personal_data": { "const": false },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,27 @@
+{
+  "adapter_receipt": {
+    "artifact_ref": "records/adapter-receipts/66666666-6666-4666-8666-666666666666.json",
+    "artifact_revision": "66666666-6666-4666-8666-666666666666",
+    "artifact_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "causal_claim": false,
+  "external_side_effects": false,
+  "live_proof": {
+    "artifact_ref": "records/live-proofs/77777777-7777-4777-8777-777777777777.json",
+    "artifact_revision": "77777777-7777-4777-8777-777777777777",
+    "artifact_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  },
+  "metrics": [],
+  "outcome_id": "88888888-8888-4888-8888-888888888888",
+  "outcome_record_version": "1.0",
+  "outcome_type": "fixture-observation",
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "recorded_at": "2026-08-31T19:01:00Z",
+  "release_package": {
+    "artifact_ref": "records/release-packages/fixture-artifact/22222222-2222-4222-8222-222222222222.json",
+    "artifact_revision": "22222222-2222-4222-8222-222222222222",
+    "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "statement": "Exact bytes were copied locally; no public or causal result was measured."
+}

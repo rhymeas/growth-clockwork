@@ -1,0 +1,21 @@
+{
+  "route_version": "1.0",
+  "route_id": "measurement-learning",
+  "display_name": "Measurement and Learning",
+  "purpose": "Validate a bounded measurement question and produce an evidence-linked learning package with explicit causal limits.",
+  "activation": {
+    "modes": ["required_by_objective"],
+    "objective_signals": ["The objective concerns baseline, measurement design, result interpretation, experiment readout, or learning closure."],
+    "prerequisites": ["A metric contract and a completed or explicitly pre-production task are bound."]
+  },
+  "context_requirements": ["funnel", "metrics", "authority"],
+  "nodes": [
+    {"node_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Define the decision question, admissible statement type, baseline, and learning destination.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+    {"node_id": "analysis", "role_id": "analytics-experimentation", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Validate data quality and produce a bounded measurement, interpretation, options, and learning proposal.", "output_contract": "result-envelope@2", "deliverable_contract": "measurement-learning-package@1", "allowed_write_roots": ["records/learning", "handoffs"]},
+    {"node_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["analysis"], "optional": false, "run_when": "always", "objective": "Review the exact measurement-learning package for lineage, definitions, causal language, authority, and revision binding.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]}
+  ],
+  "final_product": {"producer_node": "analysis", "contract": "measurement-learning-package@1", "supporting_contracts": ["validated-snapshot@1", "learning-record@1"]},
+  "parallelism": {"max_concurrent_workhorses": 2, "only_independent_nodes": true},
+  "failure_policy": {"dependent_nodes": "blocked-or-skipped", "independent_nodes": "may-continue", "ambiguous_result": "needs_attention-no-blind-retry", "semantic_revisions": 2},
+  "terminal_review": {"governance_node": "governance-final", "governance_contract": "governance-verdict@1", "required_governance_result": "pass", "review_item_contract": "outbox-review-item@1", "terminal_state": "review_ready", "human_actions": ["approve", "decline", "note"], "external_side_effects": false, "may_publish": false}
+}

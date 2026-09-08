@@ -1,0 +1,103 @@
+{
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "manifest_version": "2.0",
+  "manifest_revision": 1,
+  "previous_manifest": null,
+  "run_id": "RUN-FIXTURE-EX-0002",
+  "run_mode": "fixture",
+  "status": "completed",
+  "objective": "Produce one governed evidence packet for final human review.",
+  "coordinator_plan": {
+    "artifact_ref": "records/coordinator-plans/11111111-1111-4111-8111-111111111112.json",
+    "artifact_revision": "fixture-plan-r1",
+    "artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "project_context": {
+    "artifact_ref": "context/manifests/CTX-EXAMPLE-0001.fixture-r1.json",
+    "artifact_revision": "fixture-r1",
+    "artifact_sha256": "17c3d329142e64d02ce9a9e41958d2f2edde9c9b086002e221f76a88379e9b25"
+  },
+  "route_id": "research-evidence",
+  "route_contract": {
+    "artifact_ref": "agents/routes/research-evidence.json",
+    "artifact_revision": "growth-agent-registry-v1",
+    "artifact_sha256": "c20c8413b8365f7b27908ac5261da7aedb557b27f6e94303312cf3f5e3f6a303"
+  },
+  "planned_steps": [
+    {
+      "step_id": "coordinate",
+      "role_id": "growth-coordinator",
+      "depends_on": [],
+      "output_contract": "result-envelope@2"
+    },
+    {
+      "step_id": "research",
+      "role_id": "evidence-research",
+      "depends_on": ["coordinate"],
+      "output_contract": "result-envelope@2"
+    },
+    {
+      "step_id": "governance-final",
+      "role_id": "governance-reviewer",
+      "depends_on": ["research"],
+      "output_contract": "result-envelope@2"
+    }
+  ],
+  "tasks": [
+    {
+      "step_id": "coordinate",
+      "task_id": "EX-991-T001",
+      "task_ref": "handoffs/RUN-FIXTURE-EX-0002/EX-991-T001.json",
+      "task_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "status": "completed",
+      "result_ref": {
+        "artifact_ref": "handoffs/RUN-FIXTURE-EX-0002/EX-991-T001-result.json",
+        "artifact_revision": "fixture-r1",
+        "artifact_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    },
+    {
+      "step_id": "research",
+      "task_id": "EX-991-T002",
+      "task_ref": "handoffs/RUN-FIXTURE-EX-0002/EX-991-T002.json",
+      "task_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "status": "completed",
+      "result_ref": {
+        "artifact_ref": "handoffs/RUN-FIXTURE-EX-0002/EX-991-T002-result.json",
+        "artifact_revision": "fixture-r1",
+        "artifact_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    },
+    {
+      "step_id": "governance-final",
+      "task_id": "EX-991-T003",
+      "task_ref": "handoffs/RUN-FIXTURE-EX-0002/EX-991-T003.json",
+      "task_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "status": "completed",
+      "result_ref": {
+        "artifact_ref": "handoffs/RUN-FIXTURE-EX-0002/EX-991-T003-result.json",
+        "artifact_revision": "fixture-r1",
+        "artifact_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      }
+    }
+  ],
+  "output_artifacts": [
+    {
+      "artifact_ref": "evidence/packets/EX-991-evidence.json",
+      "artifact_revision": "fixture-r1",
+      "artifact_sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+    }
+  ],
+  "review_items": [
+    {
+      "artifact_ref": "outbox/pending/OBX-EX-991/item.json",
+      "artifact_revision": "fixture-r1",
+      "artifact_sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+    }
+  ],
+  "publish_side_effects": true,
+  "blocked_reason": null,
+  "started_at": "2026-09-01T01:00:00Z",
+  "completed_at": "2026-09-01T01:10:00Z"
+}

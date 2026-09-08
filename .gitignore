@@ -1,0 +1,17 @@
+runtime/permissions.json
+runtime/postiz.json
+runtime/media-processing.json
+runtime/ga4.json
+runtime/remote-access.json
+runtime/models/
+runtime/broker/
+runtime/analytics/
+projects/*/state/
+dashboard/node_modules/
+dashboard/dist/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+.env
+.env.*

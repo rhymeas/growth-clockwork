@@ -1,0 +1,332 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "growth-operating-contract@1",
+  "title": "Growth Operating Contract",
+  "description": "One bounded growth decision with a single outcome owner, measurable success, guardrails, stop rules, authority, resource limits, data policy, and learning destination.",
+  "type": "object",
+  "required": [
+    "project_id",
+    "project_profile_revision",
+    "contract_version",
+    "outcome_owner",
+    "growth_stage",
+    "decision_question",
+    "success_signal",
+    "guardrails",
+    "stop_conditions",
+    "resource_limits",
+    "authority",
+    "data_policy",
+    "proof_requirements",
+    "learning_contract",
+    "created_at"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "project_profile_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "contract_version": {
+      "const": "1.0"
+    },
+    "outcome_owner": {
+      "type": "object",
+      "required": ["role_id", "accountability"],
+      "properties": {
+        "role_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,63}$"
+        },
+        "accountability": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "additionalProperties": false
+    },
+    "growth_stage": {
+      "enum": [
+        "discovery",
+        "validation",
+        "activation",
+        "retention",
+        "scale",
+        "optimization"
+      ]
+    },
+    "decision_question": {
+      "type": "string",
+      "minLength": 10
+    },
+    "success_signal": {
+      "type": "object",
+      "required": [
+        "name",
+        "population",
+        "window",
+        "decision_rule",
+        "source_ref"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "population": {
+          "type": "string",
+          "minLength": 1
+        },
+        "window": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decision_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ref": {
+          "oneOf": [
+            {
+              "type": "object",
+              "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+              "properties": {
+                "artifact_ref": {
+                  "type": "string",
+                  "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+                },
+                "artifact_revision": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                },
+                "artifact_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "guardrails": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["name", "failure_condition", "response"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "failure_condition": {
+            "type": "string",
+            "minLength": 1
+          },
+          "response": {
+            "enum": ["revise", "stop", "escalate_to_final_review"]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "stop_conditions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "resource_limits": {
+      "type": "object",
+      "required": [
+        "max_duration_ms",
+        "max_input_tokens",
+        "max_output_tokens",
+        "max_sources",
+        "max_variable_external_cost_eur",
+        "max_attempts_per_task"
+      ],
+      "properties": {
+        "max_duration_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "usage_policy": {
+          "enum": ["metered", "codex_subscription"],
+          "description": "Defaults to metered. Native Codex may report unavailable token counters as null; token caps then cannot be verified, but known zero external spend and all other limits remain enforced."
+        },
+        "max_input_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_output_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_sources": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_variable_external_cost_eur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "max_attempts_per_task": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        }
+      },
+      "additionalProperties": false
+    },
+    "authority": {
+      "type": "object",
+      "required": [
+        "allowed_actions",
+        "forbidden_actions",
+        "external_side_effects",
+        "may_publish",
+        "may_spend",
+        "may_contact_people",
+        "may_use_unofficial_collection"
+      ],
+      "properties": {
+        "allowed_actions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9._-]{1,63}$"
+          }
+        },
+        "forbidden_actions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9._-]{1,63}$"
+          }
+        },
+        "external_side_effects": {
+          "const": false
+        },
+        "may_publish": {
+          "const": false
+        },
+        "may_spend": {
+          "const": false
+        },
+        "may_contact_people": {
+          "const": false
+        },
+        "may_use_unofficial_collection": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "data_policy": {
+      "type": "object",
+      "required": [
+        "allowed_evidence_grades",
+        "raw_personal_data_stored",
+        "redaction_required",
+        "retention_days",
+        "permitted_destinations"
+      ],
+      "properties": {
+        "allowed_evidence_grades": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["authoritative", "verified", "directional", "exploratory"]
+          }
+        },
+        "raw_personal_data_stored": {
+          "const": false
+        },
+        "redaction_required": {
+          "type": "boolean"
+        },
+        "retention_days": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "permitted_destinations": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "evidence",
+              "records",
+              "memory",
+              "staging",
+              "outbox"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "proof_requirements": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "source_hashes",
+          "professional_contract_checks",
+          "governance_verdict",
+          "human_exact_revision",
+          "live_outcome"
+        ]
+      }
+    },
+    "learning_contract": {
+      "type": "object",
+      "required": [
+        "learning_record_required",
+        "causal_claim_requires_experiment",
+        "destination",
+        "next_decision_required"
+      ],
+      "properties": {
+        "learning_record_required": {
+          "const": true
+        },
+        "causal_claim_requires_experiment": {
+          "const": true
+        },
+        "destination": {
+          "const": "memory/records"
+        },
+        "next_decision_required": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

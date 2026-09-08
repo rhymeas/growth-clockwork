@@ -1,0 +1,25 @@
+{
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "envelope_version": "1.0",
+  "section_kind": "metrics",
+  "section_revision": "metrics-invalid-r1",
+  "material_state": "current",
+  "usage_policy": "allowed",
+  "synthetic": true,
+  "fixture_only": true,
+  "publishable": false,
+  "approval_ref": null,
+  "source_refs": [
+    {
+      "source_id": "absolute-path-bypass",
+      "artifact_ref": "/tmp/context.json",
+      "artifact_revision": "fixture-r1",
+      "artifact_sha256": "e2e0ea27a61b6bd7586431f86bb951ec6edd3f475fccf68d95d3d6cd901c3aeb",
+      "source_state": "synthetic_fixture"
+    }
+  ],
+  "unknowns": [],
+  "content": {},
+  "created_at": "2026-09-01T00:09:52Z"
+}

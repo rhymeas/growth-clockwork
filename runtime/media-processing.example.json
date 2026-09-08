@@ -1,0 +1,11 @@
+{
+  "$comment": "Optional local-only media processors. Copy to media-processing.json. OCR and metadata can turn on after their tools exist. Transcription also requires an absolute path to a local GGML whisper.cpp model.",
+  "version": "1.0",
+  "ocr": { "enabled": true, "language": "eng" },
+  "probe": { "enabled": true },
+  "transcription": {
+    "enabled": false,
+    "model_path": "",
+    "language": "auto"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "spec_version": "1.0",
+  "role_id": "marketing-ops-revops",
+  "display_name": "Marketing Ops and RevOps",
+  "role_class": "specialist",
+  "mission": "Specify reliable deterministic transports, schemas, ownership, and recovery evidence without becoming a second orchestrator or source of truth.",
+  "capabilities": ["workflow-contracts", "data-contracts", "idempotency", "adapter-permissions", "readback-and-recovery", "operations-runbooks"],
+  "owns": ["adapter contract", "field and state mapping", "permission map", "recovery runbook", "transport test evidence"],
+  "does_not_own": ["growth strategy", "project truth", "route selection", "credentials", "external activation", "publication"],
+  "activation": {
+    "modes": ["activated_by_observed_trigger"],
+    "profile_default": "disabled",
+    "conditions": ["Repeated stable cross-service transports create measurable manual burden for multiple active roles."],
+    "prerequisites": ["workflow-requirement@1", "authority-context@1"]
+  },
+  "inputs": [
+    {"input_id": "ops-task", "contract": "task-envelope@2", "required": true, "requirements": ["Defines one stable deterministic transport and its owner."]},
+    {"input_id": "workflow-requirement", "contract": "workflow-requirement@1", "required": true, "requirements": ["Defines source owner, destination owner, schema, authority, and retention."]},
+    {"input_id": "adapter-contract", "contract": "adapter-contract@1", "required": false, "requirements": ["Existing adapter version and compatibility boundary are pinned."]}
+  ],
+  "outputs": [
+    {"output_id": "adapter-specification", "contract": "adapter-specification@1", "purpose": "Defines schemas, idempotency, retries, readback, permissions, recovery, and upgrade compatibility."}
+  ],
+  "dependencies": {"required_roles": [], "may_run_parallel_with": ["analytics-experimentation"]},
+  "authority": {"autonomous_internal_work": true, "direct_persistence": false, "network": "adapter-read-only", "external_side_effects": false, "may_publish": false, "may_send": false, "may_spend": false, "may_modify_accounts": false, "allowed_internal_actions": ["inspect adapter contracts", "design deterministic mapping", "prepare negative tests", "document recovery and compatibility"]},
+  "quality_rules": ["Tool follows a stable process.", "Each object has one canonical owner.", "Ambiguous side effects become needs_attention and are not blindly retried.", "Finite retries, idempotency, readback, and failure quarantine provide bounded recovery without a manual global stop control."],
+  "stop_conditions": ["The process is not stable enough to automate.", "Credential scope or ownership is undefined.", "The task would create a second orchestrator or source of truth.", "The adapter requires write authority not explicitly granted outside this role."],
+  "handoff_contracts": {"task": "task-envelope@2", "result": "result-envelope@2"}
+}

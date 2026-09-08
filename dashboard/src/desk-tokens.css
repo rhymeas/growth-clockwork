@@ -1,0 +1,57 @@
+/* One palette for the contextual Desk. App.tsx owns the saved theme.
+   Mercury-inspired paper modules; no external font or image requests. */
+:root {
+  --font-ui: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: var(--font-ui);
+  --font-mono: ui-monospace, SFMono-Regular, monospace;
+  --background: #efede8;
+  --surface: #faf9f6;
+  --surface-subtle: #eeede9;
+  --surface-selected: #e2e7e6;
+  --text: #272d31;
+  --text-secondary: #60686b;
+  --text-tertiary: #656c70;
+  --border: #ddded9;
+  --border-strong: #a1a7a6;
+  --accent: #385b69;
+  --accent-hover: #294653;
+  --accent-button: #2c353a;
+  --accent-button-hover: #404b50;
+  --accent-soft: #e2e7e6;
+  --button-ink: #ffffff;
+  --danger: #94372d;
+  --danger-button: #94372d;
+  --danger-soft: #f1dfd9;
+  --success: #2f6b45;
+  --warning: #775419;
+  --progress: #4e5d75;
+  --radius-card: 20px;
+  --shadow-sheet: 0 2px 3px rgb(32 38 40 / 2%), 0 12px 28px -20px rgb(32 38 40 / 18%);
+  --shadow-dialog: 0 24px 72px rgb(38 32 20 / 22%), 0 2px 8px rgb(38 32 20 / 12%);
+}
+
+:root[data-theme="dark"] {
+  --background: #181b1e;
+  --surface: #24282c;
+  --surface-subtle: #2d3236;
+  --surface-selected: #344249;
+  --text: #e7eae9;
+  --text-secondary: #b8bec0;
+  --text-tertiary: #a7b0b4;
+  --border: #3a4145;
+  --border-strong: #747f84;
+  --accent: #b5ccd3;
+  --accent-hover: #d7e6e9;
+  --accent-button: #d9e2e3;
+  --accent-button-hover: #edf3f3;
+  --accent-soft: #344249;
+  --button-ink: #202a2e;
+  --danger: #f29a8d;
+  --danger-button: #94372d;
+  --danger-soft: #3b2526;
+  --success: #85d6a3;
+  --warning: #e2bb75;
+  --progress: #aebbd3;
+  --shadow-sheet: 0 1px 2px rgb(0 0 0 / 12%), 0 10px 28px -20px rgb(0 0 0 / 50%);
+  --shadow-dialog: 0 24px 72px rgb(0 0 0 / 50%), 0 2px 8px rgb(0 0 0 / 35%);
+}

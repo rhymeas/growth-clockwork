@@ -1,0 +1,27 @@
+{
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "package_version": "1.0",
+  "package_id": "ARP-example-blocked",
+  "package_revision": "r1",
+  "decision_question": "Which audience problem is supported by the requested YouTube evidence?",
+  "requested_platforms": ["youtube"],
+  "research_status": "blocked",
+  "coverage": [{
+    "platform": "youtube",
+    "status": "access_blocked",
+    "observation_ids": [],
+    "reason": "No authorized source was available for this synthetic fixture."
+  }],
+  "observation_refs": [],
+  "insights": [],
+  "audience_segments": [],
+  "content_patterns": [],
+  "recommendations": [],
+  "counterevidence": ["No observation supports a finding."],
+  "unknowns": ["The audience question remains unanswered."],
+  "overall_confidence": "low",
+  "not_representative_acknowledged": true,
+  "contains_personal_data": false,
+  "created_at": "2026-08-31T12:00:00Z"
+}

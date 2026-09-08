@@ -1,0 +1,41 @@
+{
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "observation_version": "1.0",
+  "observation_id": "OBS-youtube-fixture",
+  "platform": "youtube",
+  "surface": "public videos and comments",
+  "research_question": "Which recurring setup questions appear in this bounded sample?",
+  "access_method": "manual_public_observation",
+  "source_tier": "documented_oss_capture",
+  "governance_use": "directional_discovery",
+  "collector_tool": "manual-evidence-intake",
+  "access_terms_ref": "https://developers.google.com/youtube/terms/developer-policies",
+  "collection_authority_ref": "records/authority/example.json",
+  "query_or_sampling_frame": {"query": "synthetic setup example", "locale": "en"},
+  "observed_window": {
+    "start": "2026-08-01T00:00:00Z",
+    "end": "2026-08-31T00:00:00Z"
+  },
+  "sample": {
+    "items_seen": 10,
+    "items_included": 4,
+    "pages_fetched": 1,
+    "pagination_complete": false,
+    "quota_limited": false,
+    "representativeness": "not_claimed"
+  },
+  "content_dimensions": ["questions", "pains", "language"],
+  "evidence": [{
+    "artifact_ref": "evidence/platform/OBS-youtube-fixture.json",
+    "artifact_revision": "r1",
+    "artifact_sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+  }],
+  "commercial_use_clearance": "cleared",
+  "raw_personal_data_stored": false,
+  "redaction_method": "aggregate_only",
+  "retention_policy": "Refresh or remove the bounded source record within 30 days.",
+  "known_biases": ["Keyword and ranking selection bias."],
+  "unknowns": ["The sample is not population representative."],
+  "collected_at": "2026-08-31T12:00:00Z"
+}

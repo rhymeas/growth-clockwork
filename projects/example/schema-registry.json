@@ -1,0 +1,101 @@
+{
+  "registry_version": "1.0",
+  "schemas": {
+    "adapter-receipt@1": {
+      "path": "schemas/adapter-receipt.schema.json",
+      "sha256": "b2c4900a9b1a398bc98b9c58d978b8cf0f066249a069f46cd5b687f67f7a2ee2"
+    },
+    "adapter-request@1": {
+      "path": "schemas/adapter-request.schema.json",
+      "sha256": "99009d9c6cbc9ae35a6fcb4f4be645eb6d1a74bdec1819a5961ec3c8d20818b5"
+    },
+    "audience-research-package@1": {
+      "path": "schemas/audience-research-package.schema.json",
+      "sha256": "7f72ea6fd925aca9fc8b0b707fae578530a936f5ea5540a729879f6a6afa637b"
+    },
+    "code-graph-index@1": {
+      "path": "schemas/code-graph-index.schema.json",
+      "sha256": "c05e1ceb44901ee2139bb3383cebe55ab933a2fb7e176100b3f0f827460ff412"
+    },
+    "coordinator-plan@1": {
+      "path": "schemas/coordinator-plan.schema.json",
+      "sha256": "969c5aa9dcf77d1e94823cbe540f408ab51f66e897b191a36ec078e6b0df61c6"
+    },
+    "context-section-envelope@1": {
+      "path": "schemas/context-section-envelope.schema.json",
+      "sha256": "e0bf258bae766355519b4e615b870e225cfa65deead7d70926070b2135629f4a"
+    },
+    "human-review-action@1": {
+      "path": "schemas/human-review-action.schema.json",
+      "sha256": "127237258c08fd8d8225c09678ddd01e7bb257ce182258fe96ea10bdb7a445a8"
+    },
+    "growth-operating-contract@1": {
+      "path": "schemas/growth-operating-contract.schema.json",
+      "sha256": "b82c2ea1934dec1bcbc8e711c39279aae0e17ed3f06dd3838071a91a09cb7071"
+    },
+    "learning-record@1": {
+      "path": "schemas/learning-record.schema.json",
+      "sha256": "5a1387127d9a559290ccba35ca4594445f9303f11458ada89b0f76ac68dfeb56"
+    },
+    "live-proof@1": {
+      "path": "schemas/live-proof.schema.json",
+      "sha256": "7017eacfa9dab3ac27d65840b53fc3addd077e695abdc23b5f2015249b7aacf6"
+    },
+    "outbox-review-item@1": {
+      "path": "schemas/outbox-review-item.schema.json",
+      "sha256": "3b81b9061fd2cb48c38dba1fdd6a4cac9de3d739e7b294d7c85166b0a6eb597b"
+    },
+    "platform-observation@1": {
+      "path": "schemas/platform-observation.schema.json",
+      "sha256": "4ded80b123ceff010d0dbde298eb55b00020a9578cd7a2088b153fbf14892af8"
+    },
+    "project-context-manifest@1": {
+      "path": "schemas/project-context-manifest.schema.json",
+      "sha256": "b22fb268014c9fa2c3b92fe3227d072234b91a06a9a6a63d829d232bc73e55d6"
+    },
+    "project-memory-record@1": {
+      "path": "schemas/project-memory-record.schema.json",
+      "sha256": "e4345e904b7d6f4f6a6939b76a83a3365fbfe943af99996e3429784812138a0e"
+    },
+    "project-start-brief@1": {
+      "path": "schemas/project-start-brief.schema.json",
+      "sha256": "4cefde1f8d268ddd4039c4ce1010b8d2b026f47e6793de7442fbf9ae8eb54cad"
+    },
+    "project-start-brief@2": {
+      "path": "schemas/project-start-brief-v2.schema.json",
+      "sha256": "e8d38cb56db0305e9b1ed256f634f2fd5a73031fe292324c0cc93b4950a6dd35"
+    },
+    "project-start-readiness@1": {
+      "path": "schemas/project-start-readiness.schema.json",
+      "sha256": "a48d657ce86a0f80bfbe08a547858d2a31b668e25b22aa36c24ee2efef92f1b6"
+    },
+    "release-outcome@1": {
+      "path": "schemas/release-outcome.schema.json",
+      "sha256": "be8aeb716d2d67c863d042d1245cd8e13ab13f85011df2adb92808af31dcc15f"
+    },
+    "release-package@1": {
+      "path": "schemas/release-package.schema.json",
+      "sha256": "a8c6c97011a5958de0e089f31a5e4c4b6485033266e4cf47a845a6fe88f8fb9e"
+    },
+    "result-envelope@2": {
+      "path": "schemas/result-envelope-v2.schema.json",
+      "sha256": "cccef713411f2108d263a0e98cfece5d0ffc02c708c9f1ca4f88c2e00f11d11a"
+    },
+    "run-manifest@1": {
+      "path": "schemas/run-manifest.schema.json",
+      "sha256": "6e13204c12bba545cec7f26fce5784153c9c222288219c6c201af1c5f0de7123"
+    },
+    "run-manifest@2": {
+      "path": "schemas/run-manifest-v2.schema.json",
+      "sha256": "4baf151c3fa4570e976bfb725d966d52d542f68cf7956cb54d8cbe8b281cec31"
+    },
+    "task-envelope@1": {
+      "path": "schemas/task-envelope.schema.json",
+      "sha256": "5b4267b97584ce4082de9e1787a21f1964af62cd679a9b1281bf0b2434b2a941"
+    },
+    "task-envelope@2": {
+      "path": "schemas/task-envelope-v2.schema.json",
+      "sha256": "9ed85d08365bee09244b2a5287615d7575177bc486f9fd3f812fd6b27b2db82a"
+    }
+  }
+}

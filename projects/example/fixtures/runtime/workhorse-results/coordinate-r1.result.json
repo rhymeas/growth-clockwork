@@ -1,0 +1,120 @@
+{
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "result_version": "2.0",
+  "run_id": "RUN-99f2529a9e2b5075",
+  "task_id": "EX-1000-T001",
+  "task_sha256": "9fa5713f090a9f8d2f3c60968c06595f918483b7b545ff3155ee81d8b03571f4",
+  "step_id": "coordinate",
+  "role_id": "growth-coordinator",
+  "status": "completed",
+  "output_artifacts": [
+    {
+      "artifact_ref": "records/decisions/EX-1000/coordinate-r1.json",
+      "artifact_revision": "r1",
+      "artifact_sha256": "2940c21ce0126dad7e4eb61a76d97ecb4b86d096a57e1822b6d49433f7c7046c",
+      "contract_id": "task-set@1"
+    }
+  ],
+  "evidence_artifacts": [
+    {
+      "artifact_ref": "handoffs/RUN-99f2529a9e2b5075/EX-1000-T001.json",
+      "artifact_revision": "2.0",
+      "artifact_sha256": "9fa5713f090a9f8d2f3c60968c06595f918483b7b545ff3155ee81d8b03571f4"
+    },
+    {
+      "artifact_ref": "records/coordinator-plans/22d62597-c822-45e4-8026-009c505efd6f.json",
+      "artifact_revision": "22d62597-c822-45e4-8026-009c505efd6f",
+      "artifact_sha256": "bd10bbdfb0cfd58f6d8d5455a821408404d7744db0791788f808bb414687106d"
+    },
+    {
+      "artifact_ref": "records/run-inputs/RUN-99f2529a9e2b5075/context/manifest.json",
+      "artifact_revision": "fixture-r1-snapshot-9e2b5075",
+      "artifact_sha256": "6d977e2adde0b9653a5d35ed82b199539e1120a412b82b264858c9874b5a3594"
+    },
+    {
+      "artifact_ref": "records/run-inputs/RUN-99f2529a9e2b5075/agents/route.json",
+      "artifact_revision": "research-evidence",
+      "artifact_sha256": "c20c8413b8365f7b27908ac5261da7aedb557b27f6e94303312cf3f5e3f6a303"
+    },
+    {
+      "artifact_ref": "records/run-inputs/RUN-99f2529a9e2b5075/agents/roles/growth-coordinator.json",
+      "artifact_revision": "growth-coordinator",
+      "artifact_sha256": "84dcf07a394b086f4c928b3e70771374b37af5e83be4bad33fb292c80850af8e"
+    },
+    {
+      "artifact_ref": "records/run-inputs/RUN-99f2529a9e2b5075/context/sources/source-c2c13fa9883d0cb5.json",
+      "artifact_revision": "synthetic-evidence-fixture-r1",
+      "artifact_sha256": "c2c13fa9883d0cb503c12024e51a124b23256a05a2276c8eb2781e68d80cd15e"
+    },
+    {
+      "artifact_ref": "records/run-inputs/RUN-99f2529a9e2b5075/context/sections/authority.json",
+      "artifact_revision": "authority-fixture-r1-snapshot-9e2b5075",
+      "artifact_sha256": "f59de395ebd832e3e624b668913748fbad9884d994ab0ae34dfcf0226ef6c901"
+    }
+  ],
+  "checks": [
+    {
+      "name": "exact task identity and SHA-256 verified",
+      "result": "pass",
+      "evidence_ref": {
+        "artifact_ref": "handoffs/RUN-99f2529a9e2b5075/EX-1000-T001.json",
+        "artifact_revision": "2.0",
+        "artifact_sha256": "9fa5713f090a9f8d2f3c60968c06595f918483b7b545ff3155ee81d8b03571f4"
+      }
+    },
+    {
+      "name": "pinned input revisions and SHA-256 values verified",
+      "result": "pass",
+      "evidence_ref": {
+        "artifact_ref": "records/run-inputs/RUN-99f2529a9e2b5075/context/manifest.json",
+        "artifact_revision": "fixture-r1-snapshot-9e2b5075",
+        "artifact_sha256": "6d977e2adde0b9653a5d35ed82b199539e1120a412b82b264858c9874b5a3594"
+      }
+    },
+    {
+      "name": "task-set includes one question, evidence standard, scope, source budget, and stop rule",
+      "result": "pass",
+      "evidence_ref": {
+        "artifact_ref": "records/decisions/EX-1000/coordinate-r1.json",
+        "artifact_revision": "r1",
+        "artifact_sha256": "2940c21ce0126dad7e4eb61a76d97ecb4b86d096a57e1822b6d49433f7c7046c"
+      }
+    },
+    {
+      "name": "single synthetic source and zero external-source budget preserved",
+      "result": "pass",
+      "evidence_ref": {
+        "artifact_ref": "records/run-inputs/RUN-99f2529a9e2b5075/context/sources/source-c2c13fa9883d0cb5.json",
+        "artifact_revision": "synthetic-evidence-fixture-r1",
+        "artifact_sha256": "c2c13fa9883d0cb503c12024e51a124b23256a05a2276c8eb2781e68d80cd15e"
+      }
+    },
+    {
+      "name": "internal-only authority and no-publication boundary preserved",
+      "result": "pass",
+      "evidence_ref": {
+        "artifact_ref": "records/run-inputs/RUN-99f2529a9e2b5075/context/sections/authority.json",
+        "artifact_revision": "authority-fixture-r1-snapshot-9e2b5075",
+        "artifact_sha256": "f59de395ebd832e3e624b668913748fbad9884d994ab0ae34dfcf0226ef6c901"
+      }
+    }
+  ],
+  "attempts": 1,
+  "usage": {
+    "duration_ms": 98000,
+    "input_tokens": null,
+    "output_tokens": null,
+    "variable_external_cost_eur": 0
+  },
+  "provenance": {
+    "provider": "openai",
+    "model": "gpt-5",
+    "prompt_version": "not_provided",
+    "contract_version": "result-envelope@2",
+    "input_revision": "9fa5713f090a9f8d2f3c60968c06595f918483b7b545ff3155ee81d8b03571f4",
+    "output_revision": "r1"
+  },
+  "error": null,
+  "created_at": "2026-09-01T00:46:38Z"
+}

@@ -1,0 +1,27 @@
+{
+  "route_version": "1.0",
+  "route_id": "content-channel",
+  "display_name": "Content and Channel Product",
+  "purpose": "Create one complete channel product from evidence and an exact governance-prechecked brief without fan-out or publication.",
+  "activation": {
+    "modes": ["required_by_objective"],
+    "objective_signals": ["The objective requires one article, story, social product, visual asset, script, or other audience-facing artifact."],
+    "prerequisites": ["A channel contract and content policy are bound to the selected project profile."]
+  },
+  "context_requirements": ["facts", "prohibited_claims", "audience", "market", "channels", "authority"],
+  "nodes": [
+    {"node_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Select one channel product and bind audience, useful outcome, evidence, and WIP limits.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+    {"node_id": "content-evidence", "role_id": "evidence-research", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Collect the minimum evidence needed for the useful outcome, examples, claims, and limitations.", "output_contract": "result-envelope@2", "deliverable_contract": "evidence-packet@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+    {"node_id": "audience-refresh", "role_id": "audience-voc", "depends_on": ["content-evidence"], "optional": true, "run_when": "Run when audience context is stale, contradictory, or insufficient for the selected artifact.", "objective": "Refresh only the audience hypothesis needed for this channel product.", "output_contract": "result-envelope@2", "deliverable_contract": "audience-change-proposal@1", "allowed_write_roots": ["records/audience", "handoffs"]},
+    {"node_id": "positioning-context", "role_id": "product-marketing-positioning", "depends_on": ["content-evidence", "audience-refresh"], "optional": true, "run_when": "Run when the product contains a product claim, category statement, comparison, or launch narrative.", "objective": "Provide the exact supported message and proof boundary required by the brief.", "output_contract": "result-envelope@2", "deliverable_contract": "positioning-package@1", "allowed_write_roots": ["positioning/packages", "handoffs"]},
+    {"node_id": "brief", "role_id": "content-strategy", "depends_on": ["content-evidence", "audience-refresh", "positioning-context"], "optional": false, "run_when": "always", "objective": "Create one complete lesson brief and claim-level source map.", "output_contract": "result-envelope@2", "deliverable_contract": "lesson-brief@1", "allowed_write_roots": ["content", "handoffs"]},
+    {"node_id": "governance-precheck", "role_id": "governance-reviewer", "depends_on": ["brief"], "optional": false, "run_when": "always", "objective": "Review the exact brief and source map before final production begins.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]},
+    {"node_id": "creative", "role_id": "brand-creative", "depends_on": ["governance-precheck"], "optional": true, "run_when": "Run when the channel contract requires non-text or designed asset bytes.", "objective": "Produce exact, rights-aware, accessible asset bytes and metadata for the final product.", "output_contract": "result-envelope@2", "deliverable_contract": "creative-package@1", "allowed_write_roots": ["staging", "handoffs"]},
+    {"node_id": "editorial", "role_id": "editorial-production", "depends_on": ["governance-precheck", "creative"], "optional": false, "run_when": "always", "objective": "Produce exactly one complete channel product bound to the brief, sources, and any asset hashes.", "output_contract": "result-envelope@2", "deliverable_contract": "channel-product@1", "allowed_write_roots": ["content", "staging", "handoffs"]},
+    {"node_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["editorial", "creative"], "optional": false, "run_when": "always", "objective": "Review the exact final product and asset revisions for evidence, policy, rights, accessibility, and authority.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]}
+  ],
+  "final_product": {"producer_node": "editorial", "contract": "channel-product@1", "supporting_contracts": ["lesson-brief@1", "source-map@1", "creative-package@1"]},
+  "parallelism": {"max_concurrent_workhorses": 2, "only_independent_nodes": true},
+  "failure_policy": {"dependent_nodes": "blocked-or-skipped", "independent_nodes": "may-continue", "ambiguous_result": "needs_attention-no-blind-retry", "semantic_revisions": 2},
+  "terminal_review": {"governance_node": "governance-final", "governance_contract": "governance-verdict@1", "required_governance_result": "pass", "review_item_contract": "outbox-review-item@1", "terminal_state": "review_ready", "human_actions": ["approve", "decline", "note"], "external_side_effects": false, "may_publish": false}
+}

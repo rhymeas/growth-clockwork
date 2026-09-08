@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent-system-registry@1",
+  "title": "Portable Growth Agent System Registry",
+  "type": "object",
+  "required": [
+    "registry_version",
+    "registry_revision",
+    "runtime",
+    "schemas",
+    "activation_modes",
+    "roles",
+    "routes",
+    "invariants"
+  ],
+  "properties": {
+    "registry_version": {
+      "const": "1.0"
+    },
+    "registry_revision": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9.-]{2,127}$"
+    },
+    "runtime": {
+      "const": "codex-root-read-only-workhorses"
+    },
+    "schemas": {
+      "type": "object",
+      "required": [
+        "role",
+        "route",
+        "catalog"
+      ],
+      "properties": {
+        "role": {
+          "const": "schemas/role-spec.schema.json"
+        },
+        "route": {
+          "const": "schemas/route-spec.schema.json"
+        },
+        "catalog": {
+          "const": "schemas/catalog.schema.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    "activation_modes": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "always_control",
+          "required_by_route",
+          "mandatory_by_product_motion",
+          "activated_by_observed_trigger"
+        ]
+      }
+    },
+    "roles": {
+      "type": "array",
+      "minItems": 9,
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/routeEntry"
+      }
+    },
+    "invariants": {
+      "type": "object",
+      "required": [
+        "one_project_per_run",
+        "project_context_required",
+        "roles_are_read_only",
+        "root_only_persistence",
+        "governance_before_review",
+        "human_review_exact_revision",
+        "approval_is_not_publication",
+        "publisher_present"
+      ],
+      "properties": {
+        "one_project_per_run": {
+          "const": true
+        },
+        "project_context_required": {
+          "const": true
+        },
+        "roles_are_read_only": {
+          "const": true
+        },
+        "root_only_persistence": {
+          "const": true
+        },
+        "governance_before_review": {
+          "const": true
+        },
+        "human_review_exact_revision": {
+          "const": true
+        },
+        "approval_is_not_publication": {
+          "const": true
+        },
+        "publisher_present": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": [
+        "role_id",
+        "role_class",
+        "spec_ref",
+        "sha256"
+      ],
+      "properties": {
+        "role_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,63}$"
+        },
+        "role_class": {
+          "enum": [
+            "core",
+            "specialist"
+          ]
+        },
+        "spec_ref": {
+          "type": "string",
+          "pattern": "^roles/(core|specialists)/[a-z][a-z0-9-]{1,63}\\.json$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "routeEntry": {
+      "type": "object",
+      "required": [
+        "route_id",
+        "spec_ref",
+        "sha256"
+      ],
+      "properties": {
+        "route_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,63}$"
+        },
+        "spec_ref": {
+          "type": "string",
+          "pattern": "^routes/[a-z][a-z0-9-]{1,63}\\.json$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

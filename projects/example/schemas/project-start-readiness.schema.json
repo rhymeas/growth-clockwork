@@ -1,0 +1,302 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-start-readiness@1",
+  "title": "Project Start Readiness Snapshot",
+  "description": "An immutable, project-bound snapshot of research progression for one exact Project Start Brief. Context readiness is independently verified by the control plane; audience, evidence, and first-recommendation states remain evidence-bound. It cannot publish or change public accounts.",
+  "type": "object",
+  "required": [
+    "project_id",
+    "project_profile_revision",
+    "readiness_version",
+    "snapshot_id",
+    "brief",
+    "audience",
+    "evidence",
+    "first_recommendation",
+    "authority",
+    "recorded_by",
+    "contains_personal_data",
+    "recorded_at"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "project_profile_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "readiness_version": { "const": "1.0" },
+    "snapshot_id": {
+      "type": "string",
+      "pattern": "^START-READY-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$"
+    },
+    "brief": {
+      "type": "object",
+      "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+      "properties": {
+        "artifact_ref": {
+          "type": "string",
+          "pattern": "^records/project-start/briefs/[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+        },
+        "artifact_revision": {
+          "type": "string",
+          "pattern": "^r[1-9][0-9]{0,5}$"
+        },
+        "artifact_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "audience": {
+      "type": "object",
+      "required": ["status", "detail", "evidence_refs"],
+      "properties": {
+        "status": {
+          "enum": ["unresearched", "hypothesis", "validated", "blocked"]
+        },
+        "detail": { "type": "string", "minLength": 10 },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+            "properties": {
+              "artifact_ref": {
+                "type": "string",
+                "pattern": "^evidence/[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+              },
+              "artifact_revision": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "artifact_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["status", "detail", "evidence_refs"],
+      "properties": {
+        "status": {
+          "enum": ["not_started", "collecting", "sufficient", "insufficient"]
+        },
+        "detail": { "type": "string", "minLength": 10 },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+            "properties": {
+              "artifact_ref": {
+                "type": "string",
+                "pattern": "^evidence/[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+              },
+              "artifact_revision": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "artifact_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "first_recommendation": {
+      "type": "object",
+      "required": ["status", "detail", "evidence_refs"],
+      "properties": {
+        "status": {
+          "enum": ["not_started", "draft", "ready", "blocked"]
+        },
+        "detail": { "type": "string", "minLength": 10 },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+            "properties": {
+              "artifact_ref": {
+                "type": "string",
+                "pattern": "^evidence/[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+              },
+              "artifact_revision": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "artifact_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "authority": {
+      "type": "object",
+      "required": [
+        "may_publish",
+        "may_change_public_accounts",
+        "human_review_required"
+      ],
+      "properties": {
+        "may_publish": { "const": false },
+        "may_change_public_accounts": { "const": false },
+        "human_review_required": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "recorded_by": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "contains_personal_data": { "const": false },
+    "recorded_at": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "audience": {
+            "properties": { "status": { "const": "validated" } },
+            "required": ["status"]
+          }
+        },
+        "required": ["audience"]
+      },
+      "then": {
+        "properties": {
+          "audience": {
+            "properties": { "evidence_refs": { "minItems": 1 } },
+            "required": ["evidence_refs"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "audience": {
+            "properties": { "status": { "const": "unresearched" } },
+            "required": ["status"]
+          }
+        },
+        "required": ["audience"]
+      },
+      "then": {
+        "properties": {
+          "audience": {
+            "properties": { "evidence_refs": { "maxItems": 0 } },
+            "required": ["evidence_refs"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidence": {
+            "properties": { "status": { "const": "sufficient" } },
+            "required": ["status"]
+          }
+        },
+        "required": ["evidence"]
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "properties": { "evidence_refs": { "minItems": 1 } },
+            "required": ["evidence_refs"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidence": {
+            "properties": { "status": { "const": "not_started" } },
+            "required": ["status"]
+          }
+        },
+        "required": ["evidence"]
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "properties": { "evidence_refs": { "maxItems": 0 } },
+            "required": ["evidence_refs"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "first_recommendation": {
+            "properties": { "status": { "const": "ready" } },
+            "required": ["status"]
+          }
+        },
+        "required": ["first_recommendation"]
+      },
+      "then": {
+        "properties": {
+          "audience": {
+            "properties": { "status": { "const": "validated" } },
+            "required": ["status"]
+          },
+          "evidence": {
+            "properties": { "status": { "const": "sufficient" } },
+            "required": ["status"]
+          },
+          "first_recommendation": {
+            "properties": { "evidence_refs": { "minItems": 1 } },
+            "required": ["evidence_refs"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "first_recommendation": {
+            "properties": { "status": { "const": "not_started" } },
+            "required": ["status"]
+          }
+        },
+        "required": ["first_recommendation"]
+      },
+      "then": {
+        "properties": {
+          "first_recommendation": {
+            "properties": { "evidence_refs": { "maxItems": 0 } },
+            "required": ["evidence_refs"]
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

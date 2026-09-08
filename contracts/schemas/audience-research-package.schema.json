@@ -1,0 +1,322 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "audience-research-package@1",
+  "title": "Cross-platform Audience Research Package",
+  "description": "Decision-ready synthesis over pinned platform observations with explicit coverage, uncertainty, counterevidence, and sampling limits.",
+  "type": "object",
+  "required": [
+    "project_id",
+    "project_profile_revision",
+    "package_version",
+    "package_id",
+    "package_revision",
+    "decision_question",
+    "requested_platforms",
+    "research_status",
+    "coverage",
+    "observation_refs",
+    "insights",
+    "audience_segments",
+    "content_patterns",
+    "recommendations",
+    "counterevidence",
+    "unknowns",
+    "overall_confidence",
+    "not_representative_acknowledged",
+    "contains_personal_data",
+    "created_at"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "project_profile_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "package_version": {
+      "const": "1.0"
+    },
+    "package_id": {
+      "type": "string",
+      "pattern": "^ARP-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$"
+    },
+    "package_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+    },
+    "decision_question": {
+      "type": "string",
+      "minLength": 10
+    },
+    "requested_platforms": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": ["tiktok", "youtube", "instagram", "pinterest", "x"]
+      }
+    },
+    "research_status": {
+      "enum": ["complete", "partial", "blocked"]
+    },
+    "coverage": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["platform", "status", "observation_ids", "reason"],
+        "properties": {
+          "platform": {
+            "enum": ["tiktok", "youtube", "instagram", "pinterest", "x"]
+          },
+          "status": {
+            "enum": ["observed", "access_blocked", "not_in_scope"]
+          },
+          "observation_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^OBS-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$"
+            }
+          },
+          "reason": {
+            "type": ["string", "null"],
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "observation_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "observation_id",
+          "platform",
+          "artifact_ref",
+          "artifact_revision",
+          "artifact_sha256"
+        ],
+        "properties": {
+          "observation_id": {
+            "type": "string",
+            "pattern": "^OBS-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$"
+          },
+          "platform": {
+            "enum": ["tiktok", "youtube", "instagram", "pinterest", "x"]
+          },
+          "artifact_ref": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+          },
+          "artifact_revision": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "insights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "insight_id",
+          "statement",
+          "classification",
+          "supporting_observation_ids",
+          "supporting_platforms",
+          "confidence",
+          "decision_use"
+        ],
+        "properties": {
+          "insight_id": {
+            "type": "string",
+            "pattern": "^INS-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$"
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 10
+          },
+          "classification": {
+            "enum": ["cross_platform", "platform_specific", "directional"]
+          },
+          "supporting_observation_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^OBS-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$"
+            }
+          },
+          "supporting_platforms": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": ["tiktok", "youtube", "instagram", "pinterest", "x"]
+            }
+          },
+          "confidence": {
+            "enum": ["low", "medium", "high"]
+          },
+          "decision_use": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "audience_segments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "jobs", "pains", "language", "evidence_insight_ids"],
+        "properties": {
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "pains": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "language": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "evidence_insight_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^INS-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "content_patterns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pattern", "platforms", "evidence_insight_ids", "caveat"],
+        "properties": {
+          "pattern": {
+            "type": "string",
+            "minLength": 1
+          },
+          "platforms": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": ["tiktok", "youtube", "instagram", "pinterest", "x"]
+            }
+          },
+          "evidence_insight_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^INS-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$"
+            }
+          },
+          "caveat": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["action", "evidence_insight_ids", "success_signal", "stop_condition"],
+        "properties": {
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_insight_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^INS-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$"
+            }
+          },
+          "success_signal": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stop_condition": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "counterevidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "overall_confidence": {
+      "enum": ["low", "medium", "high"]
+    },
+    "not_representative_acknowledged": {
+      "const": true
+    },
+    "contains_personal_data": {
+      "const": false
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "coordinator-plan@1",
+  "title": "Coordinator Plan",
+  "description": "Immutable, project-bound diagnosis and route decision produced by the Codex coordinator for deterministic materialization.",
+  "type": "object",
+  "required": [
+    "project_id",
+    "project_profile_revision",
+    "plan_version",
+    "request_id",
+    "work_item_id",
+    "run_mode",
+    "objective",
+    "project_context",
+    "diagnosis",
+    "route_decision",
+    "requested_at"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "project_profile_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "plan_version": {
+      "const": "1.0"
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "work_item_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._:-]{2,127}$"
+    },
+    "run_mode": {
+      "enum": [
+        "fixture",
+        "live",
+        "discovery"
+      ]
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 10
+    },
+    "project_context": {
+      "type": "object",
+      "required": [
+        "artifact_ref",
+        "artifact_revision",
+        "artifact_sha256"
+      ],
+      "properties": {
+        "artifact_ref": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+        },
+        "artifact_revision": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "artifact_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "diagnosis": {
+      "type": "object",
+      "required": [
+        "problem",
+        "controllable_bottleneck",
+        "evidence_refs",
+        "assumptions",
+        "confidence"
+      ],
+      "properties": {
+        "problem": {
+          "type": "string",
+          "minLength": 10
+        },
+        "controllable_bottleneck": {
+          "type": "string",
+          "minLength": 10
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [
+              "artifact_ref",
+              "artifact_revision",
+              "artifact_sha256"
+            ],
+            "properties": {
+              "artifact_ref": {
+                "type": "string",
+                "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+              },
+              "artifact_revision": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              },
+              "artifact_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "confidence": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "route_decision": {
+      "type": "object",
+      "required": [
+        "selected_route_id",
+        "rationale",
+        "alternatives"
+      ],
+      "properties": {
+        "selected_route_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,63}$"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 10
+        },
+        "alternatives": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [
+              "route_id",
+              "reason_not_selected"
+            ],
+            "properties": {
+              "route_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]{1,63}$"
+              },
+              "reason_not_selected": {
+                "type": "string",
+                "minLength": 3
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "step_activation": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": ["step_id", "decision", "reason"],
+            "properties": {
+              "step_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]{1,63}$"
+              },
+              "decision": {
+                "enum": ["activate", "skip"]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "operating_contract": {
+      "type": "object"
+    },
+    "requested_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

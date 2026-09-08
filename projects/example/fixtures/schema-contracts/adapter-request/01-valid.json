@@ -1,0 +1,16 @@
+{
+  "adapter_id": "local-filesystem-synthetic@1",
+  "adapter_request_version": "1.0",
+  "adapter_version": "1.0",
+  "external_side_effects": false,
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "release_package": {
+    "artifact_ref": "records/release-packages/fixture-artifact/22222222-2222-4222-8222-222222222222.json",
+    "artifact_revision": "22222222-2222-4222-8222-222222222222",
+    "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "request_id": "55555555-5555-4555-8555-555555555555",
+  "requested_at": "2026-08-31T19:01:00Z",
+  "target": "simulated-live"
+}

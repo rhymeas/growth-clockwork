@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "release-package@1",
+  "title": "Approved Release Package",
+  "description": "Credential-free package binding one human approval to exact reviewed bytes and their lineage.",
+  "type": "object",
+  "required": [
+    "release_package_version",
+    "release_id",
+    "project_id",
+    "project_profile_revision",
+    "artifact_id",
+    "artifact_revision",
+    "artifact_sha256",
+    "source_run_id",
+    "source_artifact",
+    "origin_artifact",
+    "review_manifest",
+    "lineage",
+    "human_approval",
+    "root_writer_receipts",
+    "adapter_port_version",
+    "contains_credentials",
+    "external_side_effects",
+    "created_at"
+  ],
+  "properties": {
+    "release_package_version": { "const": "1.0" },
+    "release_id": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+    "project_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+    "project_profile_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "artifact_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "source_run_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$" },
+    "source_artifact": {
+      "type": "object",
+      "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+      "properties": {
+        "artifact_ref": { "type": "string", "pattern": "^outbox/artifacts/(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$" },
+        "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+        "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "origin_artifact": {
+      "type": "object",
+      "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+      "properties": {
+        "artifact_ref": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$" },
+        "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+        "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "review_manifest": {
+      "type": "object",
+      "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+      "properties": {
+        "artifact_ref": { "type": "string", "pattern": "^outbox/pending/(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}\\.json$" },
+        "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+        "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "lineage": {
+      "type": "object",
+      "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+      "properties": {
+        "artifact_ref": { "type": "string", "pattern": "^outbox/lineage/(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}\\.json$" },
+        "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+        "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "human_approval": {
+      "type": "object",
+      "required": ["action", "action_id", "action_ref", "recorded_at"],
+      "properties": {
+        "action": { "const": "approve" },
+        "action_id": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "action_ref": {
+          "type": "object",
+          "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+          "properties": {
+            "artifact_ref": { "type": "string", "pattern": "^outbox/review-actions/(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}\\.json$" },
+            "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+            "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          },
+          "additionalProperties": false
+        },
+        "recorded_at": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "root_writer_receipts": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+        "properties": {
+          "artifact_ref": { "type": "string", "pattern": "^clockwork/run-receipts/(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}\\.json$" },
+          "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+          "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "adapter_port_version": { "const": "1.0" },
+    "contains_credentials": { "const": false },
+    "external_side_effects": { "const": false },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

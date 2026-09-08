@@ -1,0 +1,9 @@
+{
+  "$comment": "Optional Postiz connector map. Copy to runtime/postiz.json, keep it private, then enable only integrations whose provider settings were checked in your Postiz version.",
+  "revision": "postiz-connector-v1",
+  "base_url": "http://127.0.0.1:5000/api/public/v1",
+  "integrations": {
+    "x": { "enabled": false, "id": "replace-me", "provider": "x", "settings": { "__type": "x" } },
+    "medium": { "enabled": false, "id": "replace-me", "provider": "medium", "settings": { "__type": "medium", "title": "", "subtitle": "" } }
+  }
+}

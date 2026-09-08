@@ -1,0 +1,229 @@
+{
+  "contract_id": "growth-clockwork-open-source-package@1",
+  "package_name": "growth-clockwork",
+  "boundary_revision": "candidate-2026-09-07-r23",
+  "status": {
+    "classification": "licensed_export_candidate",
+    "current_repository_is_open_source": false,
+    "package_is_published": false
+  },
+  "future_license": {
+    "recommended_spdx_id": "Apache-2.0",
+    "decision_status": "selected_for_export_package",
+    "applies_to_current_repository": false,
+    "license_file_exists_for_package": true
+  },
+  "package_root_files": [
+    {
+      "source": "README.md",
+      "path": "README.md"
+    },
+    {
+      "source": "LICENSE",
+      "path": "LICENSE"
+    },
+    {
+      "source": "CONTRIBUTING.md",
+      "path": "CONTRIBUTING.md"
+    },
+    {
+      "source": "SECURITY.md",
+      "path": "SECURITY.md"
+    },
+    {
+      "source": "THIRD-PARTY.md",
+      "path": "THIRD-PARTY.md"
+    },
+    {
+      "source": "SBOM.cdx.json",
+      "path": "SBOM.cdx.json"
+    },
+    {
+      "source": ".gitignore",
+      "path": ".gitignore"
+    },
+    {
+      "source": ".gitleaks.toml",
+      "path": ".gitleaks.toml"
+    },
+    {
+      "source": "runtime/permissions.example.json",
+      "path": "runtime/permissions.example.json"
+    },
+    {
+      "source": "runtime/postiz.example.json",
+      "path": "runtime/postiz.example.json"
+    },
+    {
+      "source": "runtime/media-processing.example.json",
+      "path": "runtime/media-processing.example.json"
+    },
+    {
+      "source": "runtime/ga4.example.json",
+      "path": "runtime/ga4.example.json"
+    },
+    {
+      "source": "runtime/remote-access.example.json",
+      "path": "runtime/remote-access.example.json"
+    }
+  ],
+  "include_entries": [
+    {
+      "path": "pipeline",
+      "kind": "runtime_core_and_tests",
+      "reason": "Project-neutral validation, orchestration, immutable writing, review, rework, and adapter boundaries."
+    },
+    {
+      "path": "agents",
+      "kind": "portable_agent_registry",
+      "reason": "Project-neutral role contracts and route DAGs."
+    },
+    {
+      "path": "contracts",
+      "kind": "canonical_contracts",
+      "reason": "Shared runtime and release boundary schemas."
+    },
+    {
+      "path": "dashboard",
+      "kind": "human_review_dashboard",
+      "reason": "Local project-switching Review Desk source and tests."
+    },
+    {
+      "path": "projects/example",
+      "kind": "synthetic_example_project",
+      "reason": "Non-publishable synthetic profile, Context Pack, schemas, and deterministic fixtures."
+    },
+    {
+      "path": "skills/growth-clockwork",
+      "kind": "codex_skill",
+      "reason": "Codex operating entrypoint for the modular runtime."
+    },
+    {
+      "path": "docs/open-source-package-boundary.md",
+      "kind": "package_boundary_documentation",
+      "reason": "Human-readable scope, non-claims, and pre-publication gates."
+    },
+    {
+      "path": "open-source-package.json",
+      "kind": "machine_readable_boundary",
+      "reason": "The exact candidate export boundary."
+    }
+  ],
+  "exclude_entries": [
+    {
+      "path": "projects/mavery",
+      "category": "product_specific_project_profile_and_state",
+      "reason": "Mavery facts, profile, Context Pack, fixtures, and runtime state are not part of the reusable package."
+    },
+    {
+      "path": "projects/example/state",
+      "category": "runtime_outputs",
+      "reason": "Run receipts, handoffs, records, evidence packets, outbox artifacts, and review actions are local execution state, not fixtures."
+    },
+    {
+      "path": "facts",
+      "category": "private_marketing_context",
+      "reason": "Product claim approvals and prohibitions remain private project inputs."
+    },
+    {
+      "path": "policy",
+      "category": "private_marketing_context",
+      "reason": "Current editorial policy is Mavery-specific operating context."
+    },
+    {
+      "path": "research",
+      "category": "private_research",
+      "reason": "Research notes and source snapshots are not reusable runtime code."
+    },
+    {
+      "path": "content",
+      "category": "private_marketing_outputs",
+      "reason": "Draft and final marketing products are project data."
+    },
+    {
+      "path": "metrics",
+      "category": "private_marketing_outputs",
+      "reason": "Project metrics and measurement records are project data."
+    },
+    {
+      "path": "published",
+      "category": "private_marketing_outputs",
+      "reason": "Publication history is project state."
+    },
+    {
+      "path": "evidence",
+      "category": "private_project_evidence",
+      "reason": "Mavery evidence and source locks are project data."
+    },
+    {
+      "path": "providers",
+      "category": "local_provider_configuration",
+      "reason": "Provider selection and local connection configuration require a separate portability review."
+    },
+    {
+      "path": "templates",
+      "category": "private_marketing_context",
+      "reason": "Current channel templates belong to the Mavery workspace."
+    },
+    {
+      "path": ".github",
+      "category": "repository_specific_automation",
+      "reason": "The package must not depend on this private repository or paid GitHub features."
+    },
+    {
+      "path": "dashboard/node_modules",
+      "category": "generated_dependency_tree",
+      "reason": "Dependencies are restored from the lockfile."
+    },
+    {
+      "path": "dashboard/dist",
+      "category": "generated_build_output",
+      "reason": "The dashboard build is reproducible from source."
+    },
+    {
+      "path": "dashboard/design",
+      "category": "internal_design_evidence",
+      "reason": "Implementation screenshots are local proof, not package source."
+    }
+  ],
+  "export_rules": {
+    "relative_paths_only": true,
+    "exclude_entries_win": true,
+    "follow_symlinks": false,
+    "require_all_include_entries_to_exist": true,
+    "forbidden_directory_names": [
+      "__pycache__",
+      ".writer-tx",
+      "node_modules",
+      ".git",
+      ".pytest_cache",
+      ".vite"
+    ],
+    "forbidden_file_names": [
+      ".DS_Store",
+      ".env",
+      "credentials.json",
+      "secrets.json",
+      "auth.json"
+    ],
+    "forbidden_file_suffixes": [
+      ".pyc",
+      ".pyo",
+      ".key",
+      ".pem",
+      ".p12",
+      ".pfx",
+      ".sqlite",
+      ".sqlite-wal",
+      ".sqlite-shm",
+      ".sqlite-journal",
+      ".db",
+      ".tsbuildinfo"
+    ],
+    "forbidden_text_fragments": [
+      "projects/mavery",
+      "mavery-marketing",
+      "MAV-"
+    ]
+  }
+}

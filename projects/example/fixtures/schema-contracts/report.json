@@ -1,0 +1,1307 @@
+{
+  "cases": [
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "../../context/manifests/CTX-EXAMPLE-0001.fixture-r1.json",
+      "id": "example-project-context-valid",
+      "passed": true,
+      "schema": "project-context-manifest@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "../../context/sections/facts/facts-fixture-r1.json",
+      "id": "example-context-facts-valid",
+      "passed": true,
+      "schema": "context-section-envelope@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "../../context/sections/prohibited-claims/prohibited-claims-fixture-r1.json",
+      "id": "example-context-prohibited-valid",
+      "passed": true,
+      "schema": "context-section-envelope@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "../../context/sections/audience/audience-fixture-r1.json",
+      "id": "example-context-audience-valid",
+      "passed": true,
+      "schema": "context-section-envelope@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "../../context/sections/market/market-fixture-r1.json",
+      "id": "example-context-market-valid",
+      "passed": true,
+      "schema": "context-section-envelope@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "../../context/sections/funnel/funnel-fixture-r1.json",
+      "id": "example-context-funnel-valid",
+      "passed": true,
+      "schema": "context-section-envelope@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "../../context/sections/metrics/metrics-fixture-r1.json",
+      "id": "example-context-metrics-valid",
+      "passed": true,
+      "schema": "context-section-envelope@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "../../context/sections/channels/channels-fixture-r1.json",
+      "id": "example-context-channels-valid",
+      "passed": true,
+      "schema": "context-section-envelope@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "../../context/sections/authority/authority-fixture-r1.json",
+      "id": "example-context-authority-valid",
+      "passed": true,
+      "schema": "context-section-envelope@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.publishable",
+          "message": "expected constant false",
+          "rule": "const",
+          "schema_path": "#/allOf/2/then/properties/publishable/const"
+        },
+        {
+          "instance_path": "$.publishable",
+          "message": "expected constant false",
+          "rule": "const",
+          "schema_path": "#/allOf/3/then/properties/publishable/const"
+        },
+        {
+          "instance_path": "$.synthetic",
+          "message": "expected constant false",
+          "rule": "const",
+          "schema_path": "#/allOf/4/then/properties/synthetic/const"
+        },
+        {
+          "instance_path": "$.fixture_only",
+          "message": "expected constant false",
+          "rule": "const",
+          "schema_path": "#/allOf/4/then/properties/fixture_only/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "context-section/01-synthetic-publishable-invalid.json",
+      "id": "example-context-synthetic-not-publishable",
+      "passed": true,
+      "schema": "context-section-envelope@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.synthetic",
+          "message": "expected constant true",
+          "rule": "const",
+          "schema_path": "#/allOf/3/then/properties/synthetic/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "context-section/02-fixture-not-synthetic-invalid.json",
+      "id": "example-context-fixture-must-be-synthetic",
+      "passed": true,
+      "schema": "context-section-envelope@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.source_refs[0].artifact_ref",
+          "message": "value does not match '^(?!/)(?!.*(?:^|/)\\\\.\\\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$'",
+          "rule": "pattern",
+          "schema_path": "#/properties/source_refs/items/properties/artifact_ref/pattern"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "context-section/03-absolute-ref-invalid.json",
+      "id": "example-context-absolute-ref-invalid",
+      "passed": true,
+      "schema": "context-section-envelope@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "task/01-valid.json",
+      "id": "example-task-valid",
+      "passed": true,
+      "schema": "task-envelope@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "learning/01-hypothesis-valid.json",
+      "id": "example-learning-valid",
+      "passed": true,
+      "schema": "learning-record@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "outbox-review/01-valid.json",
+      "id": "example-outbox-review-valid",
+      "passed": true,
+      "schema": "outbox-review-item@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "human-review/01-note-valid.json",
+      "id": "example-human-note-valid",
+      "passed": true,
+      "schema": "human-review-action@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "run/01-completed-valid.json",
+      "id": "example-run-valid",
+      "passed": true,
+      "schema": "run-manifest@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "coordinator-plan/01-valid.json",
+      "id": "example-coordinator-plan-v1-valid",
+      "passed": true,
+      "schema": "coordinator-plan@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.project_context.artifact_ref",
+          "message": "value does not match '^(?!/)(?!.*(?:^|/)\\\\.\\\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$'",
+          "rule": "pattern",
+          "schema_path": "#/properties/project_context/properties/artifact_ref/pattern"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "coordinator-plan/02-absolute-context-ref-invalid.json",
+      "id": "example-coordinator-plan-v1-absolute-context-ref-invalid",
+      "passed": true,
+      "schema": "coordinator-plan@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "task-v2/01-valid.json",
+      "id": "example-task-v2-valid",
+      "passed": true,
+      "schema": "task-envelope@2"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.authority.may_publish",
+          "message": "expected constant false",
+          "rule": "const",
+          "schema_path": "#/properties/authority/properties/may_publish/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "task-v2/02-publish-authority-invalid.json",
+      "id": "example-task-v2-publish-authority-invalid",
+      "passed": true,
+      "schema": "task-envelope@2"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "result-v2/01-completed-valid.json",
+      "id": "example-result-v2-completed-valid",
+      "passed": true,
+      "schema": "result-envelope@2"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.checks[0].result",
+          "message": "expected constant \"pass\"",
+          "rule": "const",
+          "schema_path": "#/allOf/0/then/properties/checks/items/properties/result/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "result-v2/02-completed-failed-check-invalid.json",
+      "id": "example-result-v2-completed-failed-check-invalid",
+      "passed": true,
+      "schema": "result-envelope@2"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "run-v2/01-completed-valid.json",
+      "id": "example-run-v2-completed-valid",
+      "passed": true,
+      "schema": "run-manifest@2"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.publish_side_effects",
+          "message": "expected constant false",
+          "rule": "const",
+          "schema_path": "#/properties/publish_side_effects/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "run-v2/02-publish-side-effect-invalid.json",
+      "id": "example-run-v2-publish-side-effect-invalid",
+      "passed": true,
+      "schema": "run-manifest@2"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "release-package/01-valid.json",
+      "id": "example-release-package-valid",
+      "passed": true,
+      "schema": "release-package@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.human_approval.action",
+          "message": "expected constant \"approve\"",
+          "rule": "const",
+          "schema_path": "#/properties/human_approval/properties/action/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "release-package/02-decline-invalid.json",
+      "id": "example-release-package-decline-invalid",
+      "passed": true,
+      "schema": "release-package@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "adapter-request/01-valid.json",
+      "id": "example-adapter-request-valid",
+      "passed": true,
+      "schema": "adapter-request@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "adapter-receipt/01-valid.json",
+      "id": "example-adapter-receipt-valid",
+      "passed": true,
+      "schema": "adapter-receipt@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.external_side_effects",
+          "message": "expected constant false",
+          "rule": "const",
+          "schema_path": "#/properties/external_side_effects/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "adapter-receipt/02-external-effect-invalid.json",
+      "id": "example-adapter-receipt-external-invalid",
+      "passed": true,
+      "schema": "adapter-receipt@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "live-proof/01-valid.json",
+      "id": "example-live-proof-valid",
+      "passed": true,
+      "schema": "live-proof@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "release-outcome/01-valid.json",
+      "id": "example-release-outcome-valid",
+      "passed": true,
+      "schema": "release-outcome@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "project-memory/01-valid.json",
+      "id": "example-project-memory-valid",
+      "passed": true,
+      "schema": "project-memory-record@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$",
+          "message": "missing required property 'record_version'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'memory_id'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'memory_revision'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'memory_type'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'claim_mode'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'statement'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'tags'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'evidence'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'evidence_grade'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'decision_eligible'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'causal_claim'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'experiment_ref'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'supersedes'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'confidence'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'source_run_id'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'source_task_id'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'created_by'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'contains_personal_data'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'valid_from'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'expires_at'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'created_at'",
+          "rule": "required",
+          "schema_path": "#/required"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "project-memory/02-missing-statement-invalid.json",
+      "id": "example-project-memory-required-invalid",
+      "passed": true,
+      "schema": "project-memory-record@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "project-start/01-brief-valid.json",
+      "id": "example-project-start-brief-valid",
+      "passed": true,
+      "schema": "project-start-brief@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.authority.may_publish",
+          "message": "expected constant false",
+          "rule": "const",
+          "schema_path": "#/properties/authority/properties/may_publish/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "project-start/02-brief-publish-invalid.json",
+      "id": "example-project-start-brief-publish-invalid",
+      "passed": true,
+      "schema": "project-start-brief@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "project-start/03-brief-v2-not-measured-valid.json",
+      "id": "example-project-start-brief-v2-not-measured-valid",
+      "passed": true,
+      "schema": "project-start-brief@2"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.baseline.status",
+          "message": "value is not in the allowed set",
+          "rule": "enum",
+          "schema_path": "#/properties/baseline/properties/status/enum"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "project-start/04-brief-v2-baseline-status-invalid.json",
+      "id": "example-project-start-brief-v2-baseline-status-invalid",
+      "passed": true,
+      "schema": "project-start-brief@2"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "project-start-readiness/01-hypothesis-valid.json",
+      "id": "example-project-start-readiness-hypothesis-valid",
+      "passed": true,
+      "schema": "project-start-readiness@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.audience.evidence_refs",
+          "message": "expected at least 1 item(s)",
+          "rule": "minItems",
+          "schema_path": "#/allOf/0/then/properties/audience/properties/evidence_refs/minItems"
+        },
+        {
+          "instance_path": "$.evidence.evidence_refs",
+          "message": "expected at least 1 item(s)",
+          "rule": "minItems",
+          "schema_path": "#/allOf/2/then/properties/evidence/properties/evidence_refs/minItems"
+        },
+        {
+          "instance_path": "$.first_recommendation.evidence_refs",
+          "message": "expected at least 1 item(s)",
+          "rule": "minItems",
+          "schema_path": "#/allOf/4/then/properties/first_recommendation/properties/evidence_refs/minItems"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "project-start-readiness/02-ready-without-evidence-invalid.json",
+      "id": "example-project-start-readiness-ready-without-evidence-invalid",
+      "passed": true,
+      "schema": "project-start-readiness@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "code-graph/01-valid.json",
+      "id": "example-code-graph-valid",
+      "passed": true,
+      "schema": "code-graph-index@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$",
+          "message": "missing required property 'index_version'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'index_id'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'index_revision'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'purpose'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'repository_root'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'source_revision'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'source_state'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'adapter'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'graph_format'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'coverage'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'artifacts'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'limitations'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'contains_secrets'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'created_at'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$.external_upload",
+          "message": "expected constant false",
+          "rule": "const",
+          "schema_path": "#/properties/external_upload/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "code-graph/02-external-upload-invalid.json",
+      "id": "example-code-graph-external-upload-invalid",
+      "passed": true,
+      "schema": "code-graph-index@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "code-graph/03-gitnexus-valid.json",
+      "id": "example-code-graph-gitnexus-valid",
+      "passed": true,
+      "schema": "code-graph-index@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$.adapter.license_id",
+          "message": "expected constant \"PolyForm-Noncommercial-1.0.0\"",
+          "rule": "const",
+          "schema_path": "#/allOf/0/then/properties/adapter/properties/license_id/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "code-graph/04-gitnexus-license-invalid.json",
+      "id": "example-code-graph-gitnexus-license-invalid",
+      "passed": true,
+      "schema": "code-graph-index@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "platform-observation/01-valid.json",
+      "id": "example-platform-observation-valid",
+      "passed": true,
+      "schema": "platform-observation@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$",
+          "message": "missing required property 'observation_version'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'observation_id'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'platform'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'surface'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'research_question'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'access_method'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'source_tier'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'governance_use'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'collector_tool'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'access_terms_ref'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'collection_authority_ref'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'query_or_sampling_frame'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'observed_window'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'sample'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'content_dimensions'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'evidence'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'commercial_use_clearance'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'redaction_method'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'retention_policy'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'known_biases'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'unknowns'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'collected_at'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$.raw_personal_data_stored",
+          "message": "expected constant false",
+          "rule": "const",
+          "schema_path": "#/properties/raw_personal_data_stored/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "platform-observation/02-raw-personal-data-invalid.json",
+      "id": "example-platform-observation-personal-data-invalid",
+      "passed": true,
+      "schema": "platform-observation@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "audience-research/01-blocked-valid.json",
+      "id": "example-audience-research-blocked-valid",
+      "passed": true,
+      "schema": "audience-research-package@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$",
+          "message": "missing required property 'package_version'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'package_id'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'package_revision'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'decision_question'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'requested_platforms'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'research_status'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'coverage'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'observation_refs'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'insights'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'audience_segments'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'content_patterns'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'recommendations'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'counterevidence'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'unknowns'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'overall_confidence'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'contains_personal_data'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'created_at'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$.not_representative_acknowledged",
+          "message": "expected constant true",
+          "rule": "const",
+          "schema_path": "#/properties/not_representative_acknowledged/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "audience-research/02-representative-claim-invalid.json",
+      "id": "example-audience-research-representative-invalid",
+      "passed": true,
+      "schema": "audience-research-package@1"
+    },
+    {
+      "actual": "valid",
+      "errors": [],
+      "expect": "valid",
+      "fixture": "operating-contract/01-valid.json",
+      "id": "example-operating-contract-valid",
+      "passed": true,
+      "schema": "growth-operating-contract@1"
+    },
+    {
+      "actual": "invalid",
+      "errors": [
+        {
+          "instance_path": "$",
+          "message": "missing required property 'contract_version'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'outcome_owner'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'growth_stage'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'decision_question'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'success_signal'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'guardrails'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'stop_conditions'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'resource_limits'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'data_policy'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'proof_requirements'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'learning_contract'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$",
+          "message": "missing required property 'created_at'",
+          "rule": "required",
+          "schema_path": "#/required"
+        },
+        {
+          "instance_path": "$.authority",
+          "message": "missing required property 'allowed_actions'",
+          "rule": "required",
+          "schema_path": "#/properties/authority/required"
+        },
+        {
+          "instance_path": "$.authority",
+          "message": "missing required property 'forbidden_actions'",
+          "rule": "required",
+          "schema_path": "#/properties/authority/required"
+        },
+        {
+          "instance_path": "$.authority",
+          "message": "missing required property 'external_side_effects'",
+          "rule": "required",
+          "schema_path": "#/properties/authority/required"
+        },
+        {
+          "instance_path": "$.authority",
+          "message": "missing required property 'may_spend'",
+          "rule": "required",
+          "schema_path": "#/properties/authority/required"
+        },
+        {
+          "instance_path": "$.authority",
+          "message": "missing required property 'may_contact_people'",
+          "rule": "required",
+          "schema_path": "#/properties/authority/required"
+        },
+        {
+          "instance_path": "$.authority",
+          "message": "missing required property 'may_use_unofficial_collection'",
+          "rule": "required",
+          "schema_path": "#/properties/authority/required"
+        },
+        {
+          "instance_path": "$.authority.may_publish",
+          "message": "expected constant false",
+          "rule": "const",
+          "schema_path": "#/properties/authority/properties/may_publish/const"
+        }
+      ],
+      "expect": "invalid",
+      "expected_failure_seen": true,
+      "fixture": "operating-contract/02-publish-authority-invalid.json",
+      "id": "example-operating-contract-publish-invalid",
+      "passed": true,
+      "schema": "growth-operating-contract@1"
+    }
+  ],
+  "project": {
+    "project_id": "example-project",
+    "project_profile_revision": "example-project-profile-v2"
+  },
+  "report_version": "1.0",
+  "schemas": [
+    {
+      "id": "adapter-receipt@1",
+      "sha256": "b2c4900a9b1a398bc98b9c58d978b8cf0f066249a069f46cd5b687f67f7a2ee2",
+      "status": "verified"
+    },
+    {
+      "id": "adapter-request@1",
+      "sha256": "99009d9c6cbc9ae35a6fcb4f4be645eb6d1a74bdec1819a5961ec3c8d20818b5",
+      "status": "verified"
+    },
+    {
+      "id": "audience-research-package@1",
+      "sha256": "7f72ea6fd925aca9fc8b0b707fae578530a936f5ea5540a729879f6a6afa637b",
+      "status": "verified"
+    },
+    {
+      "id": "code-graph-index@1",
+      "sha256": "c05e1ceb44901ee2139bb3383cebe55ab933a2fb7e176100b3f0f827460ff412",
+      "status": "verified"
+    },
+    {
+      "id": "context-section-envelope@1",
+      "sha256": "e0bf258bae766355519b4e615b870e225cfa65deead7d70926070b2135629f4a",
+      "status": "verified"
+    },
+    {
+      "id": "coordinator-plan@1",
+      "sha256": "f058b64bc4d0bc10926aef4423e2fc1df008e63ef24695400b49065ba3a83262",
+      "status": "verified"
+    },
+    {
+      "id": "growth-operating-contract@1",
+      "sha256": "98a3991a94c01a222969ee6eefacbfb38484c4fcc92f594366402e3ae07936ac",
+      "status": "verified"
+    },
+    {
+      "id": "human-review-action@1",
+      "sha256": "127237258c08fd8d8225c09678ddd01e7bb257ce182258fe96ea10bdb7a445a8",
+      "status": "verified"
+    },
+    {
+      "id": "learning-record@1",
+      "sha256": "5a1387127d9a559290ccba35ca4594445f9303f11458ada89b0f76ac68dfeb56",
+      "status": "verified"
+    },
+    {
+      "id": "live-proof@1",
+      "sha256": "7017eacfa9dab3ac27d65840b53fc3addd077e695abdc23b5f2015249b7aacf6",
+      "status": "verified"
+    },
+    {
+      "id": "outbox-review-item@1",
+      "sha256": "3b81b9061fd2cb48c38dba1fdd6a4cac9de3d739e7b294d7c85166b0a6eb597b",
+      "status": "verified"
+    },
+    {
+      "id": "platform-observation@1",
+      "sha256": "4ded80b123ceff010d0dbde298eb55b00020a9578cd7a2088b153fbf14892af8",
+      "status": "verified"
+    },
+    {
+      "id": "project-context-manifest@1",
+      "sha256": "b22fb268014c9fa2c3b92fe3227d072234b91a06a9a6a63d829d232bc73e55d6",
+      "status": "verified"
+    },
+    {
+      "id": "project-memory-record@1",
+      "sha256": "e4345e904b7d6f4f6a6939b76a83a3365fbfe943af99996e3429784812138a0e",
+      "status": "verified"
+    },
+    {
+      "id": "project-start-brief@1",
+      "sha256": "4cefde1f8d268ddd4039c4ce1010b8d2b026f47e6793de7442fbf9ae8eb54cad",
+      "status": "verified"
+    },
+    {
+      "id": "project-start-brief@2",
+      "sha256": "e8d38cb56db0305e9b1ed256f634f2fd5a73031fe292324c0cc93b4950a6dd35",
+      "status": "verified"
+    },
+    {
+      "id": "project-start-readiness@1",
+      "sha256": "a48d657ce86a0f80bfbe08a547858d2a31b668e25b22aa36c24ee2efef92f1b6",
+      "status": "verified"
+    },
+    {
+      "id": "release-outcome@1",
+      "sha256": "be8aeb716d2d67c863d042d1245cd8e13ab13f85011df2adb92808af31dcc15f",
+      "status": "verified"
+    },
+    {
+      "id": "release-package@1",
+      "sha256": "a8c6c97011a5958de0e089f31a5e4c4b6485033266e4cf47a845a6fe88f8fb9e",
+      "status": "verified"
+    },
+    {
+      "id": "result-envelope@2",
+      "sha256": "cccef713411f2108d263a0e98cfece5d0ffc02c708c9f1ca4f88c2e00f11d11a",
+      "status": "verified"
+    },
+    {
+      "id": "run-manifest@1",
+      "sha256": "6e13204c12bba545cec7f26fce5784153c9c222288219c6c201af1c5f0de7123",
+      "status": "verified"
+    },
+    {
+      "id": "run-manifest@2",
+      "sha256": "4202010cde5e6c443c08e3a00af38e86115d212d25556ac8c42f05d055701521",
+      "status": "verified"
+    },
+    {
+      "id": "task-envelope@1",
+      "sha256": "5b4267b97584ce4082de9e1787a21f1964af62cd679a9b1281bf0b2434b2a941",
+      "status": "verified"
+    },
+    {
+      "id": "task-envelope@2",
+      "sha256": "9ed85d08365bee09244b2a5287615d7575177bc486f9fd3f812fd6b27b2db82a",
+      "status": "verified"
+    }
+  ],
+  "suite": "example-project-shared-contract-smoke",
+  "summary": {
+    "failed": 0,
+    "passed": 50,
+    "total": 50
+  }
+}

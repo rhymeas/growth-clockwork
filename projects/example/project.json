@@ -1,0 +1,107 @@
+{
+  "profile_version": "1.0",
+  "profile_revision": "example-project-profile-v2",
+  "project_id": "example-project",
+  "display_name": "Example Project",
+  "root_role_id": "growth-clockwork-root",
+  "schema_registry": "schema-registry.json",
+  "agent_registry": {
+    "artifact_ref": "agents/registry.json",
+    "artifact_revision": "growth-agent-registry-v1",
+    "artifact_sha256": "d4e40b4cabc502c6986ee56a67bb089dea40751c85840253eb4192bdb8be26d9"
+  },
+  "project_context": {
+    "artifact_ref": "context/manifests/CTX-EXAMPLE-0001.fixture-r1.json",
+    "artifact_revision": "fixture-r1",
+    "artifact_sha256": "17c3d329142e64d02ce9a9e41958d2f2edde9c9b086002e221f76a88379e9b25"
+  },
+  "professional_contracts": {
+    "schema": {
+      "artifact_ref": "contracts/professional-deliverable.schema.json",
+      "artifact_revision": "professional-deliverable-v1",
+      "artifact_sha256": "979ee979f3a701f797000273de2b4cec80348523497d1602a40af490e4f8a619"
+    },
+    "requirements": {
+      "artifact_ref": "contracts/deliverable-requirements.json",
+      "artifact_revision": "professional-deliverable-requirements-v1",
+      "artifact_sha256": "99ab02c818e402939548e70f6177b5b54a6d089dfa9f821a3333dd068e9427f2"
+    }
+  },
+  "research_adapters": {
+    "artifact_ref": "contracts/research-adapter-registry.json",
+    "artifact_revision": "research-adapters-2026-08-31-r1",
+    "artifact_sha256": "c5a03c86f0ed43f82f36201f05c32d135394030ee56703a393a60e60bda319a6"
+  },
+  "task_id_pattern": "^EX-[0-9]+(?:-T[0-9]{3,})?$",
+  "product_motion": "synthetic-fixture",
+  "enabled_routes": [
+    "research-evidence",
+    "market-positioning",
+    "product-funnel-experiment",
+    "content-channel",
+    "launch-readiness",
+    "measurement-learning",
+    "organic-audience-community",
+    "demand-acquisition",
+    "lifecycle-retention",
+    "marketing-operations",
+    "audience-deep-research"
+  ],
+  "mandatory_roles": [
+    "growth-coordinator",
+    "governance-reviewer"
+  ],
+  "role_ids": [
+    "growth-coordinator",
+    "governance-reviewer",
+    "evidence-research",
+    "analytics-experimentation",
+    "product-marketing-positioning",
+    "audience-voc",
+    "growth-product-cro",
+    "content-strategy",
+    "editorial-production",
+    "brand-creative",
+    "lifecycle-crm",
+    "search-ai-discovery",
+    "social-media",
+    "community",
+    "demand-generation",
+    "paid-acquisition",
+    "partnerships",
+    "developer-relations",
+    "marketing-ops-revops"
+  ],
+  "writer": {
+    "state_root": "projects/example/state",
+    "allowed_roots": [
+      "clockwork",
+      "handoffs",
+      "ops/run-logs",
+      "records",
+      "staging",
+      "outbox",
+      "memory",
+      "code-intelligence",
+      "evidence/platform",
+      "evidence/packets",
+      "positioning/packages",
+      "content",
+      "metrics"
+    ],
+    "append_only_roots": [
+      "clockwork/run-receipts",
+      "handoffs",
+      "ops/run-logs",
+      "records",
+      "staging",
+      "outbox",
+      "memory",
+      "code-intelligence",
+      "evidence/platform"
+    ],
+    "receipt_root": "clockwork/run-receipts",
+    "max_files_per_request": 64,
+    "max_total_bytes": 10485760
+  }
+}

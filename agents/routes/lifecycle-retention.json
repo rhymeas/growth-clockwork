@@ -1,0 +1,122 @@
+{
+  "route_version": "1.0",
+  "route_id": "lifecycle-retention",
+  "display_name": "Lifecycle and Retention",
+  "purpose": "Prepare one consent-bound, paused lifecycle journey and its measurement contract without sending messages, changing a CRM, or adding unapproved tracking.",
+  "activation": {
+    "modes": [
+      "required_by_objective",
+      "activated_by_observed_trigger"
+    ],
+    "objective_signals": [
+      "The objective concerns activation, retention, re-engagement, or another influenceable consented lifecycle state."
+    ],
+    "prerequisites": [
+      "The user state, consent provenance, suppression rules, retention metric, data boundary, and human send owner are explicit."
+    ]
+  },
+  "context_requirements": [
+    "facts",
+    "prohibited_claims",
+    "audience",
+    "funnel",
+    "metrics",
+    "channels",
+    "authority"
+  ],
+  "nodes": [
+    {
+      "node_id": "coordinate",
+      "role_id": "growth-coordinator",
+      "depends_on": [],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Bind one influenceable lifecycle state, intended user benefit, consent boundary, exclusions, frequency limits, measurement question, non-goals, and stop rule.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "task-set@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/decisions"
+      ]
+    },
+    {
+      "node_id": "retention-measurement",
+      "role_id": "analytics-experimentation",
+      "depends_on": [
+        "coordinate"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Bind the lifecycle baseline, population, outcome metric, window, holdout strategy, guardrails, missingness, data-quality rules, and causal boundary.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "measurement-plan@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/learning"
+      ]
+    },
+    {
+      "node_id": "lifecycle-plan",
+      "role_id": "lifecycle-crm",
+      "depends_on": [
+        "retention-measurement"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Produce a paused lifecycle plan with user-state rationale, consent, segments, suppression, frequency, journey copy, holdout, QA, measurement, and human-only activation state.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "lifecycle-plan@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "staging"
+      ]
+    },
+    {
+      "node_id": "governance-final",
+      "role_id": "governance-reviewer",
+      "depends_on": [
+        "lifecycle-plan"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Review the exact lifecycle plan for consent, suppression, frequency, claims, privacy, measurement, paused state, revision binding, and no-send compliance.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "governance-verdict@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/governance"
+      ]
+    }
+  ],
+  "final_product": {
+    "producer_node": "lifecycle-plan",
+    "contract": "lifecycle-plan@1",
+    "supporting_contracts": [
+      "measurement-plan@1"
+    ]
+  },
+  "parallelism": {
+    "max_concurrent_workhorses": 2,
+    "only_independent_nodes": true
+  },
+  "failure_policy": {
+    "dependent_nodes": "blocked-or-skipped",
+    "independent_nodes": "may-continue",
+    "ambiguous_result": "needs_attention-no-blind-retry",
+    "semantic_revisions": 2
+  },
+  "terminal_review": {
+    "governance_node": "governance-final",
+    "governance_contract": "governance-verdict@1",
+    "required_governance_result": "pass",
+    "review_item_contract": "outbox-review-item@1",
+    "terminal_state": "review_ready",
+    "human_actions": [
+      "approve",
+      "decline",
+      "note"
+    ],
+    "external_side_effects": false,
+    "may_publish": false
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "spec_version": "1.0",
+  "role_id": "content-strategy",
+  "display_name": "Content Strategy",
+  "role_class": "core",
+  "mission": "Translate audience need, positioning, and evidence into one complete, original, channel-specific lesson brief with a measurable purpose.",
+  "capabilities": ["content-thesis", "topic-selection", "intent-mapping", "briefing", "source-mapping", "content-lifecycle"],
+  "owns": ["one lesson brief", "source map", "useful outcome", "worked-example requirement", "create-update-consolidate-retire decision"],
+  "does_not_own": ["final copy", "new claims", "positioning", "channel activation", "multi-channel fan-out", "publication"],
+  "activation": {
+    "modes": ["required_by_route"],
+    "profile_default": "enabled",
+    "conditions": ["The selected route requires a content or channel final product."],
+    "prerequisites": ["audience-context@1", "evidence-packet@1", "content-policy@1"]
+  },
+  "inputs": [
+    {"input_id": "content-task", "contract": "task-envelope@2", "required": true, "requirements": ["Names exactly one requested artifact type."]},
+    {"input_id": "audience", "contract": "audience-context@1", "required": true, "requirements": ["Problem, context, language, confidence, and exclusions are present."]},
+    {"input_id": "evidence", "contract": "evidence-packet@1", "required": true, "requirements": ["Supports the useful outcome and example."]},
+    {"input_id": "positioning", "contract": "positioning-package@1", "required": false, "requirements": ["Required whenever the artifact includes product claims or category framing."]},
+    {"input_id": "content-policy", "contract": "content-policy@1", "required": true, "requirements": ["Defines value, claim, rights, accessibility, and channel boundaries."]}
+  ],
+  "outputs": [
+    {"output_id": "lesson-brief", "contract": "lesson-brief@1", "purpose": "Defines audience problem, useful outcome, angle, method, example, evidence, limits, and success rule."},
+    {"output_id": "source-map", "contract": "source-map@1", "purpose": "Maps every material factual or product claim to its exact evidence scope."}
+  ],
+  "dependencies": {"required_roles": ["evidence-research", "audience-voc"], "may_run_parallel_with": []},
+  "authority": {
+    "autonomous_internal_work": true,
+    "direct_persistence": false,
+    "network": "none",
+    "external_side_effects": false,
+    "may_publish": false,
+    "may_send": false,
+    "may_spend": false,
+    "may_modify_accounts": false,
+    "allowed_internal_actions": ["inspect content inventory", "select one useful outcome", "draft one brief", "map sources and claim boundaries"]
+  },
+  "quality_rules": ["One complete useful outcome per artifact.", "Choose format from user need, not production convenience.", "Do not create a second active artifact or automatic channel variant.", "Define refresh, consolidation, or retirement criteria."],
+  "stop_conditions": ["Evidence cannot support the useful outcome.", "The WIP rule disallows a new artifact.", "A product claim lacks approved truth.", "The task requests multiple channel variants."],
+  "handoff_contracts": {"task": "task-envelope@2", "result": "result-envelope@2"}
+}

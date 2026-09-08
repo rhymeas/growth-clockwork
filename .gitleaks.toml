@@ -1,0 +1,12 @@
+title = "Growth Clockwork secret scan"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "generic-api-key"
+
+  [[rules.allowlists]]
+  description = "UUID idempotency keys in deterministic tests are replay identifiers, not credentials."
+  regexTarget = "line"
+  regexes = ['''idempotency_key\s*=\s*["'][0-9a-f-]{36}["']''']

@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "code-graph-index@1",
+  "title": "Code Graph Index Receipt",
+  "description": "Project-bound receipt for a rebuildable local code graph. The graph is navigation evidence, never canonical product, market, or audience memory.",
+  "type": "object",
+  "required": [
+    "project_id",
+    "project_profile_revision",
+    "index_version",
+    "index_id",
+    "index_revision",
+    "purpose",
+    "repository_root",
+    "source_revision",
+    "source_state",
+    "adapter",
+    "graph_format",
+    "coverage",
+    "artifacts",
+    "limitations",
+    "external_upload",
+    "contains_secrets",
+    "created_at"
+  ],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "project_profile_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "index_version": {
+      "const": "1.0"
+    },
+    "index_id": {
+      "type": "string",
+      "pattern": "^CG-[A-Za-z0-9][A-Za-z0-9._-]{2,63}$"
+    },
+    "index_revision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+    },
+    "purpose": {
+      "const": "code_navigation_only"
+    },
+    "repository_root": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+    },
+    "source_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_state": {
+      "enum": ["clean_commit", "dirty_worktree", "exported_snapshot", "unknown"]
+    },
+    "adapter": {
+      "type": "object",
+      "required": ["id", "version", "license_id", "source_url"],
+      "properties": {
+        "id": {
+          "enum": ["scip", "codebase-memory-mcp", "joern", "gitnexus", "custom"]
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license_id": {
+          "enum": ["Apache-2.0", "MIT", "PolyForm-Noncommercial-1.0.0", "custom-reviewed"]
+        },
+        "source_url": {
+          "type": "string",
+          "pattern": "^https://"
+        }
+      },
+      "additionalProperties": false
+    },
+    "graph_format": {
+      "enum": ["scip", "codebase-memory", "code-property-graph", "gitnexus-ladybugdb", "custom"]
+    },
+    "coverage": {
+      "type": "object",
+      "required": ["files_indexed", "symbols_indexed", "edges_indexed", "languages"],
+      "properties": {
+        "files_indexed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "symbols_indexed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edges_indexed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "languages": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+        "properties": {
+          "artifact_ref": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+          },
+          "artifact_revision": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "external_upload": {
+      "const": false
+    },
+    "contains_secrets": {
+      "const": false
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "adapter": {
+            "properties": {
+              "id": {
+                "const": "gitnexus"
+              }
+            },
+            "required": ["id"]
+          }
+        },
+        "required": ["adapter"]
+      },
+      "then": {
+        "properties": {
+          "adapter": {
+            "properties": {
+              "license_id": {
+                "const": "PolyForm-Noncommercial-1.0.0"
+              }
+            },
+            "required": ["license_id"]
+          },
+          "graph_format": {
+            "const": "gitnexus-ladybugdb"
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

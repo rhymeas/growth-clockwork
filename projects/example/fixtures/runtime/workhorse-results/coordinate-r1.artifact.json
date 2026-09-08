@@ -1,0 +1,73 @@
+{
+  "contract_id": "task-set@1",
+  "artifact_revision": "r1",
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "run_id": "RUN-99f2529a9e2b5075",
+  "work_item_id": "EX-1000",
+  "route_id": "research-evidence",
+  "outcome_owner": {
+    "node_id": "research",
+    "role_id": "evidence-research"
+  },
+  "decision_question": "Which of the four documented synthetic planning options—the Example Project fixture, Spreadsheet fixture, Plain-text note fixture, or Do nothing—has enough traceable fixture evidence to support internal human review against the useful outcome of reviewing one synthetic plan in a repeatable format?",
+  "evidence_standard": {
+    "required": [
+      "Trace every factual statement to the exact artifact revision and SHA-256 in the bound context snapshot.",
+      "Treat EX-F-001 as the approved synthetic fact; label EX-AUD-001 and every option-fit assessment as hypothesis or inference.",
+      "Treat audience demand, market demand, measured outcomes, benchmarks, and effectiveness as unproven; metric definitions without values are not outcome evidence.",
+      "Record contradictions, unknowns, and confidence, with confidence capped at medium because the budget contains one synthetic source and no measured values.",
+      "Apply all prohibited-claim and authority boundaries."
+    ],
+    "acceptance": "Recommend an option only if the bound fixture evidence supports a documented distinction. Otherwise return insufficient_evidence without forcing a winner."
+  },
+  "scope": {
+    "included": [
+      "Compare the Example Project fixture with Spreadsheet fixture, Plain-text note fixture, and Do nothing.",
+      "Assess only synthetic fit with the documented useful outcome: review one synthetic plan in a repeatable format.",
+      "Use the pinned facts, prohibited claims, audience, market, funnel, metrics, channels, and authority sections.",
+      "Preserve source traceability, contradictions, unknowns, confidence, and proof boundaries."
+    ],
+    "excluded": [
+      "Real products, users, customers, companies, accounts, channels, demand, adoption, outcomes, benchmarks, or effectiveness.",
+      "Security, privacy, compliance, or accessibility certification claims.",
+      "External research, network access, positioning, channel production, publication, sending, spending, account changes, or other external side effects.",
+      "Human approval and the independent governance verdict."
+    ]
+  },
+  "source_budget": {
+    "max_unique_sources": 1,
+    "allowed_source_ids": [
+      "synthetic-context-fixture"
+    ],
+    "max_context_section_artifacts": 8,
+    "max_external_sources": 0
+  },
+  "stop_rule": "Stop after all four options have been assessed once against the useful outcome using the eight pinned context sections, with traceable support, contradictions, unknowns, and confidence recorded. If no option meets the evidence standard, stop with insufficient_evidence; do not add sources or infer a winner. Stop immediately on any revision or hash mismatch, missing or stale required context, ambiguous authority, or need for an external side effect.",
+  "tasks": [
+    {
+      "node_id": "research",
+      "role_id": "evidence-research",
+      "depends_on": [
+        "coordinate"
+      ],
+      "objective": "Collect bounded evidence and preserve sources, contradictions, unknowns, and confidence.",
+      "deliverable_contract": "evidence-packet@1"
+    },
+    {
+      "node_id": "governance-final",
+      "role_id": "governance-reviewer",
+      "depends_on": [
+        "research"
+      ],
+      "objective": "Review the exact evidence packet for source scope, policy, authority, revision, and proof boundaries.",
+      "deliverable_contract": "governance-verdict@1"
+    }
+  ],
+  "authority": {
+    "autonomous_internal_work": true,
+    "human_final_review_required": true,
+    "external_side_effects": false,
+    "may_publish": false
+  }
+}

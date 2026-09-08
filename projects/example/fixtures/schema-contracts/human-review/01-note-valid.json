@@ -1,0 +1,15 @@
+{
+  "review_action_version": "1.0",
+  "action_id": "cb25ed09-85b2-532a-86ff-ec532008e523",
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "artifact_id": "demo-brief",
+  "artifact_revision": "r1",
+  "artifact_sha256": "c000000000000000000000000000000000000000000000000000000000000001",
+  "action": "note",
+  "actor_type": "human",
+  "recorded_at": "2026-08-31T19:05:00Z",
+  "note": "Create revision r2 with a shorter first paragraph.",
+  "reason": null,
+  "rework_requested": true
+}

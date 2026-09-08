@@ -1,0 +1,4 @@
+interface:
+  display_name: "Growth Clockwork"
+  short_description: "Run modular project-bound Growth OS routes in Codex"
+  default_prompt: "Operate the selected project through the modular Growth Clockwork. Resume verified state, dispatch role agents, validate outputs, and stop at the human Review Desk."

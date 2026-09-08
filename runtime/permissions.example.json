@@ -1,0 +1,21 @@
+{
+  "$comment": "Local operating switches. Copy to runtime/permissions.json; never commit that private file.",
+  "revision": "runtime-permissions-v1",
+  "publish": "review",
+  "agents": {
+    "inbox": { "browser": "none", "credentials": "none" },
+    "research": { "browser": "read-only", "credentials": "none", "autostart": false },
+    "marketing": { "browser": "none", "credentials": "none", "autostart": false },
+    "mavery-qa": { "browser": "none", "credentials": "none", "autostart": false },
+    "publisher": {
+      "enabled": false,
+      "browser": "none",
+      "credentials": "per-channel-connector-only"
+    }
+  },
+  "connectors": {
+    "ga4": { "enabled": false, "scope": "read-only" },
+    "postiz": { "enabled": false, "mode": "drafts-only" },
+    "playwright": { "enabled": false, "profiles": "isolated" }
+  }
+}

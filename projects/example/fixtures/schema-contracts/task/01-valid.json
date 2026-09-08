@@ -1,0 +1,30 @@
+{
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "task_version": "1.0",
+  "task_id": "EX-1-T001",
+  "run_id": "EX-RUN-001",
+  "parent_task_id": null,
+  "assigned_role": "growth-coordinator",
+  "route_id": "positioning",
+  "objective": "Prepare one synthetic positioning brief for review.",
+  "project_context": {
+    "artifact_ref": "records/context/CTX-DEMO.json",
+    "artifact_revision": "demo-r1",
+    "artifact_sha256": "b000000000000000000000000000000000000000000000000000000000000001"
+  },
+  "input_artifacts": [
+    {
+      "artifact_ref": "evidence/packets/demo.json",
+      "artifact_revision": "r1",
+      "artifact_sha256": "b000000000000000000000000000000000000000000000000000000000000002"
+    }
+  ],
+  "output_contract": "outbox-review-item@1",
+  "authority": {
+    "allowed_write_roots": ["positioning/packages", "outbox"],
+    "external_side_effects": false,
+    "may_publish": false
+  },
+  "created_at": "2026-08-31T19:01:00Z"
+}

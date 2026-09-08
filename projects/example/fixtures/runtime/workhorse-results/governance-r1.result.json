@@ -1,0 +1,123 @@
+{
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "result_version": "2.0",
+  "run_id": "RUN-99f2529a9e2b5075",
+  "task_id": "EX-1000-T003",
+  "task_sha256": "7ec43409e6937d0c137c8234820379c7d2f623c6536bc40ed9d0efee7201f636",
+  "step_id": "governance-final",
+  "role_id": "governance-reviewer",
+  "status": "completed",
+  "output_artifacts": [
+    {
+      "artifact_ref": "records/governance/EX-1000/verdict-r1.json",
+      "artifact_revision": "r1",
+      "artifact_sha256": "b46d2c7cb6aa8150222207d98ee9a7c361074bc70427b6cc84bdbd5d7225f91b",
+      "contract_id": "governance-verdict@1"
+    }
+  ],
+  "evidence_artifacts": [
+    {
+      "artifact_ref": "handoffs/RUN-99f2529a9e2b5075/EX-1000-T003.json",
+      "artifact_revision": "2.0",
+      "artifact_sha256": "7ec43409e6937d0c137c8234820379c7d2f623c6536bc40ed9d0efee7201f636"
+    },
+    {
+      "artifact_ref": "evidence/packets/EX-1000/research-r1.json",
+      "artifact_revision": "research-r1",
+      "artifact_sha256": "0548fdd2c9ccc5de9498b68f8760df266f5f4949e2b230f23e4ab7d20d39310f"
+    },
+    {
+      "artifact_ref": "records/run-inputs/RUN-99f2529a9e2b5075/context/sections/prohibited_claims.json",
+      "artifact_revision": "prohibited-claims-fixture-r1-snapshot-9e2b5075",
+      "artifact_sha256": "98578dff418e09901724c674c77b5a4ef8718a5264241d3f61b9560ba5b814d6"
+    },
+    {
+      "artifact_ref": "records/run-inputs/RUN-99f2529a9e2b5075/context/sections/authority.json",
+      "artifact_revision": "authority-fixture-r1-snapshot-9e2b5075",
+      "artifact_sha256": "f59de395ebd832e3e624b668913748fbad9884d994ab0ae34dfcf0226ef6c901"
+    }
+  ],
+  "checks": [
+    {
+      "name": "evidence_present",
+      "result": "pass",
+      "evidence_ref": {
+        "artifact_ref": "evidence/packets/EX-1000/research-r1.json",
+        "artifact_revision": "research-r1",
+        "artifact_sha256": "0548fdd2c9ccc5de9498b68f8760df266f5f4949e2b230f23e4ab7d20d39310f"
+      }
+    },
+    {
+      "name": "claims_within_evidence",
+      "result": "pass",
+      "evidence_ref": {
+        "artifact_ref": "evidence/packets/EX-1000/research-r1.json",
+        "artifact_revision": "research-r1",
+        "artifact_sha256": "0548fdd2c9ccc5de9498b68f8760df266f5f4949e2b230f23e4ab7d20d39310f"
+      }
+    },
+    {
+      "name": "prohibited_claims",
+      "result": "pass",
+      "evidence_ref": {
+        "artifact_ref": "records/run-inputs/RUN-99f2529a9e2b5075/context/sections/prohibited_claims.json",
+        "artifact_revision": "prohibited-claims-fixture-r1-snapshot-9e2b5075",
+        "artifact_sha256": "98578dff418e09901724c674c77b5a4ef8718a5264241d3f61b9560ba5b814d6"
+      }
+    },
+    {
+      "name": "rights_respected",
+      "result": "pass",
+      "evidence_ref": {
+        "artifact_ref": "evidence/packets/EX-1000/research-r1.json",
+        "artifact_revision": "research-r1",
+        "artifact_sha256": "0548fdd2c9ccc5de9498b68f8760df266f5f4949e2b230f23e4ab7d20d39310f"
+      }
+    },
+    {
+      "name": "exact_revision",
+      "result": "pass",
+      "evidence_ref": {
+        "artifact_ref": "handoffs/RUN-99f2529a9e2b5075/EX-1000-T003.json",
+        "artifact_revision": "2.0",
+        "artifact_sha256": "7ec43409e6937d0c137c8234820379c7d2f623c6536bc40ed9d0efee7201f636"
+      }
+    },
+    {
+      "name": "policy_and_channel",
+      "result": "pass",
+      "evidence_ref": {
+        "artifact_ref": "records/run-inputs/RUN-99f2529a9e2b5075/context/sections/authority.json",
+        "artifact_revision": "authority-fixture-r1-snapshot-9e2b5075",
+        "artifact_sha256": "f59de395ebd832e3e624b668913748fbad9884d994ab0ae34dfcf0226ef6c901"
+      }
+    },
+    {
+      "name": "proof_layer",
+      "result": "pass",
+      "evidence_ref": {
+        "artifact_ref": "evidence/packets/EX-1000/research-r1.json",
+        "artifact_revision": "research-r1",
+        "artifact_sha256": "0548fdd2c9ccc5de9498b68f8760df266f5f4949e2b230f23e4ab7d20d39310f"
+      }
+    }
+  ],
+  "attempts": 1,
+  "usage": {
+    "duration_ms": 127000,
+    "input_tokens": null,
+    "output_tokens": null,
+    "variable_external_cost_eur": 0
+  },
+  "provenance": {
+    "provider": "openai",
+    "model": "gpt-5.6-luna",
+    "prompt_version": "example-governance-workhorse-v1",
+    "contract_version": "result-envelope@2",
+    "input_revision": "7ec43409e6937d0c137c8234820379c7d2f623c6536bc40ed9d0efee7201f636",
+    "output_revision": "r1"
+  },
+  "error": null,
+  "created_at": "2026-09-01T01:29:37Z"
+}

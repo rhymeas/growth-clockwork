@@ -1,0 +1,119 @@
+{
+  "route_version": "1.0",
+  "route_id": "marketing-operations",
+  "display_name": "Marketing Operations",
+  "purpose": "Prepare a deterministic workflow-readiness package with measurable reliability, ownership, recovery, and compatibility boundaries without activating an integration or mutating an account.",
+  "activation": {
+    "modes": [
+      "required_by_objective",
+      "activated_by_observed_trigger"
+    ],
+    "objective_signals": [
+      "The objective concerns a repeated stable cross-service transport, schema mapping, operational data-quality burden, or recovery gap."
+    ],
+    "prerequisites": [
+      "One stable workflow requirement names canonical source and destination owners, schemas, authority, retention, measurable burden, and an internal-only activation boundary."
+    ]
+  },
+  "context_requirements": [
+    "funnel",
+    "metrics",
+    "channels",
+    "authority"
+  ],
+  "nodes": [
+    {
+      "node_id": "coordinate",
+      "role_id": "growth-coordinator",
+      "depends_on": [],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Bind one stable transport problem, canonical owners, authority, data boundary, reliability target, non-goals, resource cap, and stop rule.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "task-set@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/decisions"
+      ]
+    },
+    {
+      "node_id": "operations-baseline",
+      "role_id": "analytics-experimentation",
+      "depends_on": [
+        "coordinate"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Validate the current workflow baseline, lineage, volume, error classes, missingness, manual burden, reporting window, and measurable reliability guardrails.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "validated-snapshot@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/learning"
+      ]
+    },
+    {
+      "node_id": "operations-design",
+      "role_id": "marketing-ops-revops",
+      "depends_on": [
+        "operations-baseline"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Produce an internal workflow-readiness package covering owners, schemas, idempotency, finite retries, quarantine, readback, permissions, recovery, compatibility, test evidence, risks, and inactive status.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "adapter-specification@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "staging"
+      ]
+    },
+    {
+      "node_id": "governance-final",
+      "role_id": "governance-reviewer",
+      "depends_on": [
+        "operations-design"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Review the exact workflow-readiness package for canonical ownership, authority, privacy, idempotency, bounded recovery, compatibility, test evidence, inactive state, and no-account-mutation compliance.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "governance-verdict@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/governance"
+      ]
+    }
+  ],
+  "final_product": {
+    "producer_node": "operations-design",
+    "contract": "adapter-specification@1",
+    "supporting_contracts": [
+      "validated-snapshot@1"
+    ]
+  },
+  "parallelism": {
+    "max_concurrent_workhorses": 2,
+    "only_independent_nodes": true
+  },
+  "failure_policy": {
+    "dependent_nodes": "blocked-or-skipped",
+    "independent_nodes": "may-continue",
+    "ambiguous_result": "needs_attention-no-blind-retry",
+    "semantic_revisions": 2
+  },
+  "terminal_review": {
+    "governance_node": "governance-final",
+    "governance_contract": "governance-verdict@1",
+    "required_governance_result": "pass",
+    "review_item_contract": "outbox-review-item@1",
+    "terminal_state": "review_ready",
+    "human_actions": [
+      "approve",
+      "decline",
+      "note"
+    ],
+    "external_side_effects": false,
+    "may_publish": false
+  }
+}

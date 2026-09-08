@@ -1,0 +1,64 @@
+{
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "manifest_version": "1.0",
+  "context_id": "CTX-EXAMPLE-0001",
+  "context_revision": "fixture-r1",
+  "status": "ready",
+  "sections": [
+    {
+      "kind": "facts",
+      "artifact_ref": "context/sections/facts/facts-fixture-r1.json",
+      "artifact_revision": "facts-fixture-r1",
+      "artifact_sha256": "4c5c41626516b6ec7fa9b877210077eaac18cdf06b06e8748b08f91362537134"
+    },
+    {
+      "kind": "prohibited_claims",
+      "artifact_ref": "context/sections/prohibited-claims/prohibited-claims-fixture-r1.json",
+      "artifact_revision": "prohibited-claims-fixture-r1",
+      "artifact_sha256": "0fb6bf607952fda32db874ae86528f9e80b1132b8a096d6dd1cb7e868768e833"
+    },
+    {
+      "kind": "audience",
+      "artifact_ref": "context/sections/audience/audience-fixture-r1.json",
+      "artifact_revision": "audience-fixture-r1",
+      "artifact_sha256": "47835f184e8f4b8b9dd3c0e7b23bca652ba17438db8a06fa81a762af24f68ea0"
+    },
+    {
+      "kind": "market",
+      "artifact_ref": "context/sections/market/market-fixture-r1.json",
+      "artifact_revision": "market-fixture-r1",
+      "artifact_sha256": "c32f6cd2c6687b14a0727436a6ecaf42e97db276a17b864a721422e246afb9f2"
+    },
+    {
+      "kind": "funnel",
+      "artifact_ref": "context/sections/funnel/funnel-fixture-r1.json",
+      "artifact_revision": "funnel-fixture-r1",
+      "artifact_sha256": "3c61d04389c43dde98f58ac9f7922cfe3b133786f3bac28acae486942be0e69c"
+    },
+    {
+      "kind": "metrics",
+      "artifact_ref": "context/sections/metrics/metrics-fixture-r1.json",
+      "artifact_revision": "metrics-fixture-r1",
+      "artifact_sha256": "d01b8226aa86de5c263dd6f9cafb5e2d656380ae286391e873e18775f29d89eb"
+    },
+    {
+      "kind": "channels",
+      "artifact_ref": "context/sections/channels/channels-fixture-r1.json",
+      "artifact_revision": "channels-fixture-r1",
+      "artifact_sha256": "75438a9acafda390d60bdc789d55a86dd4f3690d702b1f8a9ad820f6bf1bd8d5"
+    },
+    {
+      "kind": "authority",
+      "artifact_ref": "context/sections/authority/authority-fixture-r1.json",
+      "artifact_revision": "authority-fixture-r1",
+      "artifact_sha256": "925077cc5081e5b7388f6295ecbd0c4aad1239c357714154e634cd5e832db531"
+    }
+  ],
+  "authority": {
+    "autonomous_internal_work": true,
+    "human_final_review_required": true,
+    "publish_credentials_available": false
+  },
+  "created_at": "2026-09-01T00:09:52Z"
+}

@@ -1,0 +1,179 @@
+{
+  "route_version": "1.0",
+  "route_id": "organic-audience-community",
+  "display_name": "Organic Audience and Community",
+  "purpose": "Prepare one organic audience-readiness package informed by bounded social, community, and developer evidence without posting, replying, launching, or changing an account.",
+  "activation": {
+    "modes": [
+      "required_by_objective",
+      "mandatory_by_product_motion",
+      "activated_by_observed_trigger"
+    ],
+    "objective_signals": [
+      "The objective concerns an organic social product, an existing recurring community, or a developer audience journey."
+    ],
+    "prerequisites": [
+      "One audience and one allowed organic surface are defined in the project context; any community or developer work has current evidence and human-owned relationship boundaries."
+    ]
+  },
+  "context_requirements": [
+    "facts",
+    "prohibited_claims",
+    "audience",
+    "market",
+    "channels",
+    "authority"
+  ],
+  "nodes": [
+    {
+      "node_id": "coordinate",
+      "role_id": "growth-coordinator",
+      "depends_on": [],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Bind one organic audience objective, surface, evidence standard, relationship boundary, non-goals, and stop rule.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "task-set@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/decisions"
+      ]
+    },
+    {
+      "node_id": "audience-evidence",
+      "role_id": "evidence-research",
+      "depends_on": [
+        "coordinate"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Collect bounded public and project evidence about the audience question, channel constraints, recurring needs, contradictions, and proof gaps.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "evidence-packet@1",
+      "allowed_write_roots": [
+        "evidence/packets",
+        "handoffs"
+      ]
+    },
+    {
+      "node_id": "community-insight",
+      "role_id": "community",
+      "depends_on": [
+        "audience-evidence"
+      ],
+      "optional": true,
+      "run_when": "Activate only when a real recurring group, current aggregate signals, moderation boundaries, and a human community owner are evidenced.",
+      "objective": "Turn aggregate community evidence into a bounded audience-change proposal and feedback-closure design without outreach, sanctions, or relationship automation.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "community-program@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/audience"
+      ]
+    },
+    {
+      "node_id": "developer-journey",
+      "role_id": "developer-relations",
+      "depends_on": [
+        "audience-evidence"
+      ],
+      "optional": true,
+      "run_when": "Activate only for a public API, SDK, integration, or developer product with a bounded external-developer journey and supported-version evidence.",
+      "objective": "Prepare a technical discovery package covering time to first success, documentation friction, examples, limitations, and a human-owned feedback loop.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "developer-experience-package@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/discovery"
+      ]
+    },
+    {
+      "node_id": "social-product",
+      "role_id": "social-media",
+      "depends_on": [
+        "audience-evidence",
+        "community-insight",
+        "developer-journey"
+      ],
+      "optional": true,
+      "run_when": "Activate only when the selected organic objective includes one enabled social surface with current channel rules, metric definitions, and a human account owner.",
+      "objective": "Produce one complete platform-native channel product bound to exact claims, sources, limitations, and any activated community or developer findings without posting it.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "social-package@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "staging"
+      ]
+    },
+    {
+      "node_id": "organic-package",
+      "role_id": "product-marketing-positioning",
+      "depends_on": [
+        "audience-evidence",
+        "community-insight",
+        "developer-journey",
+        "social-product"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Assemble the supported organic audience thesis, mutual-value boundaries, channel sequence, readiness findings, owners, measurement, risks, non-goals, and explicit no-launch status.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "launch-readiness-package@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "positioning/packages",
+        "staging"
+      ]
+    },
+    {
+      "node_id": "governance-final",
+      "role_id": "governance-reviewer",
+      "depends_on": [
+        "organic-package"
+      ],
+      "optional": false,
+      "run_when": "always",
+      "objective": "Review the exact organic audience-readiness package and any supporting channel product for complete value, claims, privacy, rights, relationship boundaries, revision binding, and no-launch compliance.",
+      "output_contract": "result-envelope@2",
+      "deliverable_contract": "governance-verdict@1",
+      "allowed_write_roots": [
+        "handoffs",
+        "records/governance"
+      ]
+    }
+  ],
+  "final_product": {
+    "producer_node": "organic-package",
+    "contract": "launch-readiness-package@1",
+    "supporting_contracts": [
+      "evidence-packet@1",
+      "community-program@1",
+      "developer-experience-package@1",
+      "social-package@1"
+    ]
+  },
+  "parallelism": {
+    "max_concurrent_workhorses": 2,
+    "only_independent_nodes": true
+  },
+  "failure_policy": {
+    "dependent_nodes": "blocked-or-skipped",
+    "independent_nodes": "may-continue",
+    "ambiguous_result": "needs_attention-no-blind-retry",
+    "semantic_revisions": 2
+  },
+  "terminal_review": {
+    "governance_node": "governance-final",
+    "governance_contract": "governance-verdict@1",
+    "required_governance_result": "pass",
+    "review_item_contract": "outbox-review-item@1",
+    "terminal_state": "review_ready",
+    "human_actions": [
+      "approve",
+      "decline",
+      "note"
+    ],
+    "external_side_effects": false,
+    "may_publish": false
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "route_version": "1.0",
+  "route_id": "market-positioning",
+  "display_name": "Market and Positioning",
+  "purpose": "Turn product truth, market evidence, and audience evidence into a supported positioning package without approving claims or launch.",
+  "activation": {
+    "modes": ["required_by_objective", "mandatory_by_product_motion"],
+    "objective_signals": ["The objective concerns segment, category, alternative, differentiation, objection, message, or claim proof."],
+    "prerequisites": ["Product truth and prohibited-claim context are revision-pinned."]
+  },
+  "context_requirements": ["facts", "prohibited_claims", "audience", "market", "authority"],
+  "nodes": [
+    {"node_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Qualify the positioning decision and define segment, evidence, and output boundaries.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+    {"node_id": "market-evidence", "role_id": "evidence-research", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Collect current evidence about alternatives, category, problem, and proof scope.", "output_contract": "result-envelope@2", "deliverable_contract": "evidence-packet@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+    {"node_id": "audience-synthesis", "role_id": "audience-voc", "depends_on": ["market-evidence"], "optional": false, "run_when": "always", "objective": "Synthesize segment, problem context, language, exclusions, bias, and confidence.", "output_contract": "result-envelope@2", "deliverable_contract": "audience-change-proposal@1", "allowed_write_roots": ["records/audience", "handoffs"]},
+    {"node_id": "positioning", "role_id": "product-marketing-positioning", "depends_on": ["market-evidence", "audience-synthesis"], "optional": false, "run_when": "always", "objective": "Create one supported positioning package and mark every proof gap.", "output_contract": "result-envelope@2", "deliverable_contract": "positioning-package@1", "allowed_write_roots": ["positioning/packages", "handoffs"]},
+    {"node_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["positioning"], "optional": false, "run_when": "always", "objective": "Review the exact positioning package for truth, evidence, fairness, authority, and revision binding.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]}
+  ],
+  "final_product": {"producer_node": "positioning", "contract": "positioning-package@1", "supporting_contracts": ["evidence-packet@1", "audience-change-proposal@1"]},
+  "parallelism": {"max_concurrent_workhorses": 2, "only_independent_nodes": true},
+  "failure_policy": {"dependent_nodes": "blocked-or-skipped", "independent_nodes": "may-continue", "ambiguous_result": "needs_attention-no-blind-retry", "semantic_revisions": 2},
+  "terminal_review": {"governance_node": "governance-final", "governance_contract": "governance-verdict@1", "required_governance_result": "pass", "review_item_contract": "outbox-review-item@1", "terminal_state": "review_ready", "human_actions": ["approve", "decline", "note"], "external_side_effects": false, "may_publish": false}
+}

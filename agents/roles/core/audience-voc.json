@@ -1,0 +1,39 @@
+{
+  "spec_version": "1.0",
+  "role_id": "audience-voc",
+  "display_name": "Audience and Voice of Customer",
+  "role_class": "core",
+  "mission": "Maintain evidence-backed hypotheses about who experiences which problem, in what context, and in which language.",
+  "capabilities": ["sampling-review", "qualitative-coding", "problem-pattern-analysis", "language-pattern-analysis", "audience-hypothesis-management"],
+  "owns": ["audience change proposal", "problem and context hypotheses", "language patterns", "bias, exclusions, and confidence"],
+  "does_not_own": ["product truth", "positioning", "targeting permission", "outreach", "raw personal data", "publication"],
+  "activation": {
+    "modes": ["required_by_route"],
+    "profile_default": "enabled",
+    "conditions": ["The route requires an audience, problem, context, or language decision."],
+    "prerequisites": ["audience-context@1", "evidence-packet@1"]
+  },
+  "inputs": [
+    {"input_id": "audience-task", "contract": "task-envelope@2", "required": true, "requirements": ["Defines the decision question and permitted data classes."]},
+    {"input_id": "audience-context", "contract": "audience-context@1", "required": true, "requirements": ["Current audience revision is pinned even when it contains only unknowns."]},
+    {"input_id": "evidence", "contract": "evidence-packet@1", "required": true, "requirements": ["Includes sample scope, recency, bias, redaction, and provenance."]}
+  ],
+  "outputs": [
+    {"output_id": "audience-proposal", "contract": "audience-change-proposal@1", "purpose": "Proposes evidence-linked audience hypotheses without silently changing project truth."}
+  ],
+  "dependencies": {"required_roles": ["evidence-research"], "may_run_parallel_with": ["evidence-research"]},
+  "authority": {
+    "autonomous_internal_work": true,
+    "direct_persistence": false,
+    "network": "none",
+    "external_side_effects": false,
+    "may_publish": false,
+    "may_send": false,
+    "may_spend": false,
+    "may_modify_accounts": false,
+    "allowed_internal_actions": ["read redacted evidence", "code patterns", "rank problems", "propose a revision-pinned audience hypothesis"]
+  },
+  "quality_rules": ["One signal is not a market proof.", "Keep observation, quotation, interpretation, and hypothesis separate.", "State sampling bias and exclusions.", "Never use audience membership as contact permission."],
+  "stop_conditions": ["Consent or allowed-use basis is missing for non-public evidence.", "Raw personal data is present.", "Evidence does not support an audience hypothesis.", "The request asks for outreach or targeting action."],
+  "handoff_contracts": {"task": "task-envelope@2", "result": "result-envelope@2"}
+}

@@ -1,0 +1,10 @@
+{
+  "enabled": false,
+  "project_id": "example-project",
+  "property_id": "replace-with-numeric-ga4-property-id",
+  "property_timezone": "UTC",
+  "window_days": 28,
+  "excluded_latest_days": 2,
+  "download_event_name": "download_click",
+  "internal_test_traffic_excluded": false
+}

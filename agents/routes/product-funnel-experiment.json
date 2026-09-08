@@ -1,0 +1,24 @@
+{
+  "route_version": "1.0",
+  "route_id": "product-funnel-experiment",
+  "display_name": "Product Funnel and Experiment",
+  "purpose": "Diagnose a controllable product-funnel bottleneck and produce a pre-registered experiment charter plus measurement plan.",
+  "activation": {
+    "modes": ["required_by_objective", "mandatory_by_product_motion"],
+    "objective_signals": ["The objective concerns activation, conversion, retention friction, upgrade, onboarding, or product growth."],
+    "prerequisites": ["The project profile enables growth-product-cro and binds funnel and metric context."]
+  },
+  "context_requirements": ["audience", "funnel", "metrics", "authority"],
+  "nodes": [
+    {"node_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Qualify the product outcome, population, bottleneck question, and experiment authority.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+    {"node_id": "friction-evidence", "role_id": "evidence-research", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Collect qualitative and product evidence about the suspected friction and alternatives.", "output_contract": "result-envelope@2", "deliverable_contract": "evidence-packet@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+    {"node_id": "baseline", "role_id": "analytics-experimentation", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Validate baseline, metric definitions, lineage, coverage, and measurement feasibility.", "output_contract": "result-envelope@2", "deliverable_contract": "validated-snapshot@1", "allowed_write_roots": ["records/learning", "handoffs"]},
+    {"node_id": "experiment-owner", "role_id": "growth-product-cro", "depends_on": ["friction-evidence", "baseline"], "optional": false, "run_when": "always", "objective": "Diagnose the bottleneck and specify the smallest trustworthy product experiment.", "output_contract": "result-envelope@2", "deliverable_contract": "experiment-charter@1", "allowed_write_roots": ["records/experiments", "handoffs"]},
+    {"node_id": "measurement-design", "role_id": "analytics-experimentation", "depends_on": ["experiment-owner"], "optional": false, "run_when": "always", "objective": "Bind metrics, guardrails, power strategy, runtime, data-quality checks, and decision rule.", "output_contract": "result-envelope@2", "deliverable_contract": "measurement-plan@1", "allowed_write_roots": ["records/learning", "handoffs"]},
+    {"node_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["experiment-owner", "measurement-design"], "optional": false, "run_when": "always", "objective": "Review the exact experiment charter and measurement plan for evidence, ethics, privacy, authority, and causal boundaries.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]}
+  ],
+  "final_product": {"producer_node": "experiment-owner", "contract": "experiment-charter@1", "supporting_contracts": ["funnel-diagnosis@1", "measurement-plan@1", "validated-snapshot@1"]},
+  "parallelism": {"max_concurrent_workhorses": 2, "only_independent_nodes": true},
+  "failure_policy": {"dependent_nodes": "blocked-or-skipped", "independent_nodes": "may-continue", "ambiguous_result": "needs_attention-no-blind-retry", "semantic_revisions": 2},
+  "terminal_review": {"governance_node": "governance-final", "governance_contract": "governance-verdict@1", "required_governance_result": "pass", "review_item_contract": "outbox-review-item@1", "terminal_state": "review_ready", "human_actions": ["approve", "decline", "note"], "external_side_effects": false, "may_publish": false}
+}

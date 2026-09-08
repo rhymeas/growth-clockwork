@@ -1,0 +1,60 @@
+{
+  "registry_version": "1.0",
+  "registry_revision": "growth-agent-registry-v1",
+  "runtime": "codex-root-read-only-workhorses",
+  "schemas": {
+    "role": "schemas/role-spec.schema.json",
+    "route": "schemas/route-spec.schema.json",
+    "catalog": "schemas/catalog.schema.json"
+  },
+  "activation_modes": [
+    "always_control",
+    "required_by_route",
+    "mandatory_by_product_motion",
+    "activated_by_observed_trigger"
+  ],
+  "roles": [
+    {"role_id": "growth-coordinator", "role_class": "core", "spec_ref": "roles/core/growth-coordinator.json", "sha256": "84dcf07a394b086f4c928b3e70771374b37af5e83be4bad33fb292c80850af8e"},
+    {"role_id": "governance-reviewer", "role_class": "core", "spec_ref": "roles/core/governance-reviewer.json", "sha256": "fdb55a54f3080412ca625a6b746497b49e16d6df3fa6a6fdb236856c416df8af"},
+    {"role_id": "evidence-research", "role_class": "core", "spec_ref": "roles/core/evidence-research.json", "sha256": "b17dc14f6b37b3aabc5d70e68dc576ed18fcf979e05c7ae54a9382f44aec77b5"},
+    {"role_id": "audience-voc", "role_class": "core", "spec_ref": "roles/core/audience-voc.json", "sha256": "66de1b9565faf6084b91240e97005b6cdbfcd20c45984c8bdddd8ca87bc84cb0"},
+    {"role_id": "product-marketing-positioning", "role_class": "core", "spec_ref": "roles/core/product-marketing-positioning.json", "sha256": "234656da4a9ac0b2d00e0496e743ee4f8cdef7038df36c37a546381cf76c3fa0"},
+    {"role_id": "growth-product-cro", "role_class": "core", "spec_ref": "roles/core/growth-product-cro.json", "sha256": "a269a58f2fa0054fa8a2a1860aa70073511a2f3828df25f8b6a99d160da07a4c"},
+    {"role_id": "analytics-experimentation", "role_class": "core", "spec_ref": "roles/core/analytics-experimentation.json", "sha256": "5378ff56b90b9519e190b6bb23e3faf6081614e71cad8ab82e66c02b8825cc46"},
+    {"role_id": "content-strategy", "role_class": "core", "spec_ref": "roles/core/content-strategy.json", "sha256": "6daae8276ac8cbaf8305210db5a5b8a8239817129959d5ee82a86d53141fe586"},
+    {"role_id": "editorial-production", "role_class": "core", "spec_ref": "roles/core/editorial-production.json", "sha256": "54c884d86dfb51fbf65d3a335e7bb76e12120dc13d97ed4eaf5dc9c85471db78"},
+    {"role_id": "search-ai-discovery", "role_class": "specialist", "spec_ref": "roles/specialists/search-ai-discovery.json", "sha256": "244c83f192ca5201a970eb833c1f22874d7d8e3932d0e34006a3e64cf117a0fe"},
+    {"role_id": "lifecycle-crm", "role_class": "specialist", "spec_ref": "roles/specialists/lifecycle-crm.json", "sha256": "c5edabc8fd78dabbac3385a7c2d8300fcae8603d24d14250f0c49c448c121131"},
+    {"role_id": "social-media", "role_class": "specialist", "spec_ref": "roles/specialists/social-media.json", "sha256": "a8b041f5640bf7adc52127bcac0921d5fbf2acc299cb9ea2ea6b4053f9280e2b"},
+    {"role_id": "community", "role_class": "specialist", "spec_ref": "roles/specialists/community.json", "sha256": "e6052c233fc4c9e2838fbe08a50c322a04a33e66cf8ce054cc3afe29fbed95f5"},
+    {"role_id": "demand-generation", "role_class": "specialist", "spec_ref": "roles/specialists/demand-generation.json", "sha256": "5323aa4be8652fe4981a8ea65ea52dc1a16ce0d4e463965f08ba333b235a9387"},
+    {"role_id": "paid-acquisition", "role_class": "specialist", "spec_ref": "roles/specialists/paid-acquisition.json", "sha256": "9871521e29b773b46eb0ff314cceabf829b91841826a67e1cee8419d6a93b6f4"},
+    {"role_id": "partnerships", "role_class": "specialist", "spec_ref": "roles/specialists/partnerships.json", "sha256": "f6e929515264ac9c0dbf46641b66aa1b2781c541dba19517b0108e7aebf5d1f4"},
+    {"role_id": "brand-creative", "role_class": "specialist", "spec_ref": "roles/specialists/brand-creative.json", "sha256": "a7edbd55f156f125a042518cbea08a166ee2cfaebb971cd125bcb5cb3316c9c5"},
+    {"role_id": "developer-relations", "role_class": "specialist", "spec_ref": "roles/specialists/developer-relations.json", "sha256": "19d8fd84a5c46467ae786173e18e35332ea364856bd170627598f168d6022b92"},
+    {"role_id": "marketing-ops-revops", "role_class": "specialist", "spec_ref": "roles/specialists/marketing-ops-revops.json", "sha256": "6b7c456c115420932d74f6fc024ee59689507b008d45019a10e417ed135553b8"}
+  ],
+  "routes": [
+    {"route_id": "research-evidence", "spec_ref": "routes/research-evidence.json", "sha256": "c20c8413b8365f7b27908ac5261da7aedb557b27f6e94303312cf3f5e3f6a303"},
+    {"route_id": "market-positioning", "spec_ref": "routes/market-positioning.json", "sha256": "fa5cb9cd6e013af5dc0034e80da35fffced9698fb9b16c67f86cb0479cef6987"},
+    {"route_id": "product-funnel-experiment", "spec_ref": "routes/product-funnel-experiment.json", "sha256": "e978bfc52a6ebdbecafc6009f792c92aff38726ca41aa67b28b116313e91e16d"},
+    {"route_id": "content-channel", "spec_ref": "routes/content-channel.json", "sha256": "4772027039c45d1149f50210169c7baa30c0a37207f0de593c16240d0df5b4ac"},
+    {"route_id": "launch-readiness", "spec_ref": "routes/launch-readiness.json", "sha256": "0bdc8def27b8e117492a75d6f38991b2bf873e109e3c6685b9ffa44c0608de50"},
+    {"route_id": "measurement-learning", "spec_ref": "routes/measurement-learning.json", "sha256": "d7ed58e752951b4c3a4ca36843d2ebf3656acbeb9097fd721b5add4d48f7497d"},
+    {"route_id": "organic-audience-community", "spec_ref": "routes/organic-audience-community.json", "sha256": "be6ca52570f48a13fa5bd92d6ec42c318c6f18fda1d3f61087f70e53a8c5701d"},
+    {"route_id": "demand-acquisition", "spec_ref": "routes/demand-acquisition.json", "sha256": "18929a633f7252c80304d7c7c80d7d9b5d629456401ae23e2d1fde5d7f275fc7"},
+    {"route_id": "lifecycle-retention", "spec_ref": "routes/lifecycle-retention.json", "sha256": "6176c057af13971cd9f052f2a8c301e31409f1fb1e9aa392af056e79447f8109"},
+    {"route_id": "marketing-operations", "spec_ref": "routes/marketing-operations.json", "sha256": "f00cefde99bf2781ad74df84e98ddc23278b9199424bcb48d1a3f7cca8b38ada"},
+    {"route_id": "audience-deep-research", "spec_ref": "routes/audience-deep-research.json", "sha256": "0c05b06d7b97fa281af9790fd846274a178f3848c128eb1f4b7dab22f3bd4e42"}
+  ],
+  "invariants": {
+    "one_project_per_run": true,
+    "project_context_required": true,
+    "roles_are_read_only": true,
+    "root_only_persistence": true,
+    "governance_before_review": true,
+    "human_review_exact_revision": true,
+    "approval_is_not_publication": true,
+    "publisher_present": false
+  }
+}

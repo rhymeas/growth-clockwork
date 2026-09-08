@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent-catalog@1",
+  "title": "Hash-pinned Growth Agent Catalog",
+  "type": "object",
+  "required": [
+    "catalog_version",
+    "catalog_revision",
+    "roles",
+    "routes"
+  ],
+  "properties": {
+    "catalog_version": {"const": "1.0"},
+    "catalog_revision": {"type": "string", "pattern": "^[a-z][a-z0-9.-]{2,127}$"},
+    "roles": {
+      "type": "array",
+      "minItems": 9,
+      "items": {
+        "type": "object",
+        "required": ["role_id", "path", "sha256"],
+        "properties": {
+          "role_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$"},
+          "path": {"type": "string", "pattern": "^roles/(core|specialists)/[a-z][a-z0-9-]{1,63}\\.json$"},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "route_id",
+          "path",
+          "sha256",
+          "required_context",
+          "steps",
+          "final_product_contract",
+          "governance_step_id",
+          "terminal_state",
+          "human_actions",
+          "may_publish"
+        ],
+        "properties": {
+          "route_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$"},
+          "path": {"type": "string", "pattern": "^routes/[a-z][a-z0-9-]{1,63}\\.json$"},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "required_context": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {"enum": ["facts", "prohibited_claims", "audience", "market", "funnel", "metrics", "channels", "authority"]}
+          },
+          "steps": {
+            "type": "array",
+            "minItems": 2,
+            "items": {"$ref": "#/$defs/step"}
+          },
+          "final_product_contract": {"type": "string", "pattern": "^[a-z][a-z0-9-]+@[0-9]+$"},
+          "governance_step_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$"},
+          "terminal_state": {"const": "review_ready"},
+          "human_actions": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "uniqueItems": true,
+            "items": {"enum": ["approve", "decline", "note"]}
+          },
+          "may_publish": {"const": false}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "step": {
+      "type": "object",
+      "required": [
+        "step_id",
+        "role_id",
+        "depends_on",
+        "optional",
+        "run_when",
+        "objective",
+        "output_contract",
+        "deliverable_contract",
+        "allowed_write_roots"
+      ],
+      "properties": {
+        "step_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$"},
+        "role_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$"},
+        "depends_on": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$"}},
+        "optional": {"type": "boolean"},
+        "run_when": {"type": "string", "minLength": 3},
+        "objective": {"type": "string", "minLength": 10},
+        "output_contract": {"const": "result-envelope@2"},
+        "deliverable_contract": {"type": "string", "pattern": "^[a-z][a-z0-9-]+@[0-9]+$"},
+        "allowed_write_roots": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

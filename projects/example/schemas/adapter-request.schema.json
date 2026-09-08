@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adapter-request@1",
+  "title": "Release Adapter Request",
+  "description": "Versioned credential-free request passed from the release core to an adapter port.",
+  "type": "object",
+  "required": ["adapter_request_version", "request_id", "project_id", "project_profile_revision", "release_package", "adapter_id", "adapter_version", "target", "external_side_effects", "requested_at"],
+  "properties": {
+    "adapter_request_version": { "const": "1.0" },
+    "request_id": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+    "project_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+    "project_profile_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "release_package": {
+      "type": "object",
+      "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+      "properties": {
+        "artifact_ref": { "type": "string", "pattern": "^records/release-packages/(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}\\.json$" },
+        "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+        "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "adapter_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}@[1-9][0-9]*$" },
+    "adapter_version": { "type": "string", "pattern": "^[1-9][0-9]*\\.[0-9]+$" },
+    "target": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+    "external_side_effects": { "const": false },
+    "requested_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

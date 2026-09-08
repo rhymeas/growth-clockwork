@@ -1,0 +1,21 @@
+{
+  "route_version": "1.0",
+  "route_id": "research-evidence",
+  "display_name": "Research and Evidence",
+  "purpose": "Answer one bounded decision question with source-traceable evidence and an independent governance verdict.",
+  "activation": {
+    "modes": ["required_by_objective"],
+    "objective_signals": ["The objective asks what is true, current, supported, contradicted, or still unknown."],
+    "prerequisites": ["A valid Project Context Manifest and source policy are bound."]
+  },
+  "context_requirements": ["facts", "prohibited_claims", "market", "authority"],
+  "nodes": [
+    {"node_id": "coordinate", "role_id": "growth-coordinator", "depends_on": [], "optional": false, "run_when": "always", "objective": "Frame one decision question, evidence standard, scope, budget, and stop rule.", "output_contract": "result-envelope@2", "deliverable_contract": "task-set@1", "allowed_write_roots": ["handoffs", "records/decisions"]},
+    {"node_id": "research", "role_id": "evidence-research", "depends_on": ["coordinate"], "optional": false, "run_when": "always", "objective": "Collect bounded evidence and preserve sources, contradictions, unknowns, and confidence.", "output_contract": "result-envelope@2", "deliverable_contract": "evidence-packet@1", "allowed_write_roots": ["evidence/packets", "handoffs"]},
+    {"node_id": "governance-final", "role_id": "governance-reviewer", "depends_on": ["research"], "optional": false, "run_when": "always", "objective": "Review the exact evidence packet for source scope, policy, authority, revision, and proof boundaries.", "output_contract": "result-envelope@2", "deliverable_contract": "governance-verdict@1", "allowed_write_roots": ["records/governance", "handoffs"]}
+  ],
+  "final_product": {"producer_node": "research", "contract": "evidence-packet@1", "supporting_contracts": ["route-decision@1"]},
+  "parallelism": {"max_concurrent_workhorses": 2, "only_independent_nodes": true},
+  "failure_policy": {"dependent_nodes": "blocked-or-skipped", "independent_nodes": "may-continue", "ambiguous_result": "needs_attention-no-blind-retry", "semantic_revisions": 2},
+  "terminal_review": {"governance_node": "governance-final", "governance_contract": "governance-verdict@1", "required_governance_result": "pass", "review_item_contract": "outbox-review-item@1", "terminal_state": "review_ready", "human_actions": ["approve", "decline", "note"], "external_side_effects": false, "may_publish": false}
+}

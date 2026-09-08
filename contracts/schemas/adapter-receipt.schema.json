@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adapter-receipt@1",
+  "title": "Release Adapter Receipt",
+  "description": "Immutable adapter execution result, distinct from the Root Writer receipt.",
+  "type": "object",
+  "required": ["adapter_receipt_version", "execution_id", "request_id", "project_id", "project_profile_revision", "release_package", "adapter_id", "adapter_version", "target", "status", "external_side_effects", "output_artifact", "completed_at"],
+  "properties": {
+    "adapter_receipt_version": { "const": "1.0" },
+    "execution_id": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+    "request_id": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+    "project_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+    "project_profile_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "release_package": {
+      "type": "object",
+      "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+      "properties": {
+        "artifact_ref": { "type": "string", "pattern": "^records/release-packages/(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}\\.json$" },
+        "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+        "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "adapter_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}@[1-9][0-9]*$" },
+    "adapter_version": { "type": "string", "pattern": "^[1-9][0-9]*\\.[0-9]+$" },
+    "target": { "enum": ["preview", "simulated-live"] },
+    "status": { "const": "completed" },
+    "external_side_effects": { "const": false },
+    "output_artifact": {
+      "type": "object",
+      "required": ["artifact_ref", "artifact_revision", "artifact_sha256"],
+      "properties": {
+        "artifact_ref": { "type": "string", "pattern": "^staging/local-release/(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$" },
+        "artifact_revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+        "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "completed_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

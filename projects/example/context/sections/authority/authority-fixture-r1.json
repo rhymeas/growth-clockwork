@@ -1,0 +1,38 @@
+{
+  "project_id": "example-project",
+  "project_profile_revision": "example-project-profile-v2",
+  "envelope_version": "1.0",
+  "section_kind": "authority",
+  "section_revision": "authority-fixture-r1",
+  "material_state": "current",
+  "usage_policy": "allowed",
+  "synthetic": true,
+  "fixture_only": true,
+  "publishable": false,
+  "approval_ref": null,
+  "source_refs": [
+    {
+      "source_id": "synthetic-context-fixture",
+      "artifact_ref": "context/evidence/synthetic-evidence-index-fixture-r1.json",
+      "artifact_revision": "synthetic-evidence-fixture-r1",
+      "artifact_sha256": "c2c13fa9883d0cb503c12024e51a124b23256a05a2276c8eb2781e68d80cd15e",
+      "source_state": "synthetic_fixture"
+    }
+  ],
+  "unknowns": [],
+  "content": {
+    "run_mode": "fixture",
+    "autonomous_internal_work": true,
+    "human_final_review_required": true,
+    "publishable": false,
+    "publish_credentials_available": false,
+    "external_side_effects_allowed": false,
+    "public_account_changes_allowed": false,
+    "review_actions": [
+      "approve",
+      "decline",
+      "note"
+    ]
+  },
+  "created_at": "2026-09-01T00:09:52Z"
+}
