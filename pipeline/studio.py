@@ -135,7 +135,8 @@ def _view(workspace: Path, profile: dict[str, Any], records: list[dict[str, Any]
         "capabilities": {"platforms": list(CONTENT_CHANNELS), "publishing": False, "platform_data": False, "max_upload_bytes": MAX_UPLOAD_BYTES,
             "max_material_storage_bytes": MAX_MATERIAL_STORAGE_BYTES,
             "media_processing": media_processor.capabilities(workspace)}}
-    buckets = {"audience": "audiences", "proposal": "proposals", "slot": "slots", "material": "materials"}
+    buckets = {"audience": "audiences", "proposal": "proposals", "slot": "slots", "material": "materials",
+               "suggestion": "suggestions"}
     slots: dict[str, dict[str, Any]] = {}
     for record in records:
         if record["kind"] == "cancel_slot":
@@ -445,6 +446,22 @@ def _write(workspace: Path, profile_path: Path, profile: dict[str, Any], value: 
             if not set(ids).issubset({item["id"] for item in current["materials"]}):
                 raise StudioError("Material does not belong to this project", 409)
             payload = {**raw, "title": _text(raw["title"], "Title", 240), "status": "draft"}
+        elif kind == "suggestion":
+            raw = value["payload"]
+            _keys(raw, {"title", "channel", "audience_id", "material_ids", "basis", "detail", "source_urls"})
+            if raw["channel"] not in CONTENT_CHANNELS or raw["basis"] != "weekly_feed_hypothesis":
+                raise StudioError("Suggestion source or channel is unsupported")
+            if raw["audience_id"] is not None and raw["audience_id"] not in {item["id"] for item in current["audiences"]}:
+                raise StudioError("Suggestion audience does not belong to this project", 409)
+            if raw["material_ids"] != []:
+                raise StudioError("Weekly feed suggestions cannot claim local material")
+            urls = raw["source_urls"]
+            if (not isinstance(urls, list) or not 1 <= len(urls) <= 5
+                    or len(set(urls)) != len(urls)
+                    or any(not isinstance(url, str) or not url.startswith("https://") for url in urls)):
+                raise StudioError("Suggestion sources are invalid")
+            payload = {**raw, "title": _text(raw["title"], "Title", 240),
+                       "detail": _text(raw["detail"], "Suggestion detail", 1000)}
         elif kind == "cancel_slot":
             _keys(value["payload"], {"slot_id"})
             if _text(value["payload"]["slot_id"], "Slot ID", 36) not in {item["id"] for item in current["slots"]}:

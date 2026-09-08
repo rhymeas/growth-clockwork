@@ -12,7 +12,7 @@ export type Audience = { id: string; label: string; problem: string; status: "hy
 export type Proposal = { id: string; title: string; channel: Platform; audience_id: string | null; material_ids: string[]; status: "draft"; created_at: string };
 export type Slot = { id: string; proposal_id: string; planned_at: string; timezone: string; status: "planned"; created_at: string };
 export type Material = { id: string; name: string; mime_type: string; size_bytes: number; sha256: string; processing_status: "processed" | "indexed"; processing_note: string; extracted_text: string; metadata: Record<string, unknown>; created_at: string };
-export type Suggestion = { id: string; title: string; channel: Platform; material_ids: string[]; basis: "format_suggestion"; detail: string };
+export type Suggestion = { id: string; title: string; channel: Platform; audience_id?: string | null; material_ids: string[]; basis: "format_suggestion" | "weekly_feed_hypothesis"; detail: string; source_urls?: string[] };
 export type Studio = {
   project_id: string; project_profile_revision: string;
   audiences: Audience[]; proposals: Proposal[]; slots: Slot[]; materials: Material[]; suggestions: Suggestion[];

@@ -65,6 +65,21 @@ describe("contextual studio interactions with the real API client", () => {
     expect(writes()[0].body).toMatchObject({ ...scope, kind: "proposal", payload: { title: "Check a summary", channel: label.toLowerCase(), audience_id: "a1", material_ids: ["m1"] } });
   });
 
+  it("shows a weekly source hypothesis and applies its audience without starting work", async () => {
+    const user = userEvent.setup();
+    const studio = emptyStudio();
+    studio.audiences.push({ id: "a1", label: "Engineers", problem: "Diagnose costly traffic", status: "hypothesis", created_at: "2026-09-07T01:00:00Z" });
+    studio.suggestions.push({ id: "s1", title: "Diagnose crawler load", channel: "website", audience_id: "a1", material_ids: [], basis: "weekly_feed_hypothesis", detail: "Grounded in this week's bounded feed receipt.", source_urls: ["https://example.org/source"] });
+    fetchMock.mockResolvedValue(response(studio));
+    render(<StudioWorkspace {...props()} />); await ready();
+    await user.click(screen.getByRole("button", { name: /Planning A place for the next idea/ }));
+    expect(screen.getByText("Weekly research hypothesis")).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Use suggestion" }));
+    expect(screen.getByLabelText("Idea title")).toHaveValue("Diagnose crawler load");
+    expect(screen.getByLabelText("Audience")).toHaveValue("a1");
+    expect(writes()).toHaveLength(0);
+  });
+
   it("saves a device-local planning date as UTC, then removes only the saved slot", async () => {
     const user = userEvent.setup();
     const studio = emptyStudio();

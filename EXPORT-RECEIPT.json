@@ -3,7 +3,7 @@
   "published": false,
   "license_granted": true,
   "license": "Apache-2.0",
-  "boundary_revision": "published-2026-09-07-r30",
+  "boundary_revision": "published-2026-09-07-r31",
   "files": [
     {
       "path": "agents/README.md",
@@ -392,8 +392,8 @@
     },
     {
       "path": "dashboard/src/api/studio.ts",
-      "sha256": "3b00dfe37fafada14db9312c2e726314536a25f127eb583e8a390ebdaf23fb6c",
-      "bytes": 6669
+      "sha256": "022bce17269c6decfe57e0a47da5db51d0492712c8c1984e8bdc0d27f95e525a",
+      "bytes": 6749
     },
     {
       "path": "dashboard/src/components/ActionDialog.tsx",
@@ -492,13 +492,13 @@
     },
     {
       "path": "dashboard/src/components/StudioWorkspace.test.tsx",
-      "sha256": "9e1d0b88189f3a9ecbab293f5f679713746bf519433af4c50bbcf726b5de2b1a",
-      "bytes": 17872
+      "sha256": "a6e7e0f42b429d8dcb42550bfd0ae6897a5731089d9d1cd7ad20fda4c64184e6",
+      "bytes": 19024
     },
     {
       "path": "dashboard/src/components/StudioWorkspace.tsx",
-      "sha256": "16f6f09c5ce2e603403a8945b094133ee41ccaa7c7536a563d10c45cf0bcd0c7",
-      "bytes": 22869
+      "sha256": "659ae3ca4ad197271e02ad11560f42bbdd2a27cb0a485b3a006c0597b540e359",
+      "bytes": 22999
     },
     {
       "path": "dashboard/src/components/SystemStatus.test.tsx",
@@ -622,14 +622,14 @@
     },
     {
       "path": "open-source-package.json",
-      "sha256": "2d348f427288c33378a796c4ac984e96ad1de8acb2b01de25af40506af8dc1be",
+      "sha256": "30cd29707eb8fd5b55575ce7ecd4fd7034f9bc366b7b418a95331edebc86a372",
       "bytes": 6624,
       "origin": "generated-standalone-boundary-manifest"
     },
     {
       "path": "pipeline/README.md",
-      "sha256": "51486c3b6958bd23fb33a8d74e94f5dce9ce633ef8ab90ace44f8821bf44b55c",
-      "bytes": 18162
+      "sha256": "508a33c07e611845264948dfec71670383569e1f6ea125cba818b7caf6c24bf2",
+      "bytes": 18325
     },
     {
       "path": "pipeline/__init__.py",
@@ -733,8 +733,8 @@
     },
     {
       "path": "pipeline/macos_autostart.py",
-      "sha256": "dfd7cdd294866d4612c6f4d253beaebe0345c0f2b3cd770df066244fb1f96f0a",
-      "bytes": 16021
+      "sha256": "1ed59dde5f01e4f98bf67ebb9bd2fda298dacc431c85df3dd6fbd9763705068d",
+      "bytes": 16395
     },
     {
       "path": "pipeline/marketing_worker.py",
@@ -863,8 +863,8 @@
     },
     {
       "path": "pipeline/studio.py",
-      "sha256": "ff1691e414b6ff8527e24f231f14cc6acba65c179a433e9ce1cc028acc82d44b",
-      "bytes": 26397
+      "sha256": "98aac61a2ea74ac2294d215f8e85554e840082ddc5d69ff26a5ffa4cfa701d62",
+      "bytes": 27637
     },
     {
       "path": "pipeline/task_broker.py",
@@ -993,8 +993,8 @@
     },
     {
       "path": "pipeline/tests/test_macos_autostart.py",
-      "sha256": "7dda3f32e2c5e478cac8c741d34e5821ddb2cf8dc0c30f64906612dc91b92b55",
-      "bytes": 14002
+      "sha256": "7b34ebbb8ad4fc298c4c08853931c1d947dc2c134b3d9ea7d33ca867245b4049",
+      "bytes": 14302
     },
     {
       "path": "pipeline/tests/test_marketing_worker.py",
@@ -1142,6 +1142,11 @@
       "bytes": 5500
     },
     {
+      "path": "pipeline/tests/test_weekly_cycle.py",
+      "sha256": "45c4d0c72c99c450589b945546576fac1def01667b9644977b623df2dfdf4915",
+      "bytes": 4608
+    },
+    {
       "path": "pipeline/tests/test_workhorse.py",
       "sha256": "07303eb482b0abd4543ba4f6b35b29f475ba2163f382b6b7a9864ffa4210f61e",
       "bytes": 10342
@@ -1155,6 +1160,11 @@
       "path": "pipeline/website_analytics.py",
       "sha256": "7df52306def5b1bd22e640fb71b4d992337fedcaab71b694303fd36987df7f1f",
       "bytes": 11236
+    },
+    {
+      "path": "pipeline/weekly_cycle.py",
+      "sha256": "94ebf0a11a5d831853258c75024983a09e5d620bdc5bc113ebbd9953f8b762a2",
+      "bytes": 6541
     },
     {
       "path": "pipeline/workhorse.py",
@@ -1652,8 +1662,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "f23cb626af62c474f87538e25a935e2224ed3f889d602317b9477351aee7933e",
-      "bytes": 8319,
+      "sha256": "98a413023de3890a79ef06c244f0987863ea7b30753199dff5212065871cc06a",
+      "bytes": 8655,
       "origin": "open-source/README.md"
     },
     {

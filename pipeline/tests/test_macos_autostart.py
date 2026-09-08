@@ -75,7 +75,8 @@ class MacOSAutostartTests(unittest.TestCase):
 
     def test_generated_research_agent_runs_weekly_and_on_login(self) -> None:
         raw = macos_autostart.research_launch_agent(
-            self.workspace, "example", python_executable=self.python)
+            self.workspace, "example", python_executable=self.python,
+            codex_executable=self.python)
         value = plistlib.loads(raw)
         self.assertEqual(value["Label"], macos_autostart.RESEARCH_LABEL)
         self.assertEqual(value["StartCalendarInterval"], {
@@ -83,8 +84,9 @@ class MacOSAutostartTests(unittest.TestCase):
         self.assertTrue(value["RunAtLoad"])
         self.assertNotIn("KeepAlive", value)
         arguments = value["ProgramArguments"]
-        self.assertEqual(arguments[1:3], ["-m", "pipeline.feed_intake"])
+        self.assertEqual(arguments[1:3], ["-m", "pipeline.weekly_cycle"])
         self.assertEqual(arguments[arguments.index("--project") + 1], "example")
+        self.assertEqual(arguments[arguments.index("--codex-executable") + 1], str(self.python))
         self.assertNotIn("token", raw.decode().lower())
         self.assertNotIn("password", raw.decode().lower())
 
@@ -98,7 +100,8 @@ class MacOSAutostartTests(unittest.TestCase):
 
         result = macos_autostart.install_research(
             self.workspace, "example", launch_agents=self.launch_agents,
-            python_executable=self.python, uid=501, run=run,
+            python_executable=self.python, codex_executable=self.python,
+            uid=501, run=run,
             platform="darwin")
         target = self.launch_agents / macos_autostart.RESEARCH_PLIST_NAME
         self.assertEqual(result["status"], "installed")
@@ -109,7 +112,7 @@ class MacOSAutostartTests(unittest.TestCase):
                          ["/bin/launchctl", "bootstrap", "gui/501", str(target.resolve())])
         self.assertEqual(macos_autostart.research_readiness(
             self.workspace, "example", launch_agents=self.launch_agents,
-            python_executable=self.python,
+            python_executable=self.python, codex_executable=self.python,
             run=lambda command, **kwargs: subprocess.CompletedProcess(
                 command, 0, "", ""), platform="darwin"), {"state": "running"})
 
@@ -117,10 +120,12 @@ class MacOSAutostartTests(unittest.TestCase):
         (self.workspace / "projects/example/research-feeds.json").unlink()
         with self.assertRaisesRegex(macos_autostart.AutostartError, "no research feeds"):
             macos_autostart.research_launch_agent(
-                self.workspace, "example", python_executable=self.python)
+                self.workspace, "example", python_executable=self.python,
+                codex_executable=self.python)
         self.assertEqual(macos_autostart.research_readiness(
             self.workspace, "example", launch_agents=self.launch_agents,
-            python_executable=self.python, platform="darwin"),
+            python_executable=self.python, codex_executable=self.python,
+            platform="darwin"),
             {"state": "configuration_required"})
 
     def test_install_writes_mode_600_and_bootstraps_user_domain(self) -> None:

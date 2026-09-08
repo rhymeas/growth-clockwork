@@ -47,6 +47,17 @@ def _regular(path: Path, label: str, *, allow_symlink: bool = False) -> Path:
     return path
 
 
+def _codex_executable(value: Path | None = None) -> Path:
+    discovered = value
+    if discovered is None:
+        discovered = shutil.which("codex")
+    if discovered is None and sys.platform == "darwin" and CHATGPT_CODEX.is_file():
+        discovered = CHATGPT_CODEX
+    if discovered is None:
+        raise AutostartError("Codex executable is required by enabled automation")
+    return _regular(Path(discovered), "Codex executable", allow_symlink=True)
+
+
 def launch_agent(
     workspace: Path, *, python_executable: Path | None = None,
     codex_executable: Path | None = None,
@@ -78,14 +89,7 @@ def launch_agent(
         automation_enabled = False
     codex = None
     if automation_enabled:
-        discovered = codex_executable
-        if discovered is None:
-            discovered = shutil.which("codex")
-        if discovered is None and sys.platform == "darwin" and CHATGPT_CODEX.is_file():
-            discovered = CHATGPT_CODEX
-        if discovered is None:
-            raise AutostartError("Codex executable is required by enabled agent autostart")
-        codex = _regular(Path(discovered), "Codex executable", allow_symlink=True)
+        codex = _codex_executable(codex_executable)
     log_root = workspace / "runtime/service"
     arguments = [
         str(executable), "-m", "pipeline.review_api",
@@ -117,6 +121,7 @@ def launch_agent(
 
 def research_launch_agent(
     workspace: Path, project_id: str, *, python_executable: Path | None = None,
+    codex_executable: Path | None = None,
 ) -> bytes:
     """Build one bounded weekly feed-intake job for an existing project."""
 
@@ -125,6 +130,7 @@ def research_launch_agent(
         Path(sys.executable) if python_executable is None else Path(python_executable),
         "Python executable", allow_symlink=True,
     )
+    codex = _codex_executable(codex_executable)
     service = GoalLoopService(workspace)
     try:
         profile_path, _profile = service._selected(project_id)
@@ -140,9 +146,10 @@ def research_launch_agent(
     value = {
         "Label": RESEARCH_LABEL,
         "ProgramArguments": [
-            str(executable), "-m", "pipeline.feed_intake",
+            str(executable), "-m", "pipeline.weekly_cycle",
             "--workspace", str(workspace),
             "--project", project_id,
+            "--codex-executable", str(codex),
         ],
         "WorkingDirectory": str(workspace),
         "EnvironmentVariables": {
@@ -205,7 +212,8 @@ def install(
 
 def install_research(
     workspace: Path, project_id: str, *, launch_agents: Path | None = None,
-    python_executable: Path | None = None, uid: int | None = None,
+    python_executable: Path | None = None, codex_executable: Path | None = None,
+    uid: int | None = None,
     update: bool = False,
     run: Callable[..., subprocess.CompletedProcess] = subprocess.run,
     platform: str = sys.platform,
@@ -214,7 +222,8 @@ def install_research(
         raise AutostartError("macOS LaunchAgent installation is available only on macOS")
     workspace = root_writer._validate_workspace(Path(workspace))
     content = research_launch_agent(
-        workspace, project_id, python_executable=python_executable)
+        workspace, project_id, python_executable=python_executable,
+        codex_executable=codex_executable)
     return _install_agent(
         workspace, content, label=RESEARCH_LABEL,
         plist_name=RESEARCH_PLIST_NAME, service_name="research schedule",
@@ -315,7 +324,8 @@ def readiness(
 
 def research_readiness(
     workspace: Path, project_id: str, *, launch_agents: Path | None = None,
-    python_executable: Path | None = None, uid: int | None = None,
+    python_executable: Path | None = None, codex_executable: Path | None = None,
+    uid: int | None = None,
     run: Callable[..., subprocess.CompletedProcess] = subprocess.run,
     platform: str = sys.platform,
 ) -> dict[str, str]:
@@ -323,7 +333,8 @@ def research_readiness(
         return {"state": "unsupported"}
     try:
         expected = research_launch_agent(
-            workspace, project_id, python_executable=python_executable)
+            workspace, project_id, python_executable=python_executable,
+            codex_executable=codex_executable)
     except (AutostartError, root_writer.WriterError):
         return {"state": "configuration_required"}
     return _readiness_for(
