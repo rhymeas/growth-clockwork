@@ -1,6 +1,6 @@
 # Open-source package boundary
 
-Status: Apache-2.0 licensed export candidate, not published.
+Status: Apache-2.0 public source repository; early alpha, no GitHub Release yet.
 
 ## Decision
 
@@ -11,12 +11,13 @@ It defines what may be copied into a future clean repository and what must stay
 behind.
 
 This file and the manifest do **not** make the current mixed repository or any
-excluded Mavery files open source. The extracted package carries Apache-2.0;
-no package has been published.
+excluded Mavery files open source. The extracted package carries Apache-2.0 and
+is public at <https://github.com/rhymeas/growth-clockwork>. The first public source
+tag is `v0.1.0-alpha.23`.
 
-## Candidate package
+## Public package
 
-The future package contains only the reusable control plane and a synthetic
+The public package contains only the reusable control plane and a synthetic
 reference project:
 
 | Included root | Purpose |
@@ -99,9 +100,9 @@ python3 -m pipeline.package_audit /absolute/path/to/candidate
 This pattern scan does not replace a secret-history scan, legal review or complete
 license-notice generation. MPL-2.0 components retain their own file-level terms.
 
-## Publication gates still required
+## Public status and remaining release gates
 
-Before a public repository or release exists:
+The public repository exists. A separately packaged GitHub Release still requires:
 
 1. Extract exactly the manifest-selected files into a clean directory. Do not
    copy the whole Mavery workspace and then delete private material. **Implemented.**
@@ -115,9 +116,9 @@ Before a public repository or release exists:
    package README, installation path, contribution rules, security reporting
    process, compatibility statement, and versioning policy. **Candidate metadata implemented.**
 6. Keep the Apache-2.0 license confined to the extracted package. **Implemented.**
-7. Create the first public release from the clean repository with checksums and
-   reproducible local validation. GitHub is optional hosting, not runtime
-   authority, and no paid GitHub feature is required.
+7. Create the first packaged GitHub Release with checksums and reproducible local
+   validation. The public repository and source tag are already present. GitHub is
+   hosting, not runtime authority, and no paid GitHub feature is required.
 
-Until the remaining gates pass, the accurate description is **licensed local
-open-source candidate, not publicly released**.
+Until the remaining gates pass, the accurate description is **public early-alpha
+source repository, without a separately packaged GitHub Release**.

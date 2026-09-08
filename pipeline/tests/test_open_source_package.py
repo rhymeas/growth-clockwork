@@ -16,7 +16,7 @@ class OpenSourcePackageBoundaryTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
 
-    def test_manifest_shape_and_non_release_status(self) -> None:
+    def test_manifest_shape_and_published_package_status(self) -> None:
         manifest = self.manifest
         self.assertEqual(
             set(manifest),
@@ -36,19 +36,31 @@ class OpenSourcePackageBoundaryTests(unittest.TestCase):
             manifest["contract_id"], "growth-clockwork-open-source-package@1"
         )
         self.assertEqual(manifest["package_name"], "growth-clockwork")
-        self.assertFalse(manifest["status"]["current_repository_is_open_source"])
-        self.assertFalse(manifest["status"]["package_is_published"])
-        self.assertEqual(
-            manifest["status"]["classification"], "licensed_export_candidate"
+        standalone = all(
+            entry["source"] == entry["path"]
+            for entry in manifest["package_root_files"]
         )
+        self.assertEqual(
+            manifest["status"]["current_repository_is_open_source"], standalone
+        )
+        self.assertTrue(manifest["status"]["package_is_published"])
+        self.assertEqual(
+            manifest["status"]["classification"], "published_open_source_package"
+        )
+        self.assertEqual(manifest["status"]["public_repository_url"],
+                         "https://github.com/rhymeas/growth-clockwork")
+        self.assertEqual(manifest["status"]["first_public_tag"],
+                         "v0.1.0-alpha.23")
 
         license_boundary = manifest["future_license"]
         self.assertEqual(license_boundary["recommended_spdx_id"], "Apache-2.0")
         self.assertEqual(
             license_boundary["decision_status"],
-            "selected_for_export_package",
+            "applied_to_export_package",
         )
-        self.assertFalse(license_boundary["applies_to_current_repository"])
+        self.assertEqual(
+            license_boundary["applies_to_current_repository"], standalone
+        )
         self.assertTrue(license_boundary["license_file_exists_for_package"])
 
     def test_paths_are_safe_normalized_and_unique(self) -> None:

@@ -1,5 +1,7 @@
 # Growth Clockwork
 
+Public repository: <https://github.com/rhymeas/growth-clockwork>
+
 Growth Clockwork is a local, open-source control room for evidence-first marketing
 work. It turns one operator idea into a receipted chain:
 

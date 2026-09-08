@@ -91,6 +91,12 @@ def _safe_path(value):
 
 def _standalone_manifest(manifest):
     standalone = json.loads(json.dumps(manifest))
+    # The source workspace can remain private and mixed-license while the
+    # extracted standalone repository is the Apache-2.0 project itself.
+    if isinstance(standalone.get('status'), dict):
+        standalone['status']['current_repository_is_open_source'] = True
+    if isinstance(standalone.get('future_license'), dict):
+        standalone['future_license']['applies_to_current_repository'] = True
     for entry in standalone.get('package_root_files', []):
         entry['source'] = entry['path']
     return (json.dumps(standalone, indent=2, ensure_ascii=False) + '\n').encode('utf-8')

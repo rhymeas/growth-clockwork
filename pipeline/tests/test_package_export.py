@@ -71,9 +71,19 @@ class PackageExportTests(unittest.TestCase):
         self.manifest['include_entries'].append({'path': 'open-source-package.json'})
         self.manifest['package_root_files'] = [
             {'source': 'metadata/README.md', 'path': 'README.md'}]
+        self.manifest['status'] = {
+            'current_repository_is_open_source': False,
+            'package_is_published': True,
+        }
+        self.manifest['future_license'] = {
+            'applies_to_current_repository': False,
+        }
         (self.root / 'open-source-package.json').write_text(json.dumps(self.manifest))
         destination = Path(self.temp.name) / 'export'
         export_candidate(self.root, destination)
         exported = json.loads((destination / 'open-source-package.json').read_text())
         self.assertEqual(exported['package_root_files'], [
             {'source': 'README.md', 'path': 'README.md'}])
+        self.assertTrue(exported['status']['current_repository_is_open_source'])
+        self.assertTrue(exported['status']['package_is_published'])
+        self.assertTrue(exported['future_license']['applies_to_current_repository'])

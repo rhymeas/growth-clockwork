@@ -3,7 +3,7 @@
   "published": false,
   "license_granted": true,
   "license": "Apache-2.0",
-  "boundary_revision": "candidate-2026-09-07-r23",
+  "boundary_revision": "published-2026-09-07-r25",
   "files": [
     {
       "path": "agents/README.md",
@@ -617,13 +617,13 @@
     },
     {
       "path": "docs/open-source-package-boundary.md",
-      "sha256": "b339981b91e54edfa927d76159072eee5a74497d2d98f515bb104c3acae510d9",
-      "bytes": 6378
+      "sha256": "003f19afc81064687aa363452969c0dec33373cd6d2eb22e1274ab4ceb8ccc3a",
+      "bytes": 6578
     },
     {
       "path": "open-source-package.json",
-      "sha256": "b8b068e870692970e1d5093aaf89453debfddb42ae0356fa900bc6b262009963",
-      "bytes": 6506,
+      "sha256": "0a3fb8690edf86c5229e16637d0c7d3dab0048071c3523c2160a509014558acb",
+      "bytes": 6624,
       "origin": "generated-standalone-boundary-manifest"
     },
     {
@@ -763,8 +763,8 @@
     },
     {
       "path": "pipeline/package_export.py",
-      "sha256": "c20306cf1d6afd8212565c2edfd2dec9bc2e9b934ad34f9ec6c90d822cdee22b",
-      "bytes": 7623
+      "sha256": "1fc3521b2fc20b3c70acbfe409016ea4ea155a8910c22f91043c2dacb7ad4f1a",
+      "bytes": 8029
     },
     {
       "path": "pipeline/postiz_connector.py",
@@ -1013,8 +1013,8 @@
     },
     {
       "path": "pipeline/tests/test_open_source_package.py",
-      "sha256": "6da612e40ad00c3bd8cd731816237e06d3127045a822fc8891e16a14b8263973",
-      "bytes": 11119
+      "sha256": "d7a87f2cc60d5a57e3b39c00efe2205f49dc6c3b4e66f2a6ad14066783f3a446",
+      "bytes": 11582
     },
     {
       "path": "pipeline/tests/test_operating_contract.py",
@@ -1028,8 +1028,8 @@
     },
     {
       "path": "pipeline/tests/test_package_export.py",
-      "sha256": "c559801017d6bf3eaf9df0f72a38910e02f91c2e6061d1f4f5a8d9f30d1cc0f5",
-      "bytes": 4185
+      "sha256": "91ac455c487a65ef917b55f791c370a502d11bc3e994d72299f2808f531be43c",
+      "bytes": 4669
     },
     {
       "path": "pipeline/tests/test_postiz_connector.py",
@@ -1652,8 +1652,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "d245449c64f7634971f5354a7ec478e4e13ec1c9398bd4071247139ff9afc8e7",
-      "bytes": 7242,
+      "sha256": "3e5fe39bfb21e36376544774609256990a8942f2616710c0b42a9fea4fd78e69",
+      "bytes": 7308,
       "origin": "open-source/README.md"
     },
     {

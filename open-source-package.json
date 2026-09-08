@@ -1,16 +1,18 @@
 {
   "contract_id": "growth-clockwork-open-source-package@1",
   "package_name": "growth-clockwork",
-  "boundary_revision": "candidate-2026-09-07-r23",
+  "boundary_revision": "published-2026-09-07-r25",
   "status": {
-    "classification": "licensed_export_candidate",
-    "current_repository_is_open_source": false,
-    "package_is_published": false
+    "classification": "published_open_source_package",
+    "current_repository_is_open_source": true,
+    "package_is_published": true,
+    "public_repository_url": "https://github.com/rhymeas/growth-clockwork",
+    "first_public_tag": "v0.1.0-alpha.23"
   },
   "future_license": {
     "recommended_spdx_id": "Apache-2.0",
-    "decision_status": "selected_for_export_package",
-    "applies_to_current_repository": false,
+    "decision_status": "applied_to_export_package",
+    "applies_to_current_repository": true,
     "license_file_exists_for_package": true
   },
   "package_root_files": [
